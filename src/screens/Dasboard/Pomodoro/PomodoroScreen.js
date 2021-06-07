@@ -11,6 +11,9 @@ import sharedStyles from '../../../styles/shared';
 import HeaderBar from '../../../components/Header/HeaderBar';
 import { Icon } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native';
+import { Touchable } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native';
+import { TextInput } from 'react-native';
 
 export default class PomodoroScreen extends React.Component {
     constructor(props) {
@@ -135,7 +138,7 @@ export default class PomodoroScreen extends React.Component {
     render() {
       return (
         <FlexLayout style={sharedStyles.wrapperFlexSpaceBetween} >
-            <HeaderBar screenName='Pomodoro Timer' rightIcon = 'settings' rightFunc = {() => this.setSettingsVisible(!this.state.settingsVisible)} leftIcon = 'settings' leftFunc = {() => this.setSettingsVisible(!this.state.settingsVisible)} />
+            <HeaderBar screenName='Pomodoro Timer' rightIcon = 'settings' rightFunc = {() => this.setSettingsVisible(!this.state.settingsVisible)} />
             <View>
                 <Text>Dodaj zadanie</Text>
             </View>
@@ -163,16 +166,25 @@ export default class PomodoroScreen extends React.Component {
             animationType="slide"
             transparent={true}
             visible={this.state.settingsVisible}
-            onRequestClose={() => {
-            this.setSettingsVisible(!this.state.settingsVisible);}}>
-                    <View style={[sharedStyles.wrapperFlexCenter,styles.settingsModal]}>
-                        <HeaderBar rightIcon='exit' />
+            onRequestClose={() => {this.setSettingsVisible(!this.state.settingsVisible);}}>
+            <View style={{flex:1,backgroundColor:'rgba(0,0,0,0.5)'}}>
+                <View style={[sharedStyles.wrapperFlexStart,styles.settingsModal]}>
+                    <HeaderBar screenName='Pomodoro Settings' style={sharedStyles.marginBottom25} rightIcon='close' rightFunc={() => this.setSettingsVisible(!this.state.settingsVisible)} />
+                    <View>
                         <View style={styles.inputSettings}>
                             <InLineLayout>
-                                <Text>Time Pomodoro</Text>
+                                <Text>Time Pomodoro</Text>      
+                                <TextInput
+                                style={styles.input}
+                                value={this.state.time}
+                                keyboardType="numeric"
+                                onChange={(e)=> this.setState({time: e.target.value})}
+                                />
                             </InLineLayout>
                         </View>
                     </View>
+                </View>
+            </View>
             </Modal>
         </FlexLayout>
       );

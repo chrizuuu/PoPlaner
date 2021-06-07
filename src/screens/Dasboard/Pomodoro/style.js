@@ -2,9 +2,8 @@ import { StyleSheet, } from 'react-native';
 
 export default styles = StyleSheet.create ( {
     timer: {
-        backgroundColor:'red',
         justifyContent:'center',
-        alignContent:'center',
+        alignItems:'center',
         width:280,
         height:280,
         borderWidth:1,
@@ -18,7 +17,6 @@ export default styles = StyleSheet.create ( {
 
     settingsModal: {
         backgroundColor: "white",
-        alignItems: "center",
         marginTop:80,
         borderTopLeftRadius:25,
         borderTopRightRadius:25,

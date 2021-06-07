@@ -9,8 +9,10 @@ const styleHeader = StyleSheet.create ({
         fontSize:20,
         fontWeight:"700",
     },
-
-
+    iconWrapper: {
+        width:26,
+        height:26,
+    },
 })
 
 export default styleHeader;
