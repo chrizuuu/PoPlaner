@@ -1,0 +1,17 @@
+{     
+    "loginHeader": "Witamy z powrotem!",
+    "loginSubHeader":"Miło Cię znowu widzieć!",
+    "authLabelEmail": "EMAIL",
+    "authLabelPassword": "HASŁO",
+    "loginResPWD": "Zapomniałeś hasła?",
+    "loginSubmit": "Zaloguj się",
+    "loginSignUp": "Nie masz jeszcze konta? Zarejestruj się!",
+    "registerHeader": "Utwórz konto",
+    "registerLabelUsername": "NAZWA UZYTKOWNIKA",
+    "registerSubmit": "Zarejestruj się",
+    "registerSignIn": "Masz juz konto? Zaloguj sie!",
+
+    "timerIntervalRound": "Runda ",
+    "settingsPomodoro": "Ustawienia Pomodoro"
+
+}

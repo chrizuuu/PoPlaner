@@ -1,0 +1,18 @@
+{     
+    "loginHeader": "Welcome again!",
+    "loginSubHeader":"Nice to see you again!",
+    "authLabelEmail": "EMAIL",
+    "authLabelPassword": "PASSWORD",
+    "loginResPWD": "Did you forget your password?",
+    "loginSubmit": "Login",
+    "loginSignUp": "Did you not have an account? Sign Up! ",
+    "registerHeader": "Create an account",
+    "registerLabelUsername": "USERNAME",
+    "registerSubmit": "Sign up",
+    "registerSignIn": "Did you have account? Sign in!",
+
+    "timerIntervalRound": "Round ",
+    "settingsPomodoro": "Pomodor Settings",
+
+
+}

@@ -1,0 +1,15 @@
+Zadania na tydzień 17-23 maj:
+
+☐ Sprawdzic jak dziala memoize() i dlaczego sie tego uzywa i kiedy?
+✔ DOdac Image do ekranu logowania @done (5/15/2021, 10:07:56 PM)
+✔ Stworzyc ekran rejestracji @done (5/22/2021, 12:09:15 AM)
+✔ Dodac secureTextEntry dla TextInput Password @done (5/22/2021, 12:12:40 AM)
+
+☐ Dodac default config
+☐ Dodac ekran z ustawieniami pomodoro
+✔ Dodac sprawdzanie warunkowe autoBreak i autoPomodoro @done (5/28/2021, 8:51:43 AM)
+☐ Poprawic jakosc kodu aby był zgodny z wszelkimi standardami
+☐ Poprawic ogolna logike
+✔ Dodac przyciski zmiany typu Timera: Pomodoro / Breaks @done (5/29/2021, 10:43:49 PM)
+
+
