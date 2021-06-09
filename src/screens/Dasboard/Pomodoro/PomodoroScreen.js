@@ -33,7 +33,6 @@ export default class PomodoroScreen extends React.Component {
       }
     }  
 
-
     static defaultProps = {
         types: [
             {name: 'Pomodoro', time: 5},
@@ -45,7 +44,7 @@ export default class PomodoroScreen extends React.Component {
             {name: 'Paused'},
             {name: 'Finished'},
         ]
-    }
+    } 
 
     setSettingsVisible = (visible) => {
         this.setState({settingsVisible: visible})
@@ -167,7 +166,6 @@ export default class PomodoroScreen extends React.Component {
             transparent={true}
             visible={this.state.settingsVisible}
             onRequestClose={() => {this.setSettingsVisible(!this.state.settingsVisible);}}>
-            <View style={{flex:1,backgroundColor:'rgba(0,0,0,0.5)'}}>
                 <View style={[sharedStyles.wrapperFlexStart,styles.settingsModal]}>
                     <HeaderBar screenName='Pomodoro Settings' style={sharedStyles.marginBottom25} rightIcon='close' rightFunc={() => this.setSettingsVisible(!this.state.settingsVisible)} />
                     <View>
@@ -184,7 +182,6 @@ export default class PomodoroScreen extends React.Component {
                         </View>
                     </View>
                 </View>
-            </View>
             </Modal>
         </FlexLayout>
       );
