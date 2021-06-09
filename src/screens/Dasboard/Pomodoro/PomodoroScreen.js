@@ -35,9 +35,9 @@ export default class PomodoroScreen extends React.Component {
 
     static defaultProps = {
         types: [
-            {name: 'Pomodoro', time: 5},
-            {name: 'Short Break', time: 3},
-            {name: 'Long Break', time: 10},
+            {name: 'Pomodoro', time: 20},
+            {name: 'Short Break', time: 1},
+            {name: 'Long Break', time: 2},
         ],
         statuses: [
             {name: 'Playing'},
@@ -45,6 +45,10 @@ export default class PomodoroScreen extends React.Component {
             {name: 'Finished'},
         ]
     } 
+
+    componentWillUnmount = () => {
+        this.setState({countInterval: 100})
+    }
 
     setSettingsVisible = (visible) => {
         this.setState({settingsVisible: visible})
@@ -68,20 +72,21 @@ export default class PomodoroScreen extends React.Component {
         } else {
             this.handleType(this.props.types[0])
             this.state.autoPomodoro ? this.startTimer() : this.setState({status:null})
+
         }
     }
 
     //
     handleCountInterval = () =>{
-        this.setState(prevState => ({ countInterval: prevState.countInterval + 1}))    
+        this.setState(({ countInterval: ++this.state.countInterval}))    
     }
 
-    //
+    //DONE
     timer = () => {
-        this.state.time < 1 ? this.handlePomodoro() : this.setState(prevState => ({ time: prevState.time - 1}))
+        this.state.time < 1 ? this.handlePomodoro() : this.setState(prevState => ({ time: --prevState.time}))
     }
 
-    //
+    //DONE
     startTimer = () => { 
         this.setState ({
             status: this.props.statuses[0].name,
@@ -115,7 +120,7 @@ export default class PomodoroScreen extends React.Component {
         this.handlePomodoro()
     }
  
-    //
+    //DONE
     pauseTimer = () => { 
         if (this.state.playing){
             this.stopTimer() 
@@ -151,7 +156,7 @@ export default class PomodoroScreen extends React.Component {
                         <Text style={styles.timerValue}>{formatTime(this.state.time)} </Text>
                     </Pressable>
 
-                    <Text>{strings("timerIntervalRound")}{this.state.countInterval}</Text>
+                    <Text>{strings("timerIntervalRound")}{ this.state.type === this.props.types[0] ? this.state.countInterval + 1 : this.state.countInterval}</Text>
                 </View>
                 <ControlsButton
                 start = {this.startTimer}
@@ -174,7 +179,6 @@ export default class PomodoroScreen extends React.Component {
                                 <Text>Time Pomodoro</Text>      
                                 <TextInput
                                 style={styles.input}
-                                value={this.state.time}
                                 keyboardType="numeric"
                                 onChange={(e)=> this.setState({time: e.target.value})}
                                 />
