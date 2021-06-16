@@ -15,7 +15,7 @@ const sharedStyles = StyleSheet.create ({
         marginRight:25,
     },
 
-    borderRadius:{ borderRadius:5},
+    borderRadius:{ borderRadius:15},
     padding:{padding:10},
 
     container: {

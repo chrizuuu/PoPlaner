@@ -1,10 +1,11 @@
 import React from 'react';
-import { View,Text, Vibration,Modal,Pressable} from 'react-native';
+import { View,Text, Vibration,Modal,Pressable,Button,ScrollView} from 'react-native';
 import {strings,setI18Config} from '../../../translations/translations'
 import {formatTime} from '../../../components/Helpers/helpers';
 import FlexLayout from '../../../components/Layouts/FlexLayout';
 import ControlsButton from '../../../components/Buttons/ControlsButton';
 import ChangeTypeButton from '../../../components/Buttons/ChangeTypeButton';
+import linkButton from '../../../components/Buttons/LinkButton';
 import styles from './style';
 import InLineLayout from '../../../components/Layouts/InLineLayout';
 import sharedStyles from '../../../styles/shared';
@@ -15,13 +16,26 @@ import { Touchable } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native';
 import { TextInput } from 'react-native';
 
+const timeValue = [15,25,45,60];
+const defaultProps = {
+    types: [
+        {name: 'Pomodoro', time: 600},
+        {name: 'Short Break', time: 1},
+        {name: 'Long Break', time: 2},
+    ],
+    statuses: [
+        {name: 'Playing'},
+        {name: 'Paused'},
+        {name: 'Finished'},
+    ],
+}
 export default class PomodoroScreen extends React.Component {
     constructor(props) {
       super(props);
       setI18Config();
       this.state = {
-          type: props.types[0],
-          time: props.types[0].time,
+          type: defaultProps.types[0],
+          time: defaultProps.types[0].time,
           playing: false,
           status: null, 
           interval:null,
@@ -33,25 +47,25 @@ export default class PomodoroScreen extends React.Component {
       }
     }  
 
-    static defaultProps = {
-        types: [
-            {name: 'Pomodoro', time: 20},
-            {name: 'Short Break', time: 1},
-            {name: 'Long Break', time: 2},
-        ],
-        statuses: [
-            {name: 'Playing'},
-            {name: 'Paused'},
-            {name: 'Finished'},
-        ]
-    } 
-
     componentWillUnmount = () => {
         this.setState({countInterval: 100})
     }
 
     setSettingsVisible = (visible) => {
         this.setState({settingsVisible: visible})
+    }
+
+
+    handlePomodoroTime = (value) => {
+        
+        this.setState({
+            time:value,
+            interval:null,
+            playing:false,
+
+        }),
+        defaultProps.types[0].time = value 
+        this.resetTimer()
     }
 
     //
@@ -64,13 +78,13 @@ export default class PomodoroScreen extends React.Component {
     handlePomodoro = () => {
         this.stopTimer() 
         Vibration.vibrate(100,100,100)
-        if(this.state.type === this.props.types[0]) {
+        if(this.state.type === defaultProps.types[0]) {
             this.handleCountInterval()
-            if((this.state.countInterval % this.state.autoLongBreakInterval) === 0) this.handleType(this.props.types[2]);
-            else this.handleType(this.props.types[1]);
-            this.state.autoBreak ? this.startTimer() : this.setState({status:this.props.statuses[2].name})
+            if((this.state.countInterval % this.state.autoLongBreakInterval) === 0) this.handleType(defaultProps.types[2]);
+            else this.handleType(defaultProps.types[1]);
+            this.state.autoBreak ? this.startTimer() : this.setState({status:defaultProps.statuses[2].name})
         } else {
-            this.handleType(this.props.types[0])
+            this.handleType(defaultProps.types[0])
             this.state.autoPomodoro ? this.startTimer() : this.setState({status:null})
 
         }
@@ -89,7 +103,7 @@ export default class PomodoroScreen extends React.Component {
     //DONE
     startTimer = () => { 
         this.setState ({
-            status: this.props.statuses[0].name,
+            status: defaultProps.statuses[0].name,
             playing: true,
             interval: setInterval(this.timer,1000),
         })
@@ -125,7 +139,7 @@ export default class PomodoroScreen extends React.Component {
         if (this.state.playing){
             this.stopTimer() 
             this.setState({
-                status:this.props.statuses[1].name,
+                status:defaultProps.statuses[1].name,
                 playing: false,
             })
         }else {
@@ -156,7 +170,7 @@ export default class PomodoroScreen extends React.Component {
                         <Text style={styles.timerValue}>{formatTime(this.state.time)} </Text>
                     </Pressable>
 
-                    <Text>{strings("timerIntervalRound")}{ this.state.type === this.props.types[0] ? this.state.countInterval + 1 : this.state.countInterval}</Text>
+                    <Text>{strings("timerIntervalRound")}{ this.state.type === defaultProps.types[0] ? this.state.countInterval + 1 : this.state.countInterval}</Text>
                 </View>
                 <ControlsButton
                 start = {this.startTimer}
@@ -171,21 +185,80 @@ export default class PomodoroScreen extends React.Component {
             transparent={true}
             visible={this.state.settingsVisible}
             onRequestClose={() => {this.setSettingsVisible(!this.state.settingsVisible);}}>
-                <View style={[sharedStyles.wrapperFlexStart,styles.settingsModal]}>
+                <ScrollView contentContainerStyle={[sharedStyles.wrapperFlexStart,styles.settingsModal]}>
                     <HeaderBar screenName='Pomodoro Settings' style={sharedStyles.marginBottom25} rightIcon='close' rightFunc={() => this.setSettingsVisible(!this.state.settingsVisible)} />
-                    <View>
-                        <View style={styles.inputSettings}>
-                            <InLineLayout>
-                                <Text>Time Pomodoro</Text>      
-                                <TextInput
-                                style={styles.input}
-                                keyboardType="numeric"
-                                onChange={(e)=> this.setState({time: e.target.value})}
-                                />
+                    <View style={sharedStyles.marginSide25}>
+                    
+                        <TouchableOpacity style={{paddingTop:15}}>
+                            <InLineLayout style={styles.box}>
+                                 <Text>Focus</Text>
+                                <View style={sharedStyles.wrapperInLine}>
+                                    <Text>{(defaultProps.types[0].time)/60} min</Text>
+                                    <Icon type='material' name='arrow-drop-down' />
+                                </View>
                             </InLineLayout>
-                        </View>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={{paddingTop:15}}>  
+                            <InLineLayout style={styles.box}>
+                                 <Text>Short Break</Text>
+                                <View style={sharedStyles.wrapperInLine}>
+                                    <Text>{(defaultProps.types[1].time)/60} min</Text>
+                                    <Icon type='material' name='arrow-drop-down' />
+                                </View>
+                            </InLineLayout>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={{paddingTop:15}}>
+                            <InLineLayout style={styles.box}>
+                                 <Text>Long Break</Text>
+                                <View style={sharedStyles.wrapperInLine}>
+                                    <Text>{(defaultProps.types[2].time)/60} min</Text>
+                                    <Icon type='material' name='arrow-drop-down' />
+                                </View>
+                            </InLineLayout>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={{paddingTop:15}}>
+                            <InLineLayout style={styles.box}>
+                                 <Text>Long Break Intervals</Text>
+                                <View style={sharedStyles.wrapperInLine}>
+                                    <Text>{this.state.autoLongBreakInterval}</Text>
+                                    <Icon type='material' name='arrow-drop-down' />
+                                </View>
+                            </InLineLayout>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={{paddingTop:15}}>
+                            <InLineLayout style={styles.box}>
+                                 <Text>Auto Start Breaks?</Text>
+                                 <Text>{this.state.autoBreak.toString()}</Text>
+                            </InLineLayout>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={{paddingTop:15}}>
+                            <InLineLayout style={styles.box}>
+                                 <Text>Auto Start Pomodoro?</Text>
+                                    <Text>{this.state.autoPomodoro.toString()}</Text>
+                            </InLineLayout>
+                        </TouchableOpacity>
+
+                        <InLineLayout style={{paddingTop:15}}>
+                            <TouchableOpacity style = {{borderRadius:50,borderColor:'black',height:60, width:60, borderWidth:1, justifyContent:'center'}}>
+                                <Icon type='material' name='notifications'/>
+                            </TouchableOpacity>
+                            <TouchableOpacity style = {{borderRadius:50,borderColor:'black',height:60, width:60, borderWidth:1, justifyContent:'center'}}>
+                                <Icon type='material' name='cloud'/>
+                            </TouchableOpacity>
+                            <TouchableOpacity style = {{borderRadius:50,borderColor:'black',height:60, width:60, borderWidth:1, justifyContent:'center'}}>
+                                <Icon name='rain'/>
+                            </TouchableOpacity>
+                            <TouchableOpacity style = {{borderRadius:50,borderColor:'black',height:60, width:60, borderWidth:1, justifyContent:'center'}}>
+                                <Icon type='material' name='train'/>
+                            </TouchableOpacity>
+                        </InLineLayout>
                     </View>
-                </View>
+                </ScrollView>
             </Modal>
         </FlexLayout>
       );
