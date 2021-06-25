@@ -17,22 +17,20 @@ export default styles = StyleSheet.create ( {
 
     settingsModal: {
         backgroundColor: "white",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 12,
-        },
-        shadowOpacity: 0.58,
-        shadowRadius: 16.00,
-        elevation: 24,
+        height:'80%',
+        borderTopLeftRadius:25,
+        borderTopRightRadius:25,
+        elevation:24,
     },
-        box: {
-            height:60,
-            borderRadius:15,
-            borderColor:'black',
-            borderWidth:1,
-            paddingLeft:10,
-            paddingRight:10,
-        },
+    box: {
+        width:200,
+        height:60,
+        borderRadius:15,
+        borderColor:'black',
+        borderWidth:1,
+        paddingLeft:10,
+        paddingRight:10,
+    },
+
 
 })
