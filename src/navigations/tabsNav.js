@@ -22,20 +22,31 @@ const TabsNav = () => {
       activeTintColor:'#1976D2',
     }}
     screenOptions={({ route }) => ({
-      tabBarIcon: ({ color, size }) => {
+      tabBarIcon: ({focused, color, size }) => {
         let iconName;
         if (route.name === 'Dashboard') {
-          iconName = 'home';
+          iconName = focused 
+          ? 'home'
+          : 'home-outline';
         } else if (route.name === 'Schedule') {
-          iconName = 'calendar-today' 
+          iconName = focused 
+          ? 'calendar'
+          : 'calendar-outline' 
         } else if (route.name === 'Todo') {
-          iconName = 'format-list-bulleted';
+          iconName = focused 
+          ? 'list'
+          : 'list-outline';
         } else if (route.name === 'Pomodoro') {
-          iconName = 'timer';
+          iconName = focused 
+          ? 'timer'
+          : 'timer-outline';
         } else if (route.name === 'Profile') {
-          iconName = 'person';
+          iconName = focused 
+          ? 'person'
+          : 'person-outline';
         }
-        return <Icon type='material' name={iconName} size={size} color={color} />;
+
+        return <Icon type='ionicon' name={iconName} size={size} color={color} />;
       },
     })} >
       <HomeTab.Screen name="Dashboard" component={DashboardScreen} />
