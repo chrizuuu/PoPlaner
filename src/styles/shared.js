@@ -15,7 +15,7 @@ const sharedStyles = StyleSheet.create ({
         marginRight:25,
     },
 
-    borderRadius:{ borderRadius:5},
+    borderRadius:{ borderRadius:15},
     padding:{padding:10},
 
     container: {
@@ -28,10 +28,12 @@ const sharedStyles = StyleSheet.create ({
         alignItems:'center',
         justifyContent:'center',
     },
+
     wrapperFlexStart: {
         flex:1,
         justifyContent:'flex-start',
     },
+    
     wrapperFlexSpaceBetween: {
         flex:1,
         justifyContent:'space-between',

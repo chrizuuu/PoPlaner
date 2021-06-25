@@ -1,7 +1,7 @@
 import LinkButton from './linkButton';
 import SubmitButton from './submitButton';
-import ControlsButton from './controlsButton'
+import ControlsPomodoroButton from './ControlsPomodoroButton'
 
 export {
-    LinkButton,SubmitButton,ControlsButton
+    LinkButton,SubmitButton,ControlsPomodoroButton
 }

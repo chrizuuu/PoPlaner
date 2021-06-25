@@ -4,7 +4,7 @@ import sharedStyles from '../../styles/shared';
 
 const InLineLayout = ({children,style}) => {
     return (
-        <View style={[sharedStyles.wrapperInLine,{...style}]}>
+        <View style={[sharedStyles.wrapperInLine,[{...style}]]}>
             {children}
         </View>
     )
