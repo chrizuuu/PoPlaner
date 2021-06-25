@@ -18,12 +18,12 @@ export default styles = StyleSheet.create ( {
     settingsModal: {
         backgroundColor: "white",
         height:'80%',
-        borderTopLeftRadius:25,
-        borderTopRightRadius:25,
+        paddingLeft:25,
+        paddingRight:25,
         elevation:24,
     },
     box: {
-        width:200,
+        width:'100%',
         height:60,
         borderRadius:15,
         borderColor:'black',

@@ -18,8 +18,10 @@ import { Touchable } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native';
 import { TextInput } from 'react-native';
 
-const timeValue = [15,25,45,60];
+const pomodoroTimeValue = [15,20,25,30,35,40,45,50,55,60];
+const breaksTimeValue = [2,5,10,15,20,25,30];
 var screen = Dimensions.get('window');
+
 const defaultProps = {
     types: [
         {name: 'Pomodoro', time: 600},
@@ -49,33 +51,6 @@ export default class PomodoroScreen extends React.Component {
           isOpen:false,
       }
     }  
-
-    componentWillUnmount = () => {
-        this.setState({countInterval: 100})
-    }
-
-    setisOpen = (visible) => {
-        this.setState({isOpen: visible})
-    }
-
-
-    handlePomodoroTime = (value) => {
-        
-        this.setState({
-            time:value,
-            interval:null,
-            playing:false,
-
-        }),
-        defaultProps.types[0].time = value 
-        this.resetTimer()
-    }
-
-    //
-    handleType = type => { 
-        this.stopTimer();
-        this.setState({ type: type, time: type.time, playing:false, status: null});
-    }
 
     //
     handlePomodoro = () => {
@@ -155,20 +130,29 @@ export default class PomodoroScreen extends React.Component {
         return ((totalTime - current) / totalTime) * 100;
     }
 
-                        
-    renderList() {
-        var list = [];
-    
-        for (var i=0;i<50;i++) {
-          list.push(<Text style={styles.text} key={i}>Elem {i}</Text>);
-        }
-    
-        return list;
-      }
+    setisOpen = (visible) => {
+        this.setState({isOpen: visible})
+    }
+
+    handlePomodoroTime = (value) => {
+        defaultProps.types[0].time = value * 60
+        this.resetTimer()
+    }
+
+    changeDefaultProps = (type,value) => {
+        defaultProps.types[type].time = value * 60
+        this.resetTimer()
+    }
+
+    //
+    handleType = type => { 
+        this.stopTimer();
+        this.setState({ type: type, time: type.time, playing:false, status: null});
+    }
 
     render() {
       return (
-        <FlexLayout style={sharedStyles.wrapperFlexSpaceBetween} >
+        <FlexLayout style={{paddingBottom:25}}>
             <HeaderBar screenName='Pomodoro Timer' rightIcon = 'settings' rightFunc = {() => this.setisOpen(!this.state.isOpen)} />
             <View>
                 <Text>Dodaj zadanie</Text>
@@ -185,27 +169,31 @@ export default class PomodoroScreen extends React.Component {
 
                     <Text>{strings("timerIntervalRound")}{ this.state.type === defaultProps.types[0] ? this.state.countInterval + 1 : this.state.countInterval}</Text>
                 </View>
-                <ControlsPomodoroButton
+            </View>
+            <ControlsPomodoroButton
                 start = {this.startTimer}
                 pause= {this.pauseTimer}
                 skip = {this.skipTimer}
                 status = {this.state.status}>    
-                </ControlsPomodoroButton>
-            </View>
-
-            <Modal coverScreen={true} isOpen={this.state.isOpen} onClosed={this.closeModal} on style={[styles.settingsModal]} position={"bottom"} ref={"modal6"} swipeThreshold={60} swipeArea={40}>
-            <HeaderBar screenName='Pomodoro Settings' style={sharedStyles.marginBottom25} rightIcon='close' rightFunc={() => this.setisOpen(!this.state.isOpen)} />
+            </ControlsPomodoroButton>
+            
+            <Modal coverScreen={true} backButtonClose={true} isOpen={this.state.isOpen} onClosed={this.closeModal} on style={[styles.settingsModal]} position={"bottom"} ref={"modal6"} swipeThreshold={60} swipeArea={40}>
+                <HeaderBar screenName='Pomodoro Settings' style={sharedStyles.marginBottom25} rightIcon='close' rightFunc={() => this.setisOpen(!this.state.isOpen)} />
                 <ScrollView>
-                    <View style={{width: screen.width, paddingLeft: 10}}>
                     <TouchableOpacity style={{paddingTop:15}}>
                             <InLineLayout style={styles.box}>
                                  <Text>Focus</Text>
                                 <View style={sharedStyles.wrapperInLine}>
                                     <Text>{(defaultProps.types[0].time)/60} min</Text>
                                     <Icon type='material' name='arrow-drop-down' />
+    
                                 </View>
                             </InLineLayout>
                         </TouchableOpacity>
+
+                      {pomodoroTimeValue.map((value) =>
+                        <Button key={value} onPress={() => this.changeDefaultProps(0,value)}  title={value.toString()} />
+                      )}
 
                         <TouchableOpacity style={{paddingTop:15}}>  
                             <InLineLayout style={styles.box}>
@@ -217,6 +205,10 @@ export default class PomodoroScreen extends React.Component {
                             </InLineLayout>
                         </TouchableOpacity>
 
+                        {breaksTimeValue.map((value) =>
+                        <Button key={value} onPress={() => this.changeDefaultProps(1,value)}  title={value.toString()} />
+                      )}
+
                         <TouchableOpacity style={{paddingTop:15}}>
                             <InLineLayout style={styles.box}>
                                  <Text>Long Break</Text>
@@ -227,6 +219,10 @@ export default class PomodoroScreen extends React.Component {
                             </InLineLayout>
                         </TouchableOpacity>
 
+                        {breaksTimeValue.map((value) =>
+                        <Button key={value} onPress={() => this.changeDefaultProps(2,value)}  title={value.toString()} />
+                      )}
+
                         <TouchableOpacity style={{paddingTop:15}}>
                             <InLineLayout style={styles.box}>
                                  <Text>Long Break Intervals</Text>
@@ -236,6 +232,10 @@ export default class PomodoroScreen extends React.Component {
                                 </View>
                             </InLineLayout>
                         </TouchableOpacity>
+
+                        {[1,2,3,4,5,6,7,8,9,10].map((value) =>
+                        <Button key={value} onPress={() => this.setState({autoLongBreakInterval:value})}  title={value.toString()} />
+                      )}
 
                         <TouchableOpacity style={{paddingTop:15}}>
                             <InLineLayout style={styles.box}>
@@ -262,9 +262,7 @@ export default class PomodoroScreen extends React.Component {
                                 <Icon type='material' name='train'/>
                             </TouchableOpacity>
                         </InLineLayout>
-
-                    </View>
-                </ScrollView>
+                    </ScrollView>
             </Modal>
         </FlexLayout>
       );
