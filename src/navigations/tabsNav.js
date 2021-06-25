@@ -19,31 +19,36 @@ const TabsNav = () => {
         elevation:0,
         paddingBottom:10,
       },
+      showLabel:false,
       activeTintColor:'#1976D2',
     }}
     screenOptions={({ route }) => ({
       tabBarIcon: ({focused, color, size }) => {
         let iconName;
+        size = focused
+          ? 32
+          : 24
+
         if (route.name === 'Dashboard') {
           iconName = focused 
-          ? 'home'
-          : 'home-outline';
+            ? 'home'
+            : 'home-outline';
         } else if (route.name === 'Schedule') {
           iconName = focused 
-          ? 'calendar'
-          : 'calendar-outline' 
+            ? 'calendar'
+            : 'calendar-outline' 
         } else if (route.name === 'Todo') {
           iconName = focused 
-          ? 'list'
-          : 'list-outline';
+            ? 'list'
+            : 'list-outline';
         } else if (route.name === 'Pomodoro') {
           iconName = focused 
-          ? 'timer'
-          : 'timer-outline';
+            ? 'timer'
+            : 'timer-outline';
         } else if (route.name === 'Profile') {
           iconName = focused 
-          ? 'person'
-          : 'person-outline';
+            ? 'person'
+            : 'person-outline';
         }
 
         return <Icon type='ionicon' name={iconName} size={size} color={color} />;
