@@ -5,10 +5,23 @@ import { NavigationContainer } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import  PomodoroSettingsScreen from './src/screens/Dasboard/Pomodoro/PomodoroSettingsScreen';
 import TabsNav from './src/navigations/tabsNav';
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
 
 const Stack = createStackNavigator();
 
+const customFonts = {
+  OpenSans: require("./src/assets/fonts/OpenSans-Regular.ttf"),
+  YellowTail: require("./src/assets/fonts/Yellowtail-Regular.ttf")
+}
+
 const App = () => {
+  const [isLoaded] = useFonts(customFonts)
+
+  if (!isLoaded){
+    return <AppLoading />
+  };
+
   return (
     <>
     <StatusBar/>
