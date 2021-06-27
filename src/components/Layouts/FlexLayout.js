@@ -4,10 +4,8 @@ import sharedStyles from '../../styles/shared';
 
 const FlexLayout = ({children,style}) => {
     return (
-        <View style={[sharedStyles.container,{...style}]}>
-            <View style={[style]}>
+        <View style={[sharedStyles.wrapperFlex,sharedStyles.container,{...style}]}>
                 {children}
-            </View>
         </View>
     )
 }
