@@ -7,7 +7,7 @@ const styleHeader = StyleSheet.create ({
 
     textStyle : {
         fontSize:20,
-        fontWeight:"bold",
+        fontFamily:'MontserratBold'
     },
     iconWrapper: {
         width:26,
