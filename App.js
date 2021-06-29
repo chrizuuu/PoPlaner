@@ -17,6 +17,8 @@ const customFonts = {
   OpenSansReg: require("./src/assets/fonts/OpenSans-Regular.ttf"),
   OpenSansSemiBold: require("./src/assets/fonts/OpenSans-SemiBold.ttf"),
   OpenSansBold: require("./src/assets/fonts/OpenSans-Bold.ttf"),
+  OpenSansExtraBold: require("./src/assets/fonts/OpenSans-ExtraBold.ttf"),
+
 }
 
 const App = () => {
