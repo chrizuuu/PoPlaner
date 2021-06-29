@@ -1,5 +1,5 @@
 import React from 'react';
-import { View,Text, Vibration,Pressable,Button,ScrollView,Dimensions,FlatList} from 'react-native';
+import { View,Text, Vibration,Pressable,Button,ScrollView,Dimensions,FlatList,StyleSheet} from 'react-native';
 import Modal from 'react-native-modalbox';
 
 import {strings,setI18Config} from '../../../translations/translations'
@@ -8,7 +8,6 @@ import FlexLayout from '../../../components/Layouts/FlexLayout';
 import ControlsPomodoroButton from '../../../components/Buttons/ControlsPomodoroButton';
 import ChangeTypeButton from '../../../components/Buttons/ChangeTypeButton';
 import linkButton from '../../../components/Buttons/LinkButton';
-import styles from './style';
 import InLineLayout from '../../../components/Layouts/InLineLayout';
 import sharedStyles from '../../../styles/shared';
 import HeaderBar from '../../../components/Header/HeaderBar';
@@ -17,6 +16,7 @@ import { TouchableOpacity } from 'react-native';
 import { Touchable } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native';
 import { TextInput } from 'react-native';
+import Svg, { Circle, Rect } from 'react-native-svg';
 
 import FlatListSlider from '../../../components/FlatListSlider';
 
@@ -37,16 +37,43 @@ const defaultProps = {
     ],
 }
 
-const ListItem =(item) => {
-    return (
-        <TouchableOpacity onPress={(item)=> func(item) }>
-            <View style={styles.buttonS}>
-                <Text>{item.toString()}</Text>
-            </View>
-        </TouchableOpacity>
-    )
-}
+const styles = StyleSheet.create ( {
+    container: {
+        flex:1,
+        justifyContent:'center',
+        alignItems:'center',
+    },
+    timerValue: {
+        fontSize:54,   
+        fontFamily:'MontserratBold',
+        color:'#282828'
+    },
 
+    settingsModal: {
+        backgroundColor: "white",
+        height:'80%',
+        paddingLeft:25,
+        paddingRight:25,
+        elevation:24,
+    },
+    box: {
+        width:'100%',
+        height:60,
+        borderRadius:15,
+        borderColor:'black',
+        borderWidth:1,
+        paddingLeft:10,
+        paddingRight:10,
+    },
+    buttonS: {
+        alignItems:'center',
+        justifyContent:'center',
+        width:60,
+        height:35,
+    }
+
+
+})
 
 export default class PomodoroScreen extends React.Component {
     constructor(props) {
@@ -139,12 +166,6 @@ export default class PomodoroScreen extends React.Component {
         }
     }
 
-    progressValue = () => {
-        const current = this.state.currentTime
-        const totalTime = this.state.type.time
-        return ((totalTime - current) / totalTime) * 100;
-    }
-
     setisOpen = (visible) => {
         this.setState({isOpen: visible})
     }
@@ -166,23 +187,52 @@ export default class PomodoroScreen extends React.Component {
     }
 
     render() {
+        const size = 256;
+        const strokeWidth = 5;
+        const center = size/2;
+        const radius = size / 2 - strokeWidth /2;
+        const circumference = 2 *Math.PI * radius;
+        let timePercent = ((defaultProps.types[0].time - this.state.time)/defaultProps.types[0].time) * 100
       return (
         <FlexLayout style={{color:'#292929'}}> 
-            <HeaderBar screenName='Pomodoro timer' leftIcon = 'poll' leftFunc={() => console.log('Stats')} rightIcon = 'settings' rightFunc = {() => this.setisOpen(!this.state.isOpen)} />
+            <HeaderBar 
+                screenName='Pomodoro timer' 
+                leftIcon = 'poll' 
+                leftFunc={() => console.log('Stats')} 
+                rightIcon = 'settings' 
+                rightFunc = {() => this.setisOpen(!this.state.isOpen)} 
+            />
             <View style = {[sharedStyles.wrapperFlexSpaceBetween,{alignItems:'center',paddingBottom:50,paddingTop:30}]}>
-
                 <View style={{height:'20%',alignItems:'center',justifyContent:'center'}}>
                     <Text style={{paddingBottom:5,fontFamily:'OpenSansSemiBold',color:'#B2B2B2'}}>CURRENT TASK</Text>
                     <Text style={{fontSize:17,fontFamily:'OpenSansBold',color:'#434343'}}>Pomodoro mobile app design</Text>
+            </View>
+
+                <View style={styles.container}>
+                    <Svg width={size} height={size}>
+                        <Circle stroke="#E6E7E8" cx={center} cy={center} r={radius} strokeWidth={strokeWidth} />
+                        <Circle 
+                        stroke="#1976D2"
+                        cx={center}
+                        cy={center}
+                        r={radius}
+                        strokeWidth={strokeWidth}
+                        strokeDasharray={circumference}
+                        strokeDashoffset={circumference - (circumference * timePercent) / 100} />
+      
+                    </Svg>
+
+                    <View style={{position:"absolute",padding:20,justifyContent:'center',alignItems:'center'}}>
+                        <Pressable   onPress={() => this.setisOpen(!this.state.isOpen)}>
+                            <Text style={styles.timerValue}>{formatTime(this.state.time)} </Text>
+                        </Pressable>
+                        <Text style={{fontFamily:'MontserratSemiBold',color:'#434343'}}>
+                            { this.state.type === defaultProps.types[0] ? this.state.countInterval + 1 : this.state.countInterval} of {this.state.autoLongBreakInterval} sessions
+                        </Text>
+                    </View>
                 </View>
 
-                <View style={styles.timer}>
-                    <Pressable
-                    onPress={() => this.setisOpen(!this.state.isOpen)}>
-                        <Text style={styles.timerValue}>{formatTime(this.state.time)} </Text>
-                    </Pressable>
-                    <Text style={{fontFamily:'MontserratSemiBold',color:'#434343'}}>{ this.state.type === defaultProps.types[0] ? this.state.countInterval + 1 : this.state.countInterval} of {this.state.autoLongBreakInterval} sessions</Text>
-                </View>
+
                 <View style={{alignItems:'center'}}>
                     <Text style={{color:'#434343',fontFamily:'OpenSansReg',fontSize:16}}> {this.state.type === defaultProps.types[0]? strings("stayFocus") : strings("takeBreak") }{this.state.type.time/60} min </Text>
                 </View>
@@ -192,12 +242,30 @@ export default class PomodoroScreen extends React.Component {
                     pause= {this.pauseTimer}
                     skip = {this.skipTimer}
                     reset= {this.resetTimer}
-                    status = {this.state.status}>    
-                </ControlsPomodoroButton>
+                    status = {this.state.status}
+                />
             </View>
+
+
             
-            <Modal coverScreen={true} backButtonClose={true} isOpen={this.state.isOpen} onClosed={this.closeModal} on style={[styles.settingsModal]} position={"bottom"} ref={"modal6"} swipeThreshold={60} swipeArea={40}>
-                <HeaderBar style={{backgroudColor:'red'}} screenName='Pomodoro Settings' style={sharedStyles.marginBottom25} rightIcon='close' rightFunc={() => this.setisOpen(!this.state.isOpen)} />
+            <Modal 
+                coverScreen={true} 
+                backButtonClose={true} 
+                isOpen={this.state.isOpen} 
+                onClosed={this.closeModal} 
+                on style={[styles.settingsModal]} 
+                position={"bottom"} 
+                ref={"modal6"} 
+                swipeThreshold={60} 
+                swipeArea={40}
+            >
+                <HeaderBar 
+                    style={{backgroudColor:'red'}} 
+                    screenName='Pomodoro Settings'
+                    style={sharedStyles.marginBottom25} r
+                    ightIcon='close' 
+                    rightFunc={() => this.setisOpen(!this.state.isOpen)} 
+                />
                 <View>
                     <TouchableOpacity style={{paddingTop:15}}>
                             <InLineLayout style={styles.box}>
