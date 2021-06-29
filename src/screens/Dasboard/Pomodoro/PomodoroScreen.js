@@ -219,7 +219,6 @@ export default class PomodoroScreen extends React.Component {
                         strokeWidth={strokeWidth}
                         strokeDasharray={circumference}
                         strokeDashoffset={circumference - (circumference * timePercent) / 100} />
-      
                     </Svg>
 
                     <View style={{position:"absolute",padding:20,justifyContent:'center',alignItems:'center'}}>
