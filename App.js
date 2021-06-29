@@ -11,8 +11,14 @@ import AppLoading from 'expo-app-loading';
 const Stack = createStackNavigator();
 
 const customFonts = {
-  OpenSans: require("./src/assets/fonts/OpenSans-Regular.ttf"),
-  YellowTail: require("./src/assets/fonts/Yellowtail-Regular.ttf")
+  MontserratReg: require("./src/assets/fonts/Montserrat-Regular.ttf"),
+  MontserratSemiBold: require("./src/assets/fonts/Montserrat-SemiBold.ttf"),
+  MontserratBold: require("./src/assets/fonts/Montserrat-Bold.ttf"),
+  OpenSansReg: require("./src/assets/fonts/OpenSans-Regular.ttf"),
+  OpenSansSemiBold: require("./src/assets/fonts/OpenSans-SemiBold.ttf"),
+  OpenSansBold: require("./src/assets/fonts/OpenSans-Bold.ttf"),
+  OpenSansExtraBold: require("./src/assets/fonts/OpenSans-ExtraBold.ttf"),
+
 }
 
 const App = () => {

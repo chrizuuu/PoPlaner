@@ -8,7 +8,7 @@ import { TouchableOpacity } from 'react-native';
 
 const HeaderBar = ({style,screenName,leftIcon,leftFunc,rightIcon,rightFunc}) => {
     return (
-        <View style = {[sharedStyles.margintop15,{...style}]} >
+        <View style = {[sharedStyles.margintop20,{...style}]} >
         <InLineLayout>
             {(leftIcon && leftFunc) ? 
                 <TouchableOpacity style={styleHeader.iconWrapper} onPress={leftFunc}>

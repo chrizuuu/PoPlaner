@@ -9,10 +9,12 @@ export default styles = StyleSheet.create ( {
         borderWidth:1,
         borderRadius:280/2,
         borderColor:'black',
+    
     },
     timerValue: {
-        fontSize:32,
-        fontWeight:"700",
+        fontSize:54,   
+        fontFamily:'MontserratBold',
+        color:'#282828'
     },
 
     settingsModal: {
@@ -31,6 +33,12 @@ export default styles = StyleSheet.create ( {
         paddingLeft:10,
         paddingRight:10,
     },
+    buttonS: {
+        alignItems:'center',
+        justifyContent:'center',
+        width:60,
+        height:35,
+    }
 
 
 })

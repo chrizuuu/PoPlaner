@@ -15,13 +15,9 @@ const styleButton = StyleSheet.create ({
         fontSize:14,
         opacity:0.8,
     },
-
     buttonControls: {
-        width:60,
-        height:60,
         fontSize:16,
         justifyContent:'center',
-        backgroundColor:'#1976D2',
         borderRadius:50,
         margin:10,
     }, 
