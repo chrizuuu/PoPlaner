@@ -15,6 +15,11 @@
     "takeBreak": "Take a break for ",
     "stayFocus": "Stay focus for ",
     "settingsPomodoro": "Pomodor Settings",
+    
+    "currentTask": "Current Task",
+    "toLongBreak": " to long break"
+
+
 
 
 }

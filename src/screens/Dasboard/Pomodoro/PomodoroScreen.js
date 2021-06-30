@@ -58,12 +58,6 @@ const styles = StyleSheet.create ( {
     },
     box: {
         width:'100%',
-        height:60,
-        borderRadius:15,
-        borderColor:'black',
-        borderWidth:1,
-        paddingLeft:10,
-        paddingRight:10,
     },
     buttonS: {
         alignItems:'center',
@@ -204,7 +198,7 @@ export default class PomodoroScreen extends React.Component {
                 />
                 <View style = {[sharedStyles.wrapperFlexSpaceBetween,{alignItems:'center',paddingBottom:50,paddingTop:30}]}>
                     <View style={{height:'20%',alignItems:'center',justifyContent:'center'}}>
-                        <Text style={{paddingBottom:5,fontFamily:'OpenSansSemiBold',color:'#B2B2B2'}}>CURRENT TASK</Text>
+                        <Text style={{paddingBottom:5,fontFamily:'OpenSansSemiBold',color:'#B2B2B2'}}>{strings("currentTask")}</Text>
                         <Text style={{fontSize:17,fontFamily:'OpenSansBold',color:'#434343'}}>Pomodoro mobile app design</Text>
                 </View>
 
@@ -225,12 +219,14 @@ export default class PomodoroScreen extends React.Component {
                         <Pressable   onPress={() => this.setisOpen(!this.state.isOpen)}>
                             <Text style={styles.timerValue}>{formatTime(this.state.time)}</Text>
                         </Pressable>
-                        <Text style={{fontFamily:'OpenSansBold',color:'#434343'}}>
-                            { this.state.type === defaultProps.types[0] 
-                            ? this.state.countInterval + 1 
-                            : this.state.countInterval} 
-                            of {this.state.autoLongBreakInterval} sessions
+                       { this.state.type === defaultProps.types[0] 
+                       ? 
+                       <Text style={{fontFamily:'OpenSansBold',color:'#434343'}}>
+                            {this.state.autoLongBreakInterval - (this.state.countInterval % this.state.autoLongBreakInterval)}       
+                            {strings("toLongBreak")}
                         </Text>
+                        : <Text>Coffee Time!</Text>
+                        } 
                     </View>
                 </View>
 
@@ -238,8 +234,7 @@ export default class PomodoroScreen extends React.Component {
                         <Text style={{color:'#434343',fontFamily:'OpenSansReg',fontSize:16}}> 
                             {this.state.type === defaultProps.types[0]
                             ? strings("stayFocus") 
-                            : strings("takeBreak") }{this.state.type.time/60} 
-                            min 
+                            : strings("takeBreak") }{this.state.type.time/60} min 
                         </Text>
                 </View>
                 <ControlsPomodoroButton
@@ -277,8 +272,6 @@ export default class PomodoroScreen extends React.Component {
                                  <Text>Focus</Text>
                                 <View style={sharedStyles.wrapperInLine}>
                                     <Text>{(defaultProps.types[0].time)/60} min</Text>
-                                    <Icon type='material' name='arrow-drop-down' />
-    
                                 </View>
                             </InLineLayout>
                         </TouchableOpacity>
