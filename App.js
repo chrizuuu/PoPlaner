@@ -11,9 +11,7 @@ import AppLoading from 'expo-app-loading';
 const Stack = createStackNavigator();
 
 const customFonts = {
-  MontserratReg: require("./src/assets/fonts/Montserrat-Regular.ttf"),
-  MontserratSemiBold: require("./src/assets/fonts/Montserrat-SemiBold.ttf"),
-  MontserratBold: require("./src/assets/fonts/Montserrat-Bold.ttf"),
+  NexaBold: require("./src/assets/fonts/Nexa-Bold.otf"),
   OpenSansReg: require("./src/assets/fonts/OpenSans-Regular.ttf"),
   OpenSansSemiBold: require("./src/assets/fonts/OpenSans-SemiBold.ttf"),
   OpenSansBold: require("./src/assets/fonts/OpenSans-Bold.ttf"),
