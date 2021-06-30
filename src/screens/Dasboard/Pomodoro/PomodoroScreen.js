@@ -44,8 +44,8 @@ const styles = StyleSheet.create ( {
         alignItems:'center',
     },
     timerValue: {
-        fontSize:54,   
-        fontFamily:'MontserratBold',
+        fontSize:60,   
+        fontFamily:'OpenSansBold',
         color:'#282828'
     },
 
@@ -187,26 +187,26 @@ export default class PomodoroScreen extends React.Component {
     }
 
     render() {
-        const size = 256;
-        const strokeWidth = 5;
+        const size = 280;
+        const strokeWidth = 10;
         const center = size/2;
         const radius = size / 2 - strokeWidth /2;
         const circumference = 2 *Math.PI * radius;
-        let timePercent = ((defaultProps.types[0].time - this.state.time)/defaultProps.types[0].time) * 100
+        let timePercent = ((this.state.type.time - this.state.time)/this.state.type.time) * 100
       return (
         <FlexLayout style={{color:'#292929'}}> 
-            <HeaderBar 
-                screenName='Pomodoro timer' 
-                leftIcon = 'poll' 
-                leftFunc={() => console.log('Stats')} 
-                rightIcon = 'settings' 
-                rightFunc = {() => this.setisOpen(!this.state.isOpen)} 
-            />
-            <View style = {[sharedStyles.wrapperFlexSpaceBetween,{alignItems:'center',paddingBottom:50,paddingTop:30}]}>
-                <View style={{height:'20%',alignItems:'center',justifyContent:'center'}}>
-                    <Text style={{paddingBottom:5,fontFamily:'OpenSansSemiBold',color:'#B2B2B2'}}>CURRENT TASK</Text>
-                    <Text style={{fontSize:17,fontFamily:'OpenSansBold',color:'#434343'}}>Pomodoro mobile app design</Text>
-            </View>
+                <HeaderBar 
+                    screenName='Pomodoro timer' 
+                    leftIcon = 'poll' 
+                    leftFunc={() => console.log('Stats')} 
+                    rightIcon = 'settings' 
+                    rightFunc = {() => this.setisOpen(!this.state.isOpen)} 
+                />
+                <View style = {[sharedStyles.wrapperFlexSpaceBetween,{alignItems:'center',paddingBottom:50,paddingTop:30}]}>
+                    <View style={{height:'20%',alignItems:'center',justifyContent:'center'}}>
+                        <Text style={{paddingBottom:5,fontFamily:'OpenSansSemiBold',color:'#B2B2B2'}}>CURRENT TASK</Text>
+                        <Text style={{fontSize:17,fontFamily:'OpenSansBold',color:'#434343'}}>Pomodoro mobile app design</Text>
+                </View>
 
                 <View style={styles.container}>
                     <Svg width={size} height={size}>
@@ -223,26 +223,32 @@ export default class PomodoroScreen extends React.Component {
 
                     <View style={{position:"absolute",padding:20,justifyContent:'center',alignItems:'center'}}>
                         <Pressable   onPress={() => this.setisOpen(!this.state.isOpen)}>
-                            <Text style={styles.timerValue}>{formatTime(this.state.time)} </Text>
+                            <Text style={styles.timerValue}>{formatTime(this.state.time)}</Text>
                         </Pressable>
-                        <Text style={{fontFamily:'MontserratSemiBold',color:'#434343'}}>
-                            { this.state.type === defaultProps.types[0] ? this.state.countInterval + 1 : this.state.countInterval} of {this.state.autoLongBreakInterval} sessions
+                        <Text style={{fontFamily:'OpenSansBold',color:'#434343'}}>
+                            { this.state.type === defaultProps.types[0] 
+                            ? this.state.countInterval + 1 
+                            : this.state.countInterval} 
+                            of {this.state.autoLongBreakInterval} sessions
                         </Text>
                     </View>
                 </View>
 
-
                 <View style={{alignItems:'center'}}>
-                    <Text style={{color:'#434343',fontFamily:'OpenSansReg',fontSize:16}}> {this.state.type === defaultProps.types[0]? strings("stayFocus") : strings("takeBreak") }{this.state.type.time/60} min </Text>
+                        <Text style={{color:'#434343',fontFamily:'OpenSansReg',fontSize:16}}> 
+                            {this.state.type === defaultProps.types[0]
+                            ? strings("stayFocus") 
+                            : strings("takeBreak") }{this.state.type.time/60} 
+                            min 
+                        </Text>
                 </View>
-
                 <ControlsPomodoroButton
-                    start = {this.startTimer}
-                    pause= {this.pauseTimer}
-                    skip = {this.skipTimer}
-                    reset= {this.resetTimer}
-                    status = {this.state.status}
-                />
+                        start = {this.startTimer}
+                        pause= {this.pauseTimer}
+                        skip = {this.skipTimer}
+                        reset= {this.resetTimer}
+                        status = {this.state.status}
+                    />
             </View>
 
 
