@@ -17,6 +17,7 @@ import { Touchable } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native';
 import { TextInput } from 'react-native';
 import Svg, { Circle, Rect } from 'react-native-svg';
+import { Timer } from './Timer';
 
 import FlatListSlider from '../../../components/FlatListSlider';
 
@@ -202,34 +203,21 @@ export default class PomodoroScreen extends React.Component {
                         <Text style={{fontSize:17,fontFamily:'OpenSansBold',color:'#434343'}}>Pomodoro mobile app design</Text>
                 </View>
 
-                <View style={styles.container}>
-                    <Svg width={size} height={size}>
-                        <Circle stroke="#E6E7E8" cx={center} cy={center} r={radius} strokeWidth={strokeWidth} />
-                        <Circle 
-                        stroke="#1976D2"
-                        cx={center}
-                        cy={center}
-                        r={radius}
-                        strokeWidth={strokeWidth}
-                        strokeDasharray={circumference}
-                        strokeDashoffset={circumference - (circumference * timePercent) / 100} />
-                    </Svg>
-
-                    <View style={{position:"absolute",padding:20,justifyContent:'center',alignItems:'center'}}>
-                        <Pressable   onPress={() => this.setisOpen(!this.state.isOpen)}>
+                
+                <Timer size = {size} strokeWidth = {strokeWidth} strokeColor="#E6E7E8" progress ={timePercent} >
+                    <Pressable   onPress={() => this.setisOpen(!this.state.isOpen)}>
                             <Text style={styles.timerValue}>{formatTime(this.state.time)}</Text>
                         </Pressable>
                        { this.state.type === defaultProps.types[0] 
-                       ? 
-                       <Text style={{fontFamily:'OpenSansBold',color:'#434343'}}>
+                       ? <Text style={{fontFamily:'OpenSansBold',color:'#434343'}}>
                             {this.state.autoLongBreakInterval - (this.state.countInterval % this.state.autoLongBreakInterval)}       
                             {strings("toLongBreak")}
                         </Text>
                         : <Text>Coffee Time!</Text>
-                        } 
-                    </View>
-                </View>
+                     }
+                </Timer>
 
+                
                 <View style={{alignItems:'center'}}>
                         <Text style={{color:'#434343',fontFamily:'OpenSansReg',fontSize:16}}> 
                             {this.state.type === defaultProps.types[0]
