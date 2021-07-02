@@ -1,6 +1,6 @@
 import React from 'react';
 import {View,Text} from 'react-native';
-import InLineLayout from '../Layouts/InLineLayout'
+import InLineLayout from '../Layouts/InLineLayout';
 import {Icon} from 'react-native-elements';
 import styleHeader from './style';
 import sharedStyles from '../../styles/shared';

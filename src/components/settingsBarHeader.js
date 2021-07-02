@@ -1,0 +1,39 @@
+import React from 'react';
+import { StyleSheet,View,Text  } from "react-native";
+import InLineLayout from "./Layouts/InLineLayout";
+import sharedStyles from "../styles/shared";
+
+const styles = StyleSheet.create ( {
+    box: {
+        width:'100%',
+    },
+    settingsName: {
+        fontSize:16,
+        fontFamily:"OpenSansSemiBold",
+    },
+    settingsValue: {
+        fontSize:16,
+        fontFamily:"OpenSansSemiBold", 
+        opacity:0.7
+    },
+
+})
+
+const SettingsBarHeader = ({settingsName,settingsValue,style}) => {
+    return (
+        <View style={[{...style}]}>
+            <InLineLayout style={styles.box}>
+                <Text style={styles.settingsName}>
+                    {settingsName}
+                </Text>
+                <View style={sharedStyles.wrapperInLine}>
+                    <Text style={styles.settingsValue}>
+                        {settingsValue}
+                    </Text>
+                </View>
+            </InLineLayout>
+        </View>
+    )
+}
+
+export default SettingsBarHeader;
