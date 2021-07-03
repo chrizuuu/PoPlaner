@@ -1,40 +1,6 @@
 import React from 'react';
 import { View,Text,TouchableOpacity,StyleSheet,FlatList} from 'react-native';
 import {setI18Config} from '../translations/translations'
-import ItemFlatList from './ItemFlatList';
-import InLineLayout from './Layouts/InLineLayout';
-import sharedStyles from '../styles/shared';
-import { Icon } from 'react-native-elements';
-
-export default class FlatListSlider extends React.Component {
-    constructor(props) {
-        super(props)
-        setI18Config()
-        this.state = {
-            data: [],
-            showIndicator:false,
-        }
-    }
-    render() {
-        return (
-            <FlatList 
-            horizontal
-            showsHorizontalScrollIndicator={this.props.showIndicator} 
-            data={this.props.data}
-            keyExtractor={(item,index) => index.toString()} 
-            renderItem={({ item }) => 
-                <TouchableOpacity
-                onPress={() => this.props.onPress(item)}>
-                    <View style={styles.buttonS}>
-                        <Text>{item.toString()}</Text>
-                    </View>
-                </TouchableOpacity>} 
-            ItemSeparatorComponent = {()=> <View style={{width: 20}} />}
-        
-            />
-        )
-    }
-}
 
 const styles = StyleSheet.create ({
     buttonS: {
@@ -53,3 +19,26 @@ const styles = StyleSheet.create ({
         paddingRight:10,
     },
 })
+
+const FlatListSliderFunc = ({data,showIndicator,onPress}) => {
+    return (
+        <FlatList 
+        horizontal
+        showsHorizontalScrollIndicator={showIndicator} 
+        data={data}
+        keyExtractor={(item,index) => index.toString()} 
+        renderItem={({ item }) => 
+            <TouchableOpacity
+            onPress={() => onPress(item)}>
+                <View style={styles.buttonS}>
+                    <Text>{item.toString()}</Text>
+                </View>
+            </TouchableOpacity>} 
+        ItemSeparatorComponent = {()=> <View style={{width: 20}} />}
+    
+        />
+    )
+}
+
+
+export default FlatListSliderFunc
