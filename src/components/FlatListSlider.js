@@ -38,34 +38,36 @@ const styles = StyleSheet.create ({
 
 })
 //need to improve performance
-const FlatListSliderFunc = ({data,showIndicator,onPress,currentValue}) => {
+const FlatListSliderFunc = ({data,showIndicator,onPress,currentValue,style}) => {
     return (
-        <FlatList 
-        horizontal
-        showsHorizontalScrollIndicator={showIndicator} 
-        data={data}
-        keyExtractor={(item,index) => index.toString()} 
-        renderItem={({ item }) => 
-            <TouchableOpacity
-                onPress={() => onPress(item)}>
-                {
-                    item === currentValue 
-                    ? 
-                        <View style={styles.buttonCurrent}>
-                            <Text style={styles.currentValueText}>
-                                {item.toString()}
-                            </Text>
-                        </View>
-                    :     
-                        <View style={styles.button}>
-                            <Text style={styles.text}>
-                                {item.toString()}
-                            </Text>
-                        </View>
-                }
-            </TouchableOpacity>} 
-        ItemSeparatorComponent = {()=> <View style={{width: 20}} />}
-        />
+        <View style={[{...style}]} >
+            <FlatList 
+            horizontal
+            showsHorizontalScrollIndicator={showIndicator} 
+            data={data}
+            keyExtractor={(item,index) => index.toString()} 
+            renderItem={({ item }) => 
+                <TouchableOpacity
+                    onPress={() => onPress(item)}>
+                    {
+                        item === currentValue 
+                        ? 
+                            <View style={styles.buttonCurrent}>
+                                <Text style={styles.currentValueText}>
+                                    {item.toString()}
+                                </Text>
+                            </View>
+                        :     
+                            <View style={styles.button}>
+                                <Text style={styles.text}>
+                                    {item.toString()}
+                                </Text>
+                            </View>
+                    }
+                </TouchableOpacity>} 
+            ItemSeparatorComponent = {()=> <View style={{width: 20}} />}
+            />
+        </View>
     )
 }
 

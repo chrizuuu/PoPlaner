@@ -47,7 +47,7 @@ const styles = StyleSheet.create ( {
 
     settingsModal: {
         backgroundColor: "white",
-        height:'70%',
+        height:'90%',
         paddingLeft:25,
         paddingRight:25,
         elevation:24,
@@ -167,17 +167,14 @@ export default class PomodoroScreen extends React.Component {
 
     changeIntervals = (value) => {
         this.setState({autoLongBreakInterval:value})        
-        this.resetTimer()
     }
 
     changeAutoPomodoroStart = value => {
         this.setState({autoPomodoroStart:value})
-        this.resetTimer()
     }
 
     changeAutoBreakStart = value => {
         this.setState({autoBreakStart:value})
-        this.resetTimer()
     }
 
     //
@@ -206,44 +203,54 @@ export default class PomodoroScreen extends React.Component {
                     rightIcon = 'settings' 
                     rightFunc = {() => this.setisOpen(!this.state.isOpen)} 
                 />
-                <View style = {[sharedStyles.wrapperFlexSpaceBetween,{alignItems:'center',paddingBottom:50,paddingTop:30}]}>
-                    <View style={{height:'20%',alignItems:'center',justifyContent:'center'}}>
+                <View style = {[{flex:1,alignItems:'center',paddingBottom:50}]}>
+
+                    <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
                         <Text style={{paddingBottom:5,fontFamily:'OpenSansSemiBold',color:'#B2B2B2'}}>{strings("currentTask")}</Text>
                         <Text style={{fontSize:17,fontFamily:'OpenSansBold',color:'#434343'}}>Pomodoro mobile app design</Text>
-                </View>
-                    <Timer size = '280' strokeWidth = '10' strokeColor="#1976D2" progress ={timePercent} >
-                        <Pressable   onPress={() => this.setisOpen(!this.state.isOpen)}>
-                                <Text style={styles.timerValue}>
-                                    {formatTime(this.state.time)}
-                                </Text>
-                        </Pressable>
-
-                        { this.state.type === defaultProps.types[0] 
-                        ? 
-                            <Text style={{fontFamily:'OpenSansBold',color:'#434343'}}>
-                                {this.state.autoLongBreakInterval - (this.state.countInterval % this.state.autoLongBreakInterval)}       
-                                {strings("toLongBreak")}
-                            </Text>
-                            : 
-                            <Text style={{fontFamily:'OpenSansBold',color:'#434343'}}>Coffee Time!</Text>
-                        }
-                    </Timer>
-                    <View style={{alignItems:'center',marginBottom:25}}>
-                            <Text style={{color:'#434343',fontFamily:'OpenSansReg',fontSize:16}}> 
-                                {this.state.type === defaultProps.types[0]
-                                ? strings("stayFocus") 
-                                : strings("takeBreak") }{this.state.type.time/60} min 
-                            </Text>
                     </View>
-                
-                <ControlsPomodoroButton
-                        start = {this.startTimer}
-                        pause= {this.pauseTimer}
-                        skip = {this.skipTimer}
-                        reset= {this.resetTimer}
-                        status = {this.state.status}
-                    />
-            </View>
+
+                    <View style={{flex:4}}>
+                        <Timer 
+                            size = '280' 
+                            strokeWidth = '10' 
+                            strokeColor="#1976D2" 
+                            progress ={timePercent} 
+                        >
+                            <Pressable   onPress={() => this.setisOpen(!this.state.isOpen)}>
+                                    <Text style={styles.timerValue}>
+                                        {formatTime(this.state.time)}
+                                    </Text>
+                            </Pressable>
+
+                            { this.state.type === defaultProps.types[0] 
+                            ? 
+                                <Text style={{fontFamily:'OpenSansBold',color:'#434343'}}>
+                                    {this.state.autoLongBreakInterval - (this.state.countInterval % this.state.autoLongBreakInterval)}       
+                                    {strings("toLongBreak")}
+                                </Text>
+                                : 
+                                <Text style={{fontFamily:'OpenSansBold',color:'#434343'}}>Coffee Time!</Text>
+                            }
+                        </Timer>
+                        <View style={{alignItems:'center',}}>
+                                <Text style={{color:'#434343',fontFamily:'OpenSansReg',fontSize:16}}> 
+                                    {this.state.type === defaultProps.types[0]
+                                    ? strings("stayFocus") 
+                                    : strings("takeBreak") }{this.state.type.time/60} min 
+                                </Text>
+                        </View>
+                    </View>
+
+                        <ControlsPomodoroButton
+                            start = {this.startTimer}
+                            pause= {this.pauseTimer}
+                            skip = {this.skipTimer}
+                            reset= {this.resetTimer}
+                            status = {this.state.status}
+                        />
+
+                </View>
 
 
             
@@ -259,19 +266,19 @@ export default class PomodoroScreen extends React.Component {
                 swipeArea={40}
             >
                 <HeaderBar 
-                    style={{backgroudColor:'red'}} 
                     screenName='Pomodoro Settings'
                     style={sharedStyles.marginBottom25} 
                     ightIcon='close' 
                     rightFunc={() => this.setisOpen(!this.state.isOpen)} 
                 />
-                <View>
-                    <View>
+                <View style={{flex:1,}}>
+                    <View style={{flex:1,}} >
                         <SettingsBarHeader 
                             settingsName={strings("focus")}
                             settingsInfo={strings("minutes")}  
                         />
                         <FlatListSlider 
+                            style={{paddingTop:10}}
                             data={pomodoroTimeValue}
                             showIndicator={false}
                             onPress={value => this.changeDefaultProps(0,value)}
@@ -279,14 +286,14 @@ export default class PomodoroScreen extends React.Component {
                         />
                     </View>
 
-                    <View>
+                    <View style={{flex:1,}}>
                         <SettingsBarHeader 
-                            style={{paddingTop:30}}                        
                             settingsName={strings("shortBreak")}
                             settingsInfo={strings("minutes")}  
                         />
 
                         <FlatListSlider 
+                            style={{paddingTop:10}}
                             data={breaksTimeValue}
                             showIndicator={false}
                             onPress={value => this.changeDefaultProps(1,value)}
@@ -295,13 +302,13 @@ export default class PomodoroScreen extends React.Component {
                         />
                     </View>
 
-                    <View>
+                    <View style={{flex:1,}}>
                         <SettingsBarHeader 
-                            style={{paddingTop:30}}
                             settingsName={strings("longBreak")}
                             settingsInfo={strings("minutes")}  
                         />
                         <FlatListSlider 
+                            style={{paddingTop:10}}
                             data={breaksTimeValue}
                             showIndicator={false}
                             onPress={value => this.changeDefaultProps(2,value)}
@@ -310,33 +317,32 @@ export default class PomodoroScreen extends React.Component {
 
                     </View>
 
-                    <View>
+                    <View style={{flex:1,}}>
                         <SettingsBarHeader 
-                            style={{paddingTop:30}}
                             settingsName={strings("longBreakIntervals")}
                         />
                         <FlatListSlider 
+                            style={{paddingTop:10}}
                             data={[1,2,3,4,5,6,7,8,9,10,11,12]}
                             showIndicator={false} 
                             onPress={item => this.changeIntervals(item)}
                             currentValue = {this.state.autoLongBreakInterval}
                         />
                     </View>
-                        
+                    <View style={{flex:1,}}>
                         <SettingsSwitchBar
-                            style={{paddingTop:30}}
+                            style={{paddingBottom:10}}
                             settingsName={strings("autoStartPomodoro")}
                             switchValue={this.state.autoPomodoroStart}
                             onValueChange={(value)=> this.changeAutoPomodoroStart(value)}
                          />
                         <SettingsSwitchBar
-                            style={{paddingTop:30}}                     
                             settingsName={strings("autoStartBreak")}
                             switchValue={this.state.autoBreakStart}
                             onValueChange={(value)=> this.changeAutoBreakStart(value)}
                         />
-
                     </View>
+                </View>
             </Modal>
         </FlexLayout>
       );
