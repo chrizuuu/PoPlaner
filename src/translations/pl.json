@@ -12,9 +12,17 @@
     "registerSignIn": "Masz juz konto? Zaloguj sie!",
 
     "timerIntervalRound": "Runda ",
+    "focus": "Skupienie",
+    "shortBreak": "Krótka przerwa",
+    "longBreak": "Długa przerwa",
+    "longBreakIntervals": "Interwały przed długą przerwą",
+    "autoStartPomodoro": "Automatyczny start sesji pomodoro?",
+    "autoStartBreak": "Automatyczny start przerwy?",
     "takeBreak": "Zrób sobię przerwę na ",
     "stayFocus": "Pozostań skupiony przez ",
     "settingsPomodoro": "Ustawienia Pomodoro",
+    "minutes": "Minuty",
+    
     "currentTask": "Aktualne zadanie",
     "toLongBreak": " sesje do długiej przerwy"
 

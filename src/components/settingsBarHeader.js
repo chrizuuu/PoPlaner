@@ -11,15 +11,15 @@ const styles = StyleSheet.create ( {
         fontSize:16,
         fontFamily:"OpenSansSemiBold",
     },
-    settingsValue: {
-        fontSize:16,
+    settingsInfo: {
+        fontSize:14,
         fontFamily:"OpenSansSemiBold", 
         opacity:0.7
     },
 
 })
 
-const SettingsBarHeader = ({settingsName,settingsValue,style}) => {
+const SettingsBarHeader = ({settingsName,settingsInfo,style}) => {
     return (
         <View style={[{...style}]}>
             <InLineLayout style={styles.box}>
@@ -27,8 +27,8 @@ const SettingsBarHeader = ({settingsName,settingsValue,style}) => {
                     {settingsName}
                 </Text>
                 <View style={sharedStyles.wrapperInLine}>
-                    <Text style={styles.settingsValue}>
-                        {settingsValue}
+                    <Text style={styles.settingsInfo}>
+                        {settingsInfo}
                     </Text>
                 </View>
             </InLineLayout>

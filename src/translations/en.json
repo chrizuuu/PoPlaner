@@ -12,12 +12,21 @@
     "registerSignIn": "Did you have account? Sign in!",
 
     "timerIntervalRound": "Round ",
+    "focus": "Focus",
+    "shortBreak": "Short break",
+    "longBreak": "Long break",
     "takeBreak": "Take a break for ",
     "stayFocus": "Stay focus for ",
+    "longBreakIntervals": "Long break intervals",
+    "autoStartPomodoro": "Auto start pomodoro?",
+    "autoStartBreak": "Auto start break?",
+
     "settingsPomodoro": "Pomodor Settings",
+    "minutes": "Minutes",
     
     "currentTask": "Current Task",
     "toLongBreak": " sessions to long break"
+
 
 
 

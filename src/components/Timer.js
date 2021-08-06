@@ -24,9 +24,9 @@ export const Timer = ({size,strokeWidth,strokeColor,progress,children}) => {
     return (
         <View style={styles.container}>
                     <Svg width={size} height={size}>
-                        <Circle stroke={strokeColor} cx={center} cy={center} r={radius} strokeWidth={strokeWidth} />
+                        <Circle stroke="#E6E7E8" cx={center} cy={center} r={radius} strokeWidth={strokeWidth} />
                         <Circle 
-                        stroke="#1976D2"
+                        stroke={strokeColor}
                         cx={center}
                         cy={center}
                         r={radius}

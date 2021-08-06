@@ -1,47 +1,30 @@
 import React from 'react';
 import { View,Text,TouchableOpacity,StyleSheet,FlatList} from 'react-native';
 import {setI18Config} from '../translations/translations'
-import ItemFlatList from './ItemFlatList';
-import InLineLayout from './Layouts/InLineLayout';
-import sharedStyles from '../styles/shared';
-import { Icon } from 'react-native-elements';
-
-export default class FlatListSlider extends React.Component {
-    constructor(props) {
-        super(props)
-        setI18Config()
-        this.state = {
-            data: [],
-            showIndicator:false,
-        }
-    }
-    render() {
-        return (
-            <FlatList 
-            horizontal
-            showsHorizontalScrollIndicator={this.props.showIndicator} 
-            data={this.props.data}
-            keyExtractor={(item,index) => index.toString()} 
-            renderItem={({ item }) => 
-                <TouchableOpacity
-                onPress={() => this.props.onPress(item)}>
-                    <View style={styles.buttonS}>
-                        <Text>{item.toString()}</Text>
-                    </View>
-                </TouchableOpacity>} 
-            ItemSeparatorComponent = {()=> <View style={{width: 20}} />}
-        
-            />
-        )
-    }
-}
 
 const styles = StyleSheet.create ({
-    buttonS: {
+    button: {
         alignItems:'center',
         justifyContent:'center',
         width:60,
         height:35,
+    },
+    buttonCurrent: {
+        alignItems:'center',
+        justifyContent:'center',
+        width:60,
+        height:35,
+        backgroundColor:'#1976D2',
+        borderRadius:20,
+        color:'white',
+    },
+    text: {
+        color:'#434343',
+        fontFamily:'OpenSansSemiBold'
+    },
+    currentValueText : {
+        color:'white',
+        fontFamily:'OpenSansSemiBold'
     },
     box: {
         width:'100%',
@@ -52,4 +35,41 @@ const styles = StyleSheet.create ({
         paddingLeft:10,
         paddingRight:10,
     },
+
 })
+//need to improve performance
+const FlatListSliderFunc = ({data,showIndicator,onPress,currentValue,style}) => {
+    return (
+        <View style={[{...style}]} >
+            <FlatList 
+            horizontal
+            showsHorizontalScrollIndicator={showIndicator} 
+            data={data}
+            keyExtractor={(item,index) => index.toString()} 
+            renderItem={({ item }) => 
+                <TouchableOpacity
+                    onPress={() => onPress(item)}>
+                    {
+                        item === currentValue 
+                        ? 
+                            <View style={styles.buttonCurrent}>
+                                <Text style={styles.currentValueText}>
+                                    {item.toString()}
+                                </Text>
+                            </View>
+                        :     
+                            <View style={styles.button}>
+                                <Text style={styles.text}>
+                                    {item.toString()}
+                                </Text>
+                            </View>
+                    }
+                </TouchableOpacity>} 
+            ItemSeparatorComponent = {()=> <View style={{width: 20}} />}
+            />
+        </View>
+    )
+}
+
+
+export default FlatListSliderFunc
