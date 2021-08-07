@@ -81,7 +81,6 @@ export default class PomodoroScreen extends React.Component {
           autoPomodoroStart:false,
           isOpen:false,
       }
-      this.changeIntervals = this.changeIntervals.bind(this)
     }  
 
     //
@@ -325,7 +324,7 @@ export default class PomodoroScreen extends React.Component {
                             style={{paddingTop:10}}
                             data={[1,2,3,4,5,6,7,8,9,10,11,12]}
                             showIndicator={false} 
-                            onPress={item => this.changeIntervals(item)}
+                            onPress={this.changeIntervals}
                             currentValue = {this.state.autoLongBreakInterval}
                         />
                     </View>
