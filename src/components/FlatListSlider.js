@@ -19,7 +19,7 @@ const styles = StyleSheet.create ({
         color:'white',
     },
     text: {
-        color:'#434343',
+        color:'#434343',  
         fontFamily:'OpenSansSemiBold'
     },
     currentValueText : {
@@ -50,7 +50,7 @@ const FlatListSliderFunc = ({data,showIndicator,onPress,currentValue,style}) => 
                 <TouchableOpacity
                     onPress={() => onPress(item)}>
                     {
-                        item === currentValue 
+                        item === currentValue
                         ? 
                             <View style={styles.buttonCurrent}>
                                 <Text style={styles.currentValueText}>
