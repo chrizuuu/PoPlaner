@@ -1,19 +1,15 @@
-import React from 'react';
-import { View,Text,StyleSheet, Button, Vibration, TextInput,AsyncStorageStatic} from 'react-native';
-import FlexLayout from '../../../components/Layouts/FlexLayout';
-import {strings,setI18Config} from '../../../translations/translations';
+import React, { useState } from 'react';
+import { View,Text,StyleSheet, Button, Vibration, TextInput,AsyncStorageStatic,FlatList} from 'react-native';
+import realm, {getAllBooks,addBook} from '../../../components/Helpers/Database';
 
-export default class ToDoDashboard extends React.Component {
-    constructor(props) {
-        super(props)
-        setI18Config();
+const ToDoDashboard = () => {
+    const [data, setData] = useState(getAllBooks());
 
-    }
-    render() {
-        return (
-            <FlexLayout>
-                <Text>TODO DASHBOARD</Text>
-            </FlexLayout>
-        )
-    }
-}
+    return (
+        <>
+
+        </>
+    );
+};
+
+export default ToDoDashboard;
