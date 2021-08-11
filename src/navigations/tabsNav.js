@@ -54,9 +54,10 @@ const TabsNav = () => {
         return <Icon type='ionicon' name={iconName} size={size} color={color} />;
       },
     })} >
+            <HomeTab.Screen name="Todo" component={ToDoDashboard} />
+
       <HomeTab.Screen name="Dashboard" component={DashboardScreen} />
       <HomeTab.Screen name="Schedule" component={ScheduleScreen} />
-      <HomeTab.Screen name="Todo" component={ToDoDashboard} />
       <HomeTab.Screen name="Pomodoro" component={PomodoroScreen} />
       <HomeTab.Screen name="Profile" component={ProfileScreen} />
     </HomeTab.Navigator>

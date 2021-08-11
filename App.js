@@ -7,7 +7,6 @@ import  PomodoroSettingsScreen from './src/screens/Dasboard/Pomodoro/PomodoroSet
 import TabsNav from './src/navigations/tabsNav';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
-import realm from './src/components/Helpers/Database';
 
 const Stack = createStackNavigator();
 
