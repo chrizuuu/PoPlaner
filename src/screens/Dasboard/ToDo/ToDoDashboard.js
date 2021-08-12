@@ -3,9 +3,17 @@ import { View,Text,StyleSheet, Button, Vibration, TextInput,AsyncStorageStatic} 
 import FlexLayout from '../../../components/Layouts/FlexLayout';
 import {strings,setI18Config} from '../../../translations/translations';
 
-const ToDoForm = (props) => {
-    const [todo, addToDo] = useState({
-        title: '',
-        completed: false,
-    })
+export default class ToDoDashboard extends React.Component {
+    constructor(props) {
+        super(props)
+        setI18Config();
+
+    }
+    render() {
+        return (
+            <FlexLayout>
+                <Text>TODO DASHBOARD</Text>
+            </FlexLayout>
+        )
+    }
 }
