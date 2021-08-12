@@ -3,7 +3,6 @@ import React from 'react';
 import {StatusBar} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import  PomodoroSettingsScreen from './src/screens/Dasboard/Pomodoro/PomodoroSettingsScreen';
 import TabsNav from './src/navigations/tabsNav';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
@@ -32,7 +31,6 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown:false,}}>
         <Stack.Screen name="HomeTab" component={TabsNav}/>
-        <Stack.Screen name="Pomodoro Settings" component={PomodoroSettingsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
     </>

@@ -5,13 +5,14 @@ class TaskSchema extends Realm.Object {
     static schema = {
         name: "Task",
         properties: {
+            id: 'uuid',
             title: "string",
-            isDone: {type: 'bool', default: false},
+            isDone: {type: "bool", default: false},
             priority: {type: "bool", default:false},
             comment: "string?",
             project:"Project?",
             category:"Category?",
-            createdDate: {type: 'date', default: new Date()},
+            createdDate: "date",
             deadlineDate:"date?",
             //timeNeeded: "int?",
         }
@@ -34,6 +35,7 @@ class ProjectSchema extends Realm.Object {
             title:"string",
             isDone:"bool",
             createdDate:"date",
+            description: "string?"
         }
     }
 }
@@ -42,23 +44,24 @@ class PomodoroTimerSchema extends Realm.Object {
     static schema = {
         name:'PomodoroTimer',
         properties: {
-            id:'uuid',
-            tasks:'Task[]',
-            startTime:'date',
-            endTime:'date?',
-            duration:'int?',
+            id:"uuid",
+            tasks:"Task[]",
+            startTime:"date",
+            endTime:"date?",
+            duration:"int?",
             
         }
     }
 }
 
-let realm = new Realm({schema: [TaskSchema,CategorySchema,ProjectSchema,PomodoroTimerSchema], schemaVersion: 1});
+let realm = new Realm({schema: [TaskSchema,CategorySchema,ProjectSchema,PomodoroTimerSchema], schemaVersion: 2});
 
 
 const createTask = (_title) => {
     realm.write(() => {
         const task = realm.create("Task", {
             title: _title,
+            createdDate: new Date(),
         });
     });
 }

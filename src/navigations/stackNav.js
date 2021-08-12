@@ -2,7 +2,6 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PomodoroScreen from './src/screens/Dasboard/Pomodoro/PomodoroScreen';
-import  PomodoroSettingsScreen from './src/screens/Dasboard/Pomodoro/PomodoroSettingsScreen';
 import {Icon} from 'react-native-elements';
 
 const HomeTab = createBottomTabNavigator();

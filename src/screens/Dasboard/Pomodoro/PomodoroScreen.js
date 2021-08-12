@@ -319,7 +319,10 @@ export default class PomodoroScreen extends React.Component {
                         />
                         <FlatListSlider 
                         data={pomodoroTimeValue}
+                        currentValue={defaultProps.types[0].time/60}
                         onPress={value => this.changeDefaultProps(0,value)}
+                        showIndicator={false} 
+
                         />
                     </View>
 
@@ -332,7 +335,10 @@ export default class PomodoroScreen extends React.Component {
 
                         <FlatListSlider 
                         data={breaksTimeValue}
+                        currentValue={defaultProps.types[1].time/60}
                         onPress={value => this.changeDefaultProps(1,value)}
+                        showIndicator={false} 
+
                         />
                     </View>
 
@@ -344,7 +350,10 @@ export default class PomodoroScreen extends React.Component {
                         />
                         <FlatListSlider 
                             data={breaksTimeValue}
+                            currentValue={defaultProps.types[2].time/60}
                             onPress={value => this.changeDefaultProps(2,value)}
+                            showIndicator={false} 
+
                         />
 
                     </View>
@@ -357,7 +366,9 @@ export default class PomodoroScreen extends React.Component {
                         />
                         <FlatListSlider 
                             data={[1,2,3,4,5,6,7,8,9,10,11,12]}
+                            currentValue = {this.state.autoLongBreakInterval}
                             onPress={this.changeIntervals}
+                            showIndicator={false} 
                         />
                     </View>
                         
