@@ -274,7 +274,8 @@ export default class PomodoroScreen extends React.Component {
                         <Text style={{
                             color:'#434343',
                             fontFamily:'OpenSansReg',
-                            fontSize:16
+                            fontSize:16,
+                            padding:5,
                         }}> 
                             {this.state.type === defaultProps.types[0]
                             ? strings("stayFocus") 

@@ -1,5 +1,6 @@
 import Realm from "realm";
-// Declare Book Schema
+const { UUID } = Realm.BSON;
+
 
 class TaskSchema extends Realm.Object {
     static schema = {
@@ -60,6 +61,7 @@ let realm = new Realm({schema: [TaskSchema,CategorySchema,ProjectSchema,Pomodoro
 const createTask = (_title) => {
     realm.write(() => {
         const task = realm.create("Task", {
+            id: new UUID(),
             title: _title,
             createdDate: new Date(),
         });
