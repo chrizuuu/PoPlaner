@@ -2,6 +2,7 @@ import React, {useState, useCallback} from 'react';
 import {SafeAreaView, Text, StatusBar, FlatList, View, TouchableOpacity,TextInput,Keyboard,Switch} from 'react-native';
 import FlexLayout from '../../../components/Layouts/FlexLayout'
 import realm, { createTask, getAllTasks } from "../../../components/Helpers/Database"
+import ToDoItem from './TodoTask';
 
 
 const ToDoDashboad = () => {
@@ -19,12 +20,20 @@ const ToDoDashboad = () => {
         setInput(value)
     }
 
+
     const deleteTask = (task) => {
         realm.write(() => {
          realm.delete(task);
           setTasks([...realm.objects("Task").sorted("id")]);
         });
       };
+
+    const updateIsDone = (task) => {
+        realm.write(() => {
+            task.isDone = !task.isDone;
+            setTasks(getAllTasks())
+        })
+    }
       
     return (
     <>
@@ -49,16 +58,40 @@ const ToDoDashboad = () => {
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({item, index}) => {
                 return (
-                <FlexLayout style={{borderColor:'black',borderWidth:1,flexDirection:'row',alignItems:'center',padding:5,marginTop:5,}}>
-                    <Text style={{flex:5}}>
-                        {item.title}
-                    </Text>
-                    <Text style={{flex:1}} >
-                        {item.isDone.toString()}
-                    </Text>
-                    <Text onPress={()=>deleteTask(item)}> Delete</Text>
-
-                </FlexLayout>
+                <>
+                    <FlexLayout 
+                        style={{
+                            borderColor:'black',
+                            borderWidth:1,
+                            flexDirection:'row',
+                            alignItems:'center',
+                            padding:5,
+                            marginTop:5,
+                        
+                    }}>
+                        <Text style={{flex:5}}>
+                            {item.title}
+                        </Text>
+                        <Text >
+                            {
+                            item.isDone === true 
+                            ?
+                            "Completed "
+                            :
+                            "In Progress "
+                            }
+                        </Text>
+                        
+                        <Text  onPress={()=>deleteTask(item)}> 
+                            Delete
+                        </Text>
+                        <Switch 
+                            value={item.isDone} 
+                            onValueChange={() => updateIsDone(item)}
+                        />    
+                    </FlexLayout>
+    
+                </>
                 )
             }} />
     </FlexLayout>
