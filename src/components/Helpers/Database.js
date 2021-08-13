@@ -55,7 +55,6 @@ class PomodoroTimerSchema extends Realm.Object {
         primaryKey: "id",
     }
 }
-
 let realm = new Realm({schema: [TaskSchema,CategorySchema,ProjectSchema,PomodoroTimerSchema], schemaVersion: 3});
 
 
@@ -79,5 +78,5 @@ export default realm;
 
 export {
     createTask,
-    getAllTasks
+    getAllTasks,
 }

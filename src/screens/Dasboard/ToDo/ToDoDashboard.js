@@ -59,7 +59,7 @@ const ToDoDashboad = () => {
             </Text> 
 
             <TextInput 
-                style={{borderColor: 'black', borderWidth: 1}}
+                style={{borderColor: 'black', borderWidth: 1,backgroundColor:'grey'}}
                 name="setTask"
                 onChangeText = {(input) => changeHandler(input)}
                 value={input}
