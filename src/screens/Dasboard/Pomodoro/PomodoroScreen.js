@@ -242,7 +242,7 @@ export default class PomodoroScreen extends React.Component {
                 <Timer 
                     size = '280' 
                     strokeWidth = '10' 
-                    strokeColor="#E6E7E8" 
+                    strokeColor="#1976D2" 
                     progress ={timePercent} 
                     >
                     <Pressable   onPress={() => this.setisOpen(!this.state.isOpen)}>

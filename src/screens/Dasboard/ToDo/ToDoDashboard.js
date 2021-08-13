@@ -1,16 +1,16 @@
-import React, {useState} from 'react';
-import {SafeAreaView, Text, StatusBar, FlatList, View, TouchableOpacity,TextInput,Keyboard} from 'react-native';
+import React, {useState, useCallback} from 'react';
+import {SafeAreaView, Text, StatusBar, FlatList, View, TouchableOpacity,TextInput,Keyboard,Switch} from 'react-native';
 import FlexLayout from '../../../components/Layouts/FlexLayout'
 import realm, { createTask, getAllTasks } from "../../../components/Helpers/Database"
 
 
 const ToDoDashboad = () => {
-    const [tasks, setTask] = useState(getAllTasks());
+    const [tasks, setTasks] = useState(getAllTasks());
     const [input,setInput] = useState()
 
     const submitHandler = (value) => {
         createTask(value.nativeEvent.text)
-        setTask(getAllTasks())
+        setTasks(getAllTasks())
         Keyboard.dismiss
         setInput('')
     }
@@ -19,6 +19,13 @@ const ToDoDashboad = () => {
         setInput(value)
     }
 
+    const deleteTask = (task) => {
+        realm.write(() => {
+         realm.delete(task);
+          setTasks([...realm.objects("Task").sorted("id")]);
+        });
+      };
+      
     return (
     <>
     <FlexLayout>
@@ -42,10 +49,15 @@ const ToDoDashboad = () => {
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({item, index}) => {
                 return (
-                <FlexLayout>
-                    <Text>{item.title}</Text>
-                    <Text>{item.isDone.toString()}</Text>
-                    <Text>{item.createdDate.toString()}</Text>
+                <FlexLayout style={{borderColor:'black',borderWidth:1,flexDirection:'row',alignItems:'center',padding:5,marginTop:5,}}>
+                    <Text style={{flex:5}}>
+                        {item.title}
+                    </Text>
+                    <Text style={{flex:1}} >
+                        {item.isDone.toString()}
+                    </Text>
+                    <Text onPress={()=>deleteTask(item)}> Delete</Text>
+
                 </FlexLayout>
                 )
             }} />

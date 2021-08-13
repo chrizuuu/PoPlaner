@@ -1,12 +1,11 @@
 import Realm from "realm";
-const { UUID } = Realm.BSON;
-
+import { ObjectId } from "bson";
 
 class TaskSchema extends Realm.Object {
     static schema = {
         name: "Task",
         properties: {
-            id: 'uuid',
+            id: "objectId",
             title: "string",
             isDone: {type: "bool", default: false},
             priority: {type: "bool", default:false},
@@ -16,7 +15,8 @@ class TaskSchema extends Realm.Object {
             createdDate: "date",
             deadlineDate:"date?",
             //timeNeeded: "int?",
-        }
+        },
+        primaryKey: "id",
     }
 }
 
@@ -45,23 +45,24 @@ class PomodoroTimerSchema extends Realm.Object {
     static schema = {
         name:'PomodoroTimer',
         properties: {
-            id:"uuid",
+            id:"objectId",
             tasks:"Task[]",
             startTime:"date",
             endTime:"date?",
             duration:"int?",
             
-        }
+        },
+        primaryKey: "id",
     }
 }
 
-let realm = new Realm({schema: [TaskSchema,CategorySchema,ProjectSchema,PomodoroTimerSchema], schemaVersion: 2});
+let realm = new Realm({schema: [TaskSchema,CategorySchema,ProjectSchema,PomodoroTimerSchema], schemaVersion: 3});
 
 
 const createTask = (_title) => {
     realm.write(() => {
         const task = realm.create("Task", {
-            id: new UUID(),
+            id: new ObjectId(),
             title: _title,
             createdDate: new Date(),
         });
