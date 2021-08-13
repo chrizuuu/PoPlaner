@@ -16,6 +16,7 @@ const ToDoDashboad = () => {
         setInput('')
     }
 
+
     const changeHandler = (value) => {
         setInput(value)
     }
@@ -34,6 +35,20 @@ const ToDoDashboad = () => {
             setTasks(getAllTasks())
         })
     }
+
+    const onChangeComment = (task,value) => {
+        realm.write(() => {
+            task.comment = value.target.text;
+        })
+    }
+
+
+    function onRealmChange() {
+        console.log("Something changed!");
+        setTasks(getAllTasks())
+      }
+      // Add the listener callback to the realm
+      realm.addListener("change", onRealmChange);
       
     return (
     <>
@@ -59,6 +74,8 @@ const ToDoDashboad = () => {
                 renderItem={({item, index}) => {
                 return (
                 <>
+                    <ToDoItem item={item} />
+
                     <FlexLayout 
                         style={{
                             borderColor:'black',
@@ -70,7 +87,7 @@ const ToDoDashboad = () => {
                         
                     }}>
                         <Text style={{flex:5}}>
-                            {item.title}
+                            {item.comment}
                         </Text>
                         <Text >
                             {
@@ -89,8 +106,8 @@ const ToDoDashboad = () => {
                             value={item.isDone} 
                             onValueChange={() => updateIsDone(item)}
                         />    
+                        
                     </FlexLayout>
-    
                 </>
                 )
             }} />
