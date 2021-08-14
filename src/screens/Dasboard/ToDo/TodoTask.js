@@ -35,7 +35,6 @@ export default class ToDoItem extends React.Component {
     deleteTask = () => {
         realm.write(() => {
          realm.delete(this.task);
-         console.log('delete')
         });
       };
 
@@ -81,7 +80,7 @@ export default class ToDoItem extends React.Component {
                             onSubmitEditing={() => {
                                 this.submitHandler()
                             }}
-                                    />        
+                    />        
     
                 </>
         );

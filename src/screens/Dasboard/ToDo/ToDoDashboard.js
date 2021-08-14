@@ -18,38 +18,15 @@ const ToDoDashboad = () => {
         setInput('')
     }
 
-
     const changeHandler = (value) => {
         setInput(value)
     }
-
-
-    const deleteTask = (task) => {
-        realm.write(() => {
-         realm.delete(task);
-          setTasks([...realm.objects("Task").sorted("id")]);
-        });
-      };
-
-    const updateIsDone = (task) => {
-        realm.write(() => {
-            task.isDone = !task.isDone;
-            setTasks(getAllTasks())
-        })
-    }
-
-    const onChangeComment = (task,value) => {
-        realm.write(() => {
-            task.comment = value.target.text;
-        })
-    }
-
 
     function onRealmChange() {
         console.log("Something changed!");
         setTasks(getAllTasks())
       }
-      // Add the listener callback to the realm
+      
       realm.addListener("change", onRealmChange);
       
     return (
@@ -76,7 +53,7 @@ const ToDoDashboad = () => {
                 renderItem={({item}) => {
                 return (
                 <>
-                    <ToDoItem key={item.id} item_id={item.id} />
+                    <ToDoItem item_id={item.id} />
                 </>
                 )
             }} />
