@@ -12,7 +12,7 @@ export default class ToDoItem extends React.Component {
         }
     }
 
-    task = realm.objectForPrimaryKey("Task",this.props.item.id)
+    task = realm.objectForPrimaryKey("Task",this.props.item_id)
 
     changeHandler = (value) => {
         this.setState({inputComment:value})
@@ -31,6 +31,13 @@ export default class ToDoItem extends React.Component {
             this.task.isDone = !this.task.isDone;
         })
     }
+
+    deleteTask = () => {
+        realm.write(() => {
+         realm.delete(this.task);
+        });
+      };
+
 
     render() {
         return (
@@ -62,6 +69,7 @@ export default class ToDoItem extends React.Component {
                             value={this.task.isDone} 
                             onValueChange={() => this.updateIsDone()}
                         />                
+                        <Text onPress={() => this.deleteTask()} > Delete</Text>
                          
                     </FlexLayout>
                     <TextInput 
@@ -72,7 +80,7 @@ export default class ToDoItem extends React.Component {
                             onSubmitEditing={() => {
                                 this.submitHandler()
                             }}
-                                    />        
+                    />        
     
                 </>
         );
