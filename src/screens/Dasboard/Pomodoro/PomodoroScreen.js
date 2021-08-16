@@ -214,8 +214,8 @@ export default class PomodoroScreen extends React.Component {
                 <View style = {[
                     sharedStyles.wrapperFlexSpaceBetween,
                     {alignItems:'center',
-                    paddingBottom:50,
-                    paddingTop:30}
+                    paddingTop:50,
+                    paddingBottom:50,}
                 ]}>
                     <View style={{
                         height:'20%',
@@ -225,13 +225,13 @@ export default class PomodoroScreen extends React.Component {
                         <Text style={{
                             paddingBottom:5,
                             fontFamily:'OpenSansSemiBold',
-                            color:'#B2B2B2'
+                            color:'#B2B2B2',
                         }}>
                             {strings("currentTask")}
                         </Text>
                         <Text style={{
-                            fontSize:17,
-                            fontFamily:'OpenSansBold',
+                            fontSize:18,
+                            fontFamily:'OpenSansExtraBold',
                             color:'#434343'
                         }}>
                             Pomodoro mobile app design
@@ -242,7 +242,7 @@ export default class PomodoroScreen extends React.Component {
                 <Timer 
                     size = '280' 
                     strokeWidth = '10' 
-                    strokeColor="#1976D2" 
+                    strokeColor="#53D3AF" 
                     progress ={timePercent} 
                     >
                     <Pressable   onPress={() => this.setisOpen(!this.state.isOpen)}>
@@ -275,7 +275,6 @@ export default class PomodoroScreen extends React.Component {
                             color:'#434343',
                             fontFamily:'OpenSansReg',
                             fontSize:16,
-                            padding:5,
                         }}> 
                             {this.state.type === defaultProps.types[0]
                             ? strings("stayFocus") 
