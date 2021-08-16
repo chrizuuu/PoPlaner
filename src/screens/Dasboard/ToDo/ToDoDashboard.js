@@ -46,8 +46,9 @@ const ToDoDashboad = () => {
     function onRealmChange() {
         console.log("Something changed!");
         setTasks(getAllTasks())
+        //setTasks([...realm.objects("Task").sorted("id")]);
+
       }
-      // Add the listener callback to the realm
       realm.addListener("change", onRealmChange);
       
     return (
