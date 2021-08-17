@@ -11,7 +11,7 @@ export default CheckBox = ({status,onChange,style}) => {
         container : {
             borderWidth:2,
             borderRadius:25,
-            borderColor:'rgb(83, 211, 175)',
+            borderColor:'rgba(48,48,48,0.2)',
             height:32,
             width:32,
         },

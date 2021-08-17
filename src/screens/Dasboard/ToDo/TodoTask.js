@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View,Text,StyleSheet, Button, Vibration, TextInput,AsyncStorageStatic,Switch,Keyboard} from 'react-native';
 import FlexLayout from '../../../components/Layouts/FlexLayout';
 import {strings,setI18Config} from '../../../translations/translations';
-import realm, {getAllTasks} from "../../../components/Helpers/Database";
+import realm, {getAllTasks} from "../../../Database/Database";
 import CheckBox from "../../../components/Buttons/CheckBox";
 import {Icon} from 'react-native-elements';
 
@@ -13,7 +13,6 @@ export default class ToDoItem extends React.Component {
             inputComment: null,
         }
     }
-
     task = realm.objectForPrimaryKey("Task",this.props.item_id)
 
     changeHandler = (value) => {
@@ -33,8 +32,6 @@ export default class ToDoItem extends React.Component {
         })  
     }
 
-
-
     updateIsDone = () => {
         realm.write(() => {
             this.task.isDone = !this.task.isDone;
@@ -50,11 +47,17 @@ export default class ToDoItem extends React.Component {
 
     render() {
         let priorityTaskStatus = this.task.priority === true
-            ? {color:'rgba(83,211,175,1)',icon:'star'}
-            : {color:'rgba(48,48,48,0.3)',icon:'star-border'}
-        let isDoneTaskStatus = this.task.isDone === true
-            ? 0.2
+            ? 
+                {color:'rgba(83,211,175,1)',
+                icon:'star'}
+            : 
+                {color:'rgba(48,48,48,0.3)',
+                icon:'star-border'}
+
+        let isDoneTaskOpacity = this.task.isDone === true
+            ? 0.4
             : 1
+
         return (
                 <>
                     <View 
@@ -62,9 +65,16 @@ export default class ToDoItem extends React.Component {
                             flex:1,
                             borderTopWidth:1,
                             borderColor:'rgba(28,28,28,0.1)',
-                            opacity: isDoneTaskStatus,
-                        }}>
-                        <View style={{flex:1,flexDirection:'row',alignItems:'center',padding:12}}> 
+                            opacity: isDoneTaskOpacity,
+                    }}>
+                        <View 
+                            style={{
+                                flex:1,
+                                flexDirection:'row',
+                                alignItems:'center',
+                                padding:12
+                            }}
+                        > 
                             <CheckBox 
                                 status={this.task.isDone} 
                                 onChange={() => this.updateIsDone()}
