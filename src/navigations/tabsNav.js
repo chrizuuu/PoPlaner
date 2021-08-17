@@ -20,7 +20,7 @@ const TabsNav = () => {
         paddingBottom:10,
       },
       showLabel:false,
-      activeTintColor:'#1976D2',
+      activeTintColor:'#7393DD',
     }}
     screenOptions={({ route }) => ({
       tabBarIcon: ({focused, color, size }) => {

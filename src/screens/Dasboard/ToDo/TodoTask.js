@@ -3,6 +3,8 @@ import { View,Text,StyleSheet, Button, Vibration, TextInput,AsyncStorageStatic,S
 import FlexLayout from '../../../components/Layouts/FlexLayout';
 import {strings,setI18Config} from '../../../translations/translations';
 import realm, {getAllTasks} from "../../../components/Helpers/Database";
+import CheckBox from "../../../components/Buttons/CheckBox";
+import {Icon} from 'react-native-elements';
 
 export default class ToDoItem extends React.Component {
     constructor(props) {
@@ -25,6 +27,13 @@ export default class ToDoItem extends React.Component {
          Keyboard.dismiss
     }
 
+    changePriority = (priority) => {
+        realm.write(() => {
+            this.task.priority = !this.task.priority;
+        })  
+    }
+
+
 
     updateIsDone = () => {
         realm.write(() => {
@@ -40,47 +49,51 @@ export default class ToDoItem extends React.Component {
 
 
     render() {
+        let priorityTaskStatus = this.task.priority === false 
+            ? {color:'rgba(16,16,16,0.3)',icon:'star-border'}
+            : {color:'rgba(83,211,175,1)',icon:'star'}
         return (
                 <>
-                <Text>{this.state.inputComment}</Text>
                     <FlexLayout 
                         style={{
-                            borderColor:'black',
-                            borderWidth:1,
+                            borderRadius:5,
                             flexDirection:'row',
                             alignItems:'center',
                             padding:5,
-                            marginTop:5,
-                        
-                    }}>
-                        <Text style={{flex:5}}>
-                            {this.task.title}
-                        </Text>
-                        <Text >
-                            {
-                            this.task.isDone === true 
-                            ?
-                            "Completed "
-                            :
-                            "In Progress "
-                            }
-                        </Text>
-                        <Switch 
-                            value={this.task.isDone} 
-                            onValueChange={() => this.updateIsDone()}
-                        />                
-                        <Text onPress={() => this.deleteTask()} > Delete</Text>
-                         
-                    </FlexLayout>
-                    <TextInput 
-                            style={{borderColor: 'black', borderWidth: 1}}
-                            name="input"
-                            defaultValue={this.task.comment}
-                            onChangeText = {(input) => this.changeHandler(input)}
-                            onSubmitEditing={() => {
-                                this.submitHandler()
+                            marginTop:20,
+                            backgroundColor:'rgba(81,211,175,0.5)',    
+                        }}>
+                        <CheckBox 
+                            status={this.task.isDone} 
+                            onChange={() => this.updateIsDone()}
+                            style={{marginRight:20}} 
+                        />                                    
+                        <Text             
+                            numberOfLines={1}
+                            style={{
+                                flex:1,
+                                fontSize:15,
+                                fontFamily:"OpenSansBold",
+                                color:'#282828',
+                                overflow:'hidden' 
                             }}
-                    />        
+                        >
+                            {this.task.title}
+                        </Text>  
+                        <Icon 
+                            type='material' 
+                            name={priorityTaskStatus.icon}
+                            iconStyle = {{
+                                marginLeft:15,
+                                color:priorityTaskStatus.color
+                            }} 
+                            size={28} 
+                            onPress = {() => this.changePriority()}
+                        />
+                    </FlexLayout>
+                            
+
+                       
     
                 </>
         );

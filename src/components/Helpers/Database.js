@@ -57,6 +57,7 @@ class PomodoroTimerSchema extends Realm.Object {
 }
 let realm = new Realm({schema: [TaskSchema,CategorySchema,ProjectSchema,PomodoroTimerSchema], schemaVersion: 3});
 
+// Task handlers
 
 const createTask = (_title) => {
     realm.write(() => {
@@ -69,12 +70,10 @@ const createTask = (_title) => {
 }
 
 const getAllTasks =() => {
-    return realm.objects("Task")
+    return realm.objects("Task").sorted("createdDate","Descendig")
 }
 
-
 export default realm;
-// Export other functions so other files can access it
 
 export {
     createTask,
