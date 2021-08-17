@@ -49,48 +49,51 @@ export default class ToDoItem extends React.Component {
 
 
     render() {
-        let priorityTaskStatus = this.task.priority === false 
-            ? {color:'rgba(16,16,16,0.3)',icon:'star-border'}
-            : {color:'rgba(83,211,175,1)',icon:'star'}
+        let priorityTaskStatus = this.task.priority === true
+            ? {color:'rgba(83,211,175,1)',icon:'star'}
+            : {color:'rgba(48,48,48,0.3)',icon:'star-border'}
+        let isDoneTaskStatus = this.task.isDone === true
+            ? 0.2
+            : 1
         return (
                 <>
-                    <FlexLayout 
+                    <View 
                         style={{
-                            borderRadius:5,
-                            flexDirection:'row',
-                            alignItems:'center',
-                            padding:5,
-                            marginTop:20,
-                            backgroundColor:'rgba(81,211,175,0.5)',    
+                            flex:1,
+                            borderTopWidth:1,
+                            borderColor:'rgba(28,28,28,0.1)',
+                            opacity: isDoneTaskStatus,
                         }}>
-                        <CheckBox 
-                            status={this.task.isDone} 
-                            onChange={() => this.updateIsDone()}
-                            style={{marginRight:20}} 
-                        />                                    
-                        <Text             
-                            numberOfLines={1}
-                            style={{
-                                flex:1,
-                                fontSize:15,
-                                fontFamily:"OpenSansBold",
-                                color:'#282828',
-                                overflow:'hidden' 
-                            }}
-                        >
-                            {this.task.title}
-                        </Text>  
-                        <Icon 
-                            type='material' 
-                            name={priorityTaskStatus.icon}
-                            iconStyle = {{
-                                marginLeft:15,
-                                color:priorityTaskStatus.color
-                            }} 
-                            size={28} 
-                            onPress = {() => this.changePriority()}
-                        />
-                    </FlexLayout>
+                        <View style={{flex:1,flexDirection:'row',alignItems:'center',padding:12}}> 
+                            <CheckBox 
+                                status={this.task.isDone} 
+                                onChange={() => this.updateIsDone()}
+                                style={{marginRight:20}} 
+                            />                                    
+                            <Text             
+                                numberOfLines={1}
+                                style={{
+                                    flex:1,
+                                    fontSize:14,
+                                    fontFamily:"OpenSansReg",
+                                    color:'#282828',
+                                    overflow:'hidden' 
+                                }}
+                            >
+                                {this.task.title}
+                            </Text>  
+                            <Icon 
+                                type='material' 
+                                name={priorityTaskStatus.icon}
+                                iconStyle = {{
+                                    marginLeft:15,
+                                    color:priorityTaskStatus.color
+                                }} 
+                                size={28} 
+                                onPress = {() => this.changePriority()}
+                            />
+                        </View>
+                    </View>
                             
 
                        

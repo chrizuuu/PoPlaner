@@ -74,6 +74,7 @@ const getAllTasks =() => {
 }
 
 export default realm;
+// Export other functions so other files can access it
 
 export {
     createTask,

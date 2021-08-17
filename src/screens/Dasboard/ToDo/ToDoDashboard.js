@@ -55,7 +55,7 @@ const ToDoDashboad = () => {
       
     return (
     <>
-    <FlexLayout style={{paddingTop:50, paddingBottom:25}}>
+    <View style={{flex:1,paddingTop:50, paddingBottom:25}}>
             <Text 
                 style={{paddingVertical: 8}}>
                 Add task
@@ -76,7 +76,7 @@ const ToDoDashboad = () => {
                     style={[
                     sharedStyles.wrapperInLine,
                     {justifyContent:'space-between',
-                    marginBottom:25
+                    marginBottom:25,marginLeft:10,marginRight:10
 
                     }
                 ]}>
@@ -87,6 +87,8 @@ const ToDoDashboad = () => {
                         Priority Tasks 
                     </Text>
                 </View>
+
+                
     
                 <FlatList
                     data={tasks}
@@ -99,7 +101,7 @@ const ToDoDashboad = () => {
                 />
             </View> 
             
-    </FlexLayout>
+    </View>
     </>
 
     );
