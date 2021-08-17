@@ -1,4 +1,3 @@
-import { StatusBar } from 'react-native';
 import { StyleSheet} from 'react-native';
 
 const sharedStyles = StyleSheet.create ({
@@ -48,7 +47,6 @@ const sharedStyles = StyleSheet.create ({
     wrapperInLine: {
         flexDirection:'row',
         alignItems:'center',
-        justifyContent:'space-between',
     }
 
 })

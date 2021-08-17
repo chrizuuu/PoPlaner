@@ -14,12 +14,13 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.chrizuuu.producitivityUp"
     },
     "android": {
-      "softwareKeyboardLayoutMode":"pan"
+      "softwareKeyboardLayoutMode": "pan",
+      "package": "com.chrizuuu.producitivityUp"
     },
-    "web": {
-    }
+    "web": {}
   }
 }

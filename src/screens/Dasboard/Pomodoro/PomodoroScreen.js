@@ -2,7 +2,7 @@ import React from 'react';
 import { View,Text, Vibration,Pressable,Button,ScrollView,Dimensions,FlatList,StyleSheet,Switch} from 'react-native';
 import Modal from 'react-native-modalbox';
 
-import {strings,setI18Config} from '../../../translations/translations'
+import {strings} from '../../../translations/translations'
 import {formatTime} from '../../../components/Helpers/helpers';
 import FlexLayout from '../../../components/Layouts/FlexLayout';
 import ControlsPomodoroButton from '../../../components/Buttons/ControlsPomodoroButton';
@@ -68,7 +68,6 @@ const styles = StyleSheet.create ( {
 export default class PomodoroScreen extends React.Component {
     constructor(props) {
       super(props);
-      setI18Config();
       this.state = {
           type: defaultProps.types[0],
           time: defaultProps.types[0].time,
@@ -79,7 +78,7 @@ export default class PomodoroScreen extends React.Component {
           autoBreakStart:false,
           autoLongBreakInterval:4,
           autoPomodoroStart:false,
-          isOpen:false,
+          settingsIsOpen:false,
       }
     }  
 
@@ -156,9 +155,9 @@ export default class PomodoroScreen extends React.Component {
         }
     }
 
-    setisOpen = (visible) => {
+    setIsOpen = (visible) => {
         this.setState({
-            isOpen: visible
+            settingsIsOpen: visible
         })
     }
 
@@ -199,6 +198,7 @@ export default class PomodoroScreen extends React.Component {
         });
     }
 
+
     render() {
         let timePercent = ((this.state.type.time - this.state.time)/this.state.type.time) * 100
 
@@ -209,13 +209,13 @@ export default class PomodoroScreen extends React.Component {
                     leftIcon = 'poll' 
                     leftFunc={() => console.log('Stats')} 
                     rightIcon = 'settings' 
-                    rightFunc = {() => this.setisOpen(!this.state.isOpen)} 
+                    rightFunc = {() => this.setIsOpen(!this.state.settingsIsOpen)} 
                 />
                 <View style = {[
                     sharedStyles.wrapperFlexSpaceBetween,
                     {alignItems:'center',
-                    paddingBottom:50,
-                    paddingTop:30}
+                    paddingTop:50,
+                    paddingBottom:50,}
                 ]}>
                     <View style={{
                         height:'20%',
@@ -225,13 +225,13 @@ export default class PomodoroScreen extends React.Component {
                         <Text style={{
                             paddingBottom:5,
                             fontFamily:'OpenSansSemiBold',
-                            color:'#B2B2B2'
+                            color:'#B2B2B2',
                         }}>
                             {strings("currentTask")}
                         </Text>
                         <Text style={{
-                            fontSize:17,
-                            fontFamily:'OpenSansBold',
+                            fontSize:18,
+                            fontFamily:'OpenSansExtraBold',
                             color:'#434343'
                         }}>
                             Pomodoro mobile app design
@@ -242,10 +242,10 @@ export default class PomodoroScreen extends React.Component {
                 <Timer 
                     size = '280' 
                     strokeWidth = '10' 
-                    strokeColor="#E6E7E8" 
+                    strokeColor="#53D3AF" 
                     progress ={timePercent} 
                     >
-                    <Pressable   onPress={() => this.setisOpen(!this.state.isOpen)}>
+                    <Pressable  onPress={() => this.setIsOpen(!this.state.settingsIsOpen)}>
                             <Text style={styles.timerValue}>
                                 {formatTime(this.state.time)}
                             </Text>
@@ -274,7 +274,7 @@ export default class PomodoroScreen extends React.Component {
                         <Text style={{
                             color:'#434343',
                             fontFamily:'OpenSansReg',
-                            fontSize:16
+                            fontSize:16,
                         }}> 
                             {this.state.type === defaultProps.types[0]
                             ? strings("stayFocus") 
@@ -296,8 +296,8 @@ export default class PomodoroScreen extends React.Component {
             <Modal 
                 coverScreen={true} 
                 backButtonClose={true} 
-                isOpen={this.state.isOpen} 
-                onClosed={this.closeModal} 
+                isOpen={this.state.settingsIsOpen} 
+                onClosed={() => this.setIsOpen(!this.state.settingsIsOpen)}  
                 on style={[styles.settingsModal]} 
                 position={"bottom"} 
                 ref={"modal6"} 
@@ -308,8 +308,8 @@ export default class PomodoroScreen extends React.Component {
                     style={{backgroudColor:'red'}} 
                     screenName='Pomodoro Settings'
                     style={sharedStyles.marginBottom25} 
-                    ightIcon='close' 
-                    rightFunc={() => this.setisOpen(!this.state.isOpen)} 
+                    rightIcon='close' 
+                    rightFunc={() => this.setIsOpen(!this.state.settingsIsOpen)} 
                 />
                 <View>
                     <View>

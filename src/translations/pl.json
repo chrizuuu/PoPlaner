@@ -24,6 +24,8 @@
     "minutes": "Minuty",
     
     "currentTask": "Aktualne zadanie",
-    "toLongBreak": " sesje do długiej przerwy"
+    "toLongBreak": " sesje do długiej przerwy",
+
+    "allTasks": "Wszystkie zadania"
 
 }
