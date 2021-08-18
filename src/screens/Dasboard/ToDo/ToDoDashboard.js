@@ -20,6 +20,24 @@ const ToDoDashboad = () => {
       
     realm.addListener("change", onRealmChange);
     
+    useEffect(() => {
+        displayOnlyPriorityTasks === true
+            ? setTasks(realm.objects("Task").filtered("priority == true").sorted("createdDate", "Descending"))
+            : setTasks(realm.objects("Task").filtered("isDone == false").sorted("createdDate", "Descending"))
+    }, [displayOnlyPriorityTasks])
+
+
+    const submitHandler = (value) => {
+        createTask(value.nativeEvent.text)
+        setTasks(getAllTasks())
+        Keyboard.dismiss
+        setInput('')
+    }
+
+    const changeHandler = (value) => {
+        setInput(value)
+    }
+
     const styles = StyleSheet.create({
         headerWrapper: {
             justifyContent:'space-between',
@@ -55,44 +73,7 @@ const ToDoDashboad = () => {
         }
     })
 
-
-    const submitHandler = (value) => {
-        createTask(value.nativeEvent.text)
-        setTasks(getAllTasks())
-        Keyboard.dismiss
-        setInput('')
-    }
-
-    const changeHandler = (value) => {
-        setInput(value)
-    }
-
-    const allTasksDisplay = () => {
-        setTasks(realm.objects("Task").filtered("isDone == false").sorted("createdDate", "Descending"))
-        setDisplayOnlyPriorityTasks(false)
-    }
-    
-    const priorityTasksDisplay = () => {
-        setTasks(realm.objects("Task").filtered("priority == true").sorted("createdDate", "Descending"))
-        setDisplayOnlyPriorityTasks(true)
-    }     
-
-    const handlerDisplayOnlyPriorityTasks = (value) => {
-        setDisplayOnlyPriorityTasks(value)
-        console.log('value = '+value)
-        console.log('displayOnlyPrioritTasks:'+ displayOnlyPriorityTasks)
-        console.log('displayOnlyPriorityTasks === true = ' + displayOnlyPriorityTasks === true)
-    }
-
-    useEffect(() => {
-        if (displayOnlyPriorityTasks === !displayOnlyPriorityTasks) {
-            displayOnlyPriorityTasks === true
-            ? setTasks(realm.objects("Task").filtered("priority == true").sorted("createdDate", "Descending"))
-            : setTasks(realm.objects("Task").filtered("isDone == false").sorted("createdDate", "Descending"))
-        }
-    }, [displayOnlyPriorityTasks])
-
-    
+ 
     return (
         <>
             <View 
@@ -109,11 +90,11 @@ const ToDoDashboad = () => {
                                 styles.headerWrapper
                             ]}
                         >
-                            <Text onPress={() => handlerDisplayOnlyPriorityTasks(false)} style= {[styles.header,styles.headerAllTask]}>
+                            <Text onPress={() => setDisplayOnlyPriorityTasks(false)} style= {[styles.header,styles.headerAllTask]}>
                                 {strings('allTasks')} 
                             </Text>
 
-                            <Text onPress={() => handlerDisplayOnlyPriorityTasks(true)} style= {[styles.header,styles.headerPriorityTasks]}>
+                            <Text onPress={() => setDisplayOnlyPriorityTasks(true)} style= {[styles.header,styles.headerPriorityTasks]}>
                                 {strings('priorityTasks')}
                             </Text>
 
