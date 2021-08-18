@@ -70,8 +70,15 @@ const createTask = (_title) => {
 }
 
 const getAllTasks =() => {
-    return realm.objects("Task").sorted("createdDate","Descendig")
+    return realm.objects("Task").filtered("isDone == false").sorted("createdDate","Descendig")
 }
+
+// Category handlers
+
+
+// Project handlers
+
+//Pomodoro handlers 
 
 export default realm;
 // Export other functions so other files can access it

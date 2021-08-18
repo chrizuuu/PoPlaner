@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import {SafeAreaView, Text, StatusBar, FlatList, View, TouchableOpacity,TextInput,Keyboard,Switch,StyleSheet,} from 'react-native';
 import FlexLayout from '../../../components/Layouts/FlexLayout'
 import realm, { createTask, getAllTasks } from "../../../Database/Database"
@@ -8,6 +8,7 @@ import sharedStyles from '../../../styles/shared';
 
 
 const ToDoDashboad = () => {
+    const [displayOnlyPriorityTasks, setDisplayOnlyPriorityTasks] = useState(false)
     const [tasks, setTasks] = useState(getAllTasks());
     const [input,setInput] = useState()
 
@@ -18,8 +19,7 @@ const ToDoDashboad = () => {
       }
       
     realm.addListener("change", onRealmChange);
-
-
+    
     const styles = StyleSheet.create({
         headerWrapper: {
             justifyContent:'space-between',
@@ -32,6 +32,15 @@ const ToDoDashboad = () => {
             fontSize:18,
             color:"#282828",
         },
+
+        headerAllTask: {
+            opacity: displayOnlyPriorityTasks === false ? 1 : 0.3
+        },
+
+        headerPriorityTasks: {
+            opacity: displayOnlyPriorityTasks === false ? 0.3 : 1
+        },
+
 
         counter: {
             backgroundColor:'#53D3AF',
@@ -59,14 +68,29 @@ const ToDoDashboad = () => {
     }
 
     const allTasksDisplay = () => {
-        setTasks(realm.objects("Task").sorted("createdDate", "Descending"))
-
-        }
+        setTasks(realm.objects("Task").filtered("isDone == false").sorted("createdDate", "Descending"))
+        setDisplayOnlyPriorityTasks(false)
+    }
     
     const priorityTasksDisplay = () => {
         setTasks(realm.objects("Task").filtered("priority == true").sorted("createdDate", "Descending"))
-
+        setDisplayOnlyPriorityTasks(true)
     }     
+
+    const handlerDisplayOnlyPriorityTasks = (value) => {
+        setDisplayOnlyPriorityTasks(value)
+        console.log('value = '+value)
+        console.log('displayOnlyPrioritTasks:'+ displayOnlyPriorityTasks)
+        console.log('displayOnlyPriorityTasks === true = ' + displayOnlyPriorityTasks === true)
+    }
+
+    useEffect(() => {
+        if (displayOnlyPriorityTasks === !displayOnlyPriorityTasks) {
+            displayOnlyPriorityTasks === true
+            ? setTasks(realm.objects("Task").filtered("priority == true").sorted("createdDate", "Descending"))
+            : setTasks(realm.objects("Task").filtered("isDone == false").sorted("createdDate", "Descending"))
+        }
+    }, [displayOnlyPriorityTasks])
 
     
     return (
@@ -85,11 +109,11 @@ const ToDoDashboad = () => {
                                 styles.headerWrapper
                             ]}
                         >
-                            <Text onPress={() => allTasksDisplay()} style= {styles.header}>
+                            <Text onPress={() => handlerDisplayOnlyPriorityTasks(false)} style= {[styles.header,styles.headerAllTask]}>
                                 {strings('allTasks')} 
                             </Text>
 
-                            <Text onPress={() => priorityTasksDisplay()} style= {styles.header}>
+                            <Text onPress={() => handlerDisplayOnlyPriorityTasks(true)} style= {[styles.header,styles.headerPriorityTasks]}>
                                 {strings('priorityTasks')}
                             </Text>
 
