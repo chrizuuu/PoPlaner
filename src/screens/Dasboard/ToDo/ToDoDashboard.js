@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import {SafeAreaView, Text, StatusBar, FlatList, View, TouchableOpacity,TextInput,Keyboard,Switch,StyleSheet,} from 'react-native';
 import FlexLayout from '../../../components/Layouts/FlexLayout'
 import realm, { createTask, getAllTasks } from "../../../Database/Database"
@@ -8,17 +8,38 @@ import sharedStyles from '../../../styles/shared';
 
 
 const ToDoDashboad = () => {
+    const [displayOnlyPriorityTasks, setDisplayOnlyPriorityTasks] = useState(false)
     const [tasks, setTasks] = useState(getAllTasks());
     const [input,setInput] = useState()
 
+    function handlerSetTasks() {
+        displayOnlyPriorityTasks === true
+            ? setTasks(realm.objects("Task").filtered("priority == true").sorted("createdDate", "Descending"))
+            : setTasks(realm.objects("Task").sorted("createdDate", "Descending"))
+    }
+
     function onRealmChange() {
         console.log("Something changed!");
-        setTasks(getAllTasks())
-        //setTasks([...realm.objects("Task").sorted("id")]);
+        handlerSetTasks()
       }
       
     realm.addListener("change", onRealmChange);
+    
+    useEffect(() => {
+        handlerSetTasks()
+    }, [displayOnlyPriorityTasks])
 
+
+    const submitHandler = (value) => {
+        createTask(value.nativeEvent.text,displayOnlyPriorityTasks)
+        setTasks(tasks) //to fix - have to use current tasks value
+        Keyboard.dismiss
+        setInput('')
+    }
+
+    const changeHandler = (value) => {
+        setInput(value)
+    }
 
     const styles = StyleSheet.create({
         headerWrapper: {
@@ -33,6 +54,15 @@ const ToDoDashboad = () => {
             color:"#282828",
         },
 
+        headerAllTask: {
+            opacity: displayOnlyPriorityTasks === false ? 1 : 0.3
+        },
+
+        headerPriorityTasks: {
+            opacity: displayOnlyPriorityTasks === false ? 0.3 : 1
+        },
+
+
         counter: {
             backgroundColor:'#53D3AF',
             borderRadius:10,
@@ -46,29 +76,7 @@ const ToDoDashboad = () => {
         }
     })
 
-
-    const submitHandler = (value) => {
-        createTask(value.nativeEvent.text)
-        setTasks(getAllTasks())
-        Keyboard.dismiss
-        setInput('')
-    }
-
-    const changeHandler = (value) => {
-        setInput(value)
-    }
-
-    const allTasksDisplay = () => {
-        setTasks(realm.objects("Task").sorted("createdDate", "Descending"))
-
-        }
-    
-    const priorityTasksDisplay = () => {
-        setTasks(realm.objects("Task").filtered("priority == true").sorted("createdDate", "Descending"))
-
-    }     
-
-    
+ 
     return (
         <>
             <View 
@@ -85,11 +93,11 @@ const ToDoDashboad = () => {
                                 styles.headerWrapper
                             ]}
                         >
-                            <Text onPress={() => allTasksDisplay()} style= {styles.header}>
+                            <Text onPress={() => setDisplayOnlyPriorityTasks(false)} style= {[styles.header,styles.headerAllTask]}>
                                 {strings('allTasks')} 
                             </Text>
 
-                            <Text onPress={() => priorityTasksDisplay()} style= {styles.header}>
+                            <Text onPress={() => setDisplayOnlyPriorityTasks(true)} style= {[styles.header,styles.headerPriorityTasks]}>
                                 {strings('priorityTasks')}
                             </Text>
 

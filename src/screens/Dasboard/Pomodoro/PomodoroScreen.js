@@ -1,15 +1,12 @@
 import React from 'react';
 import { View,Text, Vibration,Pressable,Button,ScrollView,Dimensions,FlatList,StyleSheet,Switch} from 'react-native';
 import Modal from 'react-native-modalbox';
-
 import {strings} from '../../../translations/translations'
 import {formatTime} from '../../../components/Helpers/helpers';
 import FlexLayout from '../../../components/Layouts/FlexLayout';
 import ControlsPomodoroButton from '../../../components/Buttons/ControlsPomodoroButton';
-import InLineLayout from '../../../components/Layouts/InLineLayout';
 import sharedStyles from '../../../styles/shared';
 import HeaderBar from '../../../components/Header/HeaderBar';
-import { TouchableOpacity } from 'react-native';
 import { Timer } from '../../../components/Timer';
 import SettingsBarHeader from '../../../components/settingsBarHeader';
 import SettingsSwitchBar from '../../../components/settingsSwitchBar';
@@ -305,7 +302,6 @@ export default class PomodoroScreen extends React.Component {
                 swipeArea={40}
             >
                 <HeaderBar 
-                    style={{backgroudColor:'red'}} 
                     screenName='Pomodoro Settings'
                     style={sharedStyles.marginBottom25} 
                     rightIcon='close' 

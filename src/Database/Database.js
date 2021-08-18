@@ -59,19 +59,27 @@ let realm = new Realm({schema: [TaskSchema,CategorySchema,ProjectSchema,Pomodoro
 
 // Task handlers
 
-const createTask = (_title) => {
+const createTask = (_title,_priority) => {
     realm.write(() => {
         const task = realm.create("Task", {
             id: new ObjectId(),
             title: _title,
             createdDate: new Date(),
+            priority:_priority
         });
     });
 }
 
 const getAllTasks =() => {
-    return realm.objects("Task").sorted("createdDate","Descendig")
+    return realm.objects("Task").filtered("isDone == false").sorted("createdDate","Descendig")
 }
+
+// Category handlers
+
+
+// Project handlers
+
+//Pomodoro handlers 
 
 export default realm;
 // Export other functions so other files can access it
