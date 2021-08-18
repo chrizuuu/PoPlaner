@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { View,Text,StyleSheet, Button, Vibration, TextInput,AsyncStorageStatic,Switch,Keyboard} from 'react-native';
-import FlexLayout from '../../../components/Layouts/FlexLayout';
-import {strings,setI18Config} from '../../../translations/translations';
-import realm, {getAllTasks} from "../../../Database/Database";
+import React from "react";
+import { View,Text,Keyboard,Pressable} from 'react-native';
+import realm from "../../../Database/Database";
 import CheckBox from "../../../components/Buttons/CheckBox";
 import {Icon} from 'react-native-elements';
+import Modal from 'react-native-modalbox';
+import HeaderBar from "../../../components/Header/HeaderBar";
+import sharedStyles from "../../../styles/shared";
 
 export default class ToDoItem extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             inputComment: null,
+            taskPageIsOpen: false,
         }
     }
     task = realm.objectForPrimaryKey("Task",this.props.item_id)
@@ -44,6 +46,12 @@ export default class ToDoItem extends React.Component {
         });
       };
 
+    setTaskPageIsOpen = (visible) => {
+        this.setState({
+            taskPageIsOpen: visible
+        })
+    }
+
 
     render() {
         let priorityTaskStatus = this.task.priority === true
@@ -60,54 +68,78 @@ export default class ToDoItem extends React.Component {
 
         return (
                 <>
-                    <View 
-                        style={{
-                            flex:1,
-                            borderTopWidth:1,
-                            borderColor:'rgba(28,28,28,0.1)',
-                            opacity: isDoneTaskOpacity,
-                    }}>
+                    <Pressable  onPress={() => this.setTaskPageIsOpen(!this.state.settingsIsOpen)}>          
                         <View 
                             style={{
                                 flex:1,
-                                flexDirection:'row',
-                                alignItems:'center',
-                                padding:12
-                            }}
-                        > 
-                            <CheckBox 
-                                status={this.task.isDone} 
-                                onChange={() => this.updateIsDone()}
-                                style={{marginRight:20}} 
-                            />                                    
-                            <Text             
-                                numberOfLines={1}
+                                borderTopWidth:1,
+                                borderColor:'rgba(28,28,28,0.1)',
+                                opacity: isDoneTaskOpacity,
+                        }}>
+                            <View 
                                 style={{
                                     flex:1,
-                                    fontSize:14,
-                                    fontFamily:"OpenSansReg",
-                                    color:'#282828',
-                                    overflow:'hidden' 
+                                    flexDirection:'row',
+                                    alignItems:'center',
+                                    padding:12
                                 }}
-                            >
-                                {this.task.title}
-                            </Text>  
-                            <Icon 
-                                type='material' 
-                                name={priorityTaskStatus.icon}
-                                iconStyle = {{
-                                    marginLeft:15,
-                                    color:priorityTaskStatus.color
-                                }} 
-                                size={28} 
-                                onPress = {() => this.changePriority()}
-                            />
+                            > 
+                                <CheckBox 
+                                    status={this.task.isDone} 
+                                    onChange={() => this.updateIsDone()}
+                                    style={{marginRight:20}} 
+                                />                                    
+                                <Text             
+                                    numberOfLines={1}
+                                    style={{
+                                        flex:1,
+                                        fontSize:14,
+                                        fontFamily:"OpenSansReg",
+                                        color:'#282828',
+                                        overflow:'hidden' 
+                                    }}
+                                >
+                                    {this.task.title}
+                                </Text> 
+                                <Icon 
+                                    type='material' 
+                                    name={priorityTaskStatus.icon}
+                                    iconStyle = {{
+                                        marginLeft:15,
+                                        color:priorityTaskStatus.color
+                                    }} 
+                                    size={28} 
+                                    onPress = {() => this.changePriority()}
+                                />
+                            </View>
                         </View>
-                    </View>
-                            
 
-                       
-    
+                                    <Modal 
+                                        coverScreen={true} 
+                                        backButtonClose={true} 
+                                        isOpen={this.state.taskPageIsOpen} 
+                                        onClosed={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}  
+                                        on style={{
+                                            backgroundColor: "white",
+                                            height:'70%',
+                                            paddingLeft:25,
+                                            paddingRight:25,
+                                            elevation:24,
+                                        }} 
+                                        position={"bottom"} 
+                                        ref={"modal6"} 
+                                        swipeThreshold={60} 
+                                        swipeArea={40}
+                                    >
+                                        <HeaderBar 
+                                            style={{backgroudColor:'red'}} 
+                                            screenName={this.task.title}
+                                            style={sharedStyles.marginBottom25} 
+                                            rightIcon='close' 
+                                            rightFunc={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)} 
+                                        />
+                            </Modal>
+                    </Pressable>     
                 </>
         );
     }

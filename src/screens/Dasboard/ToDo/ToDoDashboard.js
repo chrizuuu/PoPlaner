@@ -12,17 +12,21 @@ const ToDoDashboad = () => {
     const [tasks, setTasks] = useState(getAllTasks());
     const [input,setInput] = useState()
 
+    function handlerSetTasks() {
+        displayOnlyPriorityTasks === true
+            ? setTasks(realm.objects("Task").filtered("priority == true").sorted("createdDate", "Descending"))
+            : setTasks(realm.objects("Task").sorted("createdDate", "Descending"))
+    }
+
     function onRealmChange() {
         console.log("Something changed!");
-        setTasks(tasks) //to fix - have to use current tasks value
+        handlerSetTasks()
       }
       
     realm.addListener("change", onRealmChange);
     
     useEffect(() => {
-        displayOnlyPriorityTasks === true
-            ? setTasks(realm.objects("Task").filtered("priority == true").sorted("createdDate", "Descending"))
-            : setTasks(realm.objects("Task").filtered("isDone == false").sorted("createdDate", "Descending"))
+        handlerSetTasks()
     }, [displayOnlyPriorityTasks])
 
 
