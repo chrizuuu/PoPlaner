@@ -14,8 +14,7 @@ const ToDoDashboad = () => {
 
     function onRealmChange() {
         console.log("Something changed!");
-        setTasks(getAllTasks())
-        //setTasks([...realm.objects("Task").sorted("id")]);
+        setTasks(tasks) //to fix - have to use current tasks value
       }
       
     realm.addListener("change", onRealmChange);
@@ -28,8 +27,8 @@ const ToDoDashboad = () => {
 
 
     const submitHandler = (value) => {
-        createTask(value.nativeEvent.text)
-        setTasks(getAllTasks())
+        createTask(value.nativeEvent.text,displayOnlyPriorityTasks)
+        setTasks(tasks) //to fix - have to use current tasks value
         Keyboard.dismiss
         setInput('')
     }

@@ -59,12 +59,13 @@ let realm = new Realm({schema: [TaskSchema,CategorySchema,ProjectSchema,Pomodoro
 
 // Task handlers
 
-const createTask = (_title) => {
+const createTask = (_title,_priority) => {
     realm.write(() => {
         const task = realm.create("Task", {
             id: new ObjectId(),
             title: _title,
             createdDate: new Date(),
+            priority:_priority
         });
     });
 }
