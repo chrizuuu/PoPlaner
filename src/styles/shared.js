@@ -22,26 +22,9 @@ const sharedStyles = StyleSheet.create ({
         width:'100%',
         backgroundColor:'#fff',
     },
-    wrapperFlexCenter: {
-        flex:1,
-        alignItems:'center',
-        justifyContent:'center',
-    },
 
     wrapperFlex: {
         flex:1,
-        paddingLeft:25,
-        paddingRight:25
-    },
-
-    wrapperFlexStart: {
-        flex:1,
-        justifyContent:'flex-start',
-    },
-    
-    wrapperFlexSpaceBetween: {
-        flex:1,
-        justifyContent:'space-between',
     },
 
     wrapperInLine: {
