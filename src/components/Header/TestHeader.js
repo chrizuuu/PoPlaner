@@ -6,7 +6,7 @@ import styleHeader from './style';
 import sharedStyles from '../../styles/shared';
 import { TouchableOpacity } from 'react-native';
 
-const HeaderBar = ({style,screenName,leftIcon,rightIcon,headerTextSize}) => {
+const TestHeader = ({style,screenName,leftIcon,rightIcon,headerTextSize}) => {
     return (
         <View 
             style = {[
@@ -42,7 +42,6 @@ const HeaderBar = ({style,screenName,leftIcon,rightIcon,headerTextSize}) => {
     )
 }
 
-
-export default HeaderBar
+export default TestHeader
 
 
