@@ -11,6 +11,7 @@ import { Timer } from '../../../components/Timer';
 import SettingsBarHeader from '../../../components/settingsBarHeader';
 import SettingsSwitchBar from '../../../components/settingsSwitchBar';
 import FlatListSlider from '../../../components/FlatListSlider';
+import { Icon } from 'react-native-elements/dist/icons/Icon';
 
 const pomodoroTimeValue = [15,20,25,30,35,40,45,50,55,60,70,80,90];
 const breaksTimeValue = [2,5,10,15,20,25,30];
@@ -203,10 +204,21 @@ export default class PomodoroScreen extends React.Component {
         <FlexLayout style={{color:'#292929'}}> 
                 <HeaderBar 
                     screenName='Pomodoro timer' 
-                    leftIcon = 'poll' 
-                    leftFunc={() => console.log('Stats')} 
-                    rightIcon = 'settings' 
-                    rightFunc = {() => this.setIsOpen(!this.state.settingsIsOpen)} 
+                    headerTextSize={20}
+                    leftIcon = {
+                        <>
+                            <Pressable  >
+                                <Icon name='poll'  />
+                            </Pressable>
+                        </>   
+                    }
+                    rightIcon = {
+                        <>
+                            <Pressable onPress={() => this.setIsOpen(!this.state.settingsIsOpen)} >
+                                <Icon name='settings' />
+                            </Pressable>
+                        </>
+                    }
                 />
                 <View style = {[
                     sharedStyles.wrapperFlexSpaceBetween,
@@ -303,9 +315,14 @@ export default class PomodoroScreen extends React.Component {
             >
                 <HeaderBar 
                     screenName='Pomodoro Settings'
-                    style={sharedStyles.marginBottom25} 
-                    rightIcon='close' 
-                    rightFunc={() => this.setIsOpen(!this.state.settingsIsOpen)} 
+                    headerTextSize={20}
+                    rightIcon = {
+                        <>
+                            <Pressable onPress={() => this.setIsOpen(!this.state.settingsIsOpen)} >
+                                <Icon name='close' />
+                            </Pressable>
+                        </>
+                    }
                 />
                 <View>
                     <View>

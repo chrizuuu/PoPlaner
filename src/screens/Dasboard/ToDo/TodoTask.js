@@ -3,9 +3,11 @@ import { View,Text,Keyboard,Pressable} from 'react-native';
 import realm from "../../../Database/Database";
 import CheckBox from "../../../components/Buttons/CheckBox";
 import {Icon} from 'react-native-elements';
-import Modal from 'react-native-modalbox';
+import Modal from 'react-native-modal';
 import HeaderBar from "../../../components/Header/HeaderBar";
 import sharedStyles from "../../../styles/shared";
+import TestHeader from "../../../components/Header/TestHeader";
+import FlexLayoyt from "../../../components/Layouts/FlexLayout"
 
 export default class ToDoItem extends React.Component {
     constructor(props) {
@@ -68,7 +70,7 @@ export default class ToDoItem extends React.Component {
 
         return (
                 <>
-                    <Pressable  onPress={() => this.setTaskPageIsOpen(!this.state.settingsIsOpen)}>          
+                    <Pressable  onPress={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}>          
                         <View 
                             style={{
                                 flex:1,
@@ -113,31 +115,47 @@ export default class ToDoItem extends React.Component {
                                 />
                             </View>
                         </View>
-
+                                
                                     <Modal 
-                                        coverScreen={true} 
-                                        backButtonClose={true} 
-                                        isOpen={this.state.taskPageIsOpen} 
-                                        onClosed={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}  
-                                        on style={{
-                                            backgroundColor: "white",
-                                            height:'70%',
-                                            paddingLeft:25,
-                                            paddingRight:25,
-                                            elevation:24,
+                                        useNativeDriver={true}
+                                        animationIn='slideInRight'
+                                        animationOut='slideOutRight'
+                                        isVisible={this.state.taskPageIsOpen} 
+                                        onBackdropPress={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}
+                                        style={{
+                                            backgroundColor: "rgba(245,245,245,1)",
+                                            height:'100%',
+                                            width:'90%',
+                                            position:'absolute',
+                                            right:0,
+                                            margin:0,
                                         }} 
-                                        position={"bottom"} 
-                                        ref={"modal6"} 
-                                        swipeThreshold={60} 
-                                        swipeArea={40}
+
                                     >
-                                        <HeaderBar 
-                                            style={{backgroudColor:'red'}} 
+                                    <FlexLayoyt>
+                                        <TestHeader
                                             screenName={this.task.title}
-                                            style={sharedStyles.marginBottom25} 
-                                            rightIcon='close' 
-                                            rightFunc={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)} 
+                                            headerTextSize={16}
+                                            leftIcon={
+                                                <CheckBox 
+                                                    status={this.task.isDone} 
+                                                    onChange={() => this.updateIsDone()}
+                                                    style={{marginRight:20}} 
+                                                />  
+                                            }
+                                            rightIcon={
+                                                <Icon 
+                                                    type='material' 
+                                                    name={priorityTaskStatus.icon}
+                                                    iconStyle = {{
+                                                        color:priorityTaskStatus.color
+                                                    }} 
+                                                    size={28} 
+                                                    onPress = {() => this.changePriority()}
+                                                />
+                                            }
                                         />
+                                    </FlexLayoyt>
                             </Modal>
                     </Pressable>     
                 </>
