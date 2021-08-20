@@ -68,7 +68,9 @@ export default class ToDoItem extends React.Component {
 
         return (
                 <>
-                    <Pressable  onPress={() => this.setTaskPageIsOpen(!this.state.settingsIsOpen)}>          
+                    <Pressable  
+                        onPress={() => this.setTaskPageIsOpen(!this.state.settingsIsOpen)}
+                    >          
                         <View 
                             style={{
                                 flex:1,
@@ -121,13 +123,14 @@ export default class ToDoItem extends React.Component {
                                         onClosed={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}  
                                         on style={{
                                             backgroundColor: "white",
-                                            height:'70%',
+                                            height:'100%',
+                                            width:'95%',
                                             paddingLeft:25,
                                             paddingRight:25,
                                             elevation:24,
+                                            position:'absolute',
+                                            right:0
                                         }} 
-                                        position={"bottom"} 
-                                        ref={"modal6"} 
                                         swipeThreshold={60} 
                                         swipeArea={40}
                                     >
@@ -136,7 +139,7 @@ export default class ToDoItem extends React.Component {
                                             screenName={this.task.title}
                                             style={sharedStyles.marginBottom25} 
                                             rightIcon='close' 
-                                            rightFunc={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)} 
+                                            rightFunc={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}
                                         />
                             </Modal>
                     </Pressable>     

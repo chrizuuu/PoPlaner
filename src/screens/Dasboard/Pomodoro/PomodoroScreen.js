@@ -296,8 +296,7 @@ export default class PomodoroScreen extends React.Component {
                 isOpen={this.state.settingsIsOpen} 
                 onClosed={() => this.setIsOpen(!this.state.settingsIsOpen)}  
                 on style={[styles.settingsModal]} 
-                position={"bottom"} 
-                ref={"modal6"} 
+                entry
                 swipeThreshold={60} 
                 swipeArea={40}
             >
