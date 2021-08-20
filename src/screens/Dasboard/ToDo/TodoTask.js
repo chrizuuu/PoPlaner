@@ -80,9 +80,10 @@ export default class ToDoItem extends React.Component {
                         <View 
                             style={{
                                 flex:1,
-                                borderTopWidth:1,
+                                borderTopWidth:1.5,
                                 borderColor:'rgba(28,28,28,0.1)',
                                 opacity: isDoneTaskOpacity,
+                                backgroundColor:'rgb(255,255,255)'
                         }}>
                             <View 
                                 style={{
@@ -133,74 +134,74 @@ export default class ToDoItem extends React.Component {
                                             height:'100%',
                                             marginRight:0,
                                             marginTop:0,
-                                            marginBottom:0
-                                            
+                                            marginBottom:0,
+
                                         }} 
 
                                     >
-                                    <FlexLayout>
-                                        <HeaderBar
-                                            screenName={this.task.title}
-                                            headerTextSize={16}
-                                            style={{        
-                                                paddingLeft:25,
-                                                paddingRight:25,
-                                            }}
-                                            leftIcon={
-                                                <CheckBox 
-                                                    status={this.task.isDone} 
-                                                    onChange={() => this.updateIsDone()}
-                                                    style={{marginRight:20}} 
-                                                />  
-                                            }
-                                            rightIcon={
-                                                <Icon 
-                                                    type='material' 
-                                                    name={priorityTaskStatus.icon}
-                                                    iconStyle = {{
-                                                        color:priorityTaskStatus.color
-                                                    }} 
-                                                    size={28} 
-                                                    onPress = {() => this.changePriority()}
+                                        <FlexLayout>
+                                            <HeaderBar
+                                                screenName={this.task.title}
+                                                headerTextSize={16}
+                                                style={{        
+                                                    paddingLeft:25,
+                                                    paddingRight:25,
+                                                }}
+                                                leftIcon={
+                                                    <CheckBox 
+                                                        status={this.task.isDone} 
+                                                        onChange={() => this.updateIsDone()}
+                                                        style={{marginRight:20}} 
+                                                    />  
+                                                }
+                                                rightIcon={
+                                                    <Icon 
+                                                        type='material' 
+                                                        name={priorityTaskStatus.icon}
+                                                        iconStyle = {{
+                                                            color:priorityTaskStatus.color
+                                                        }} 
+                                                        size={28} 
+                                                        onPress = {() => this.changePriority()}
+                                                    />
+                                                }
+                                            />
+                                            
+
+
+                                            <FlexLayout style={{marginTop:20, paddingLeft:12, paddingRight:12,backgroundColor:'rgb(245,245,245)'}}>
+                                                <ToDoSettingsItem
+                                                    valueIcon = 'calendar-today'
+                                                    valueTitle = 'Data?'
+                                                    value = {this.task.createdDate.toLocaleDateString() + ' ' + this.task.createdDate.toLocaleTimeString()}
                                                 />
-                                            }
-                                        />
-                                        
-
-
-                                        <FlexLayout style={{marginTop:20, paddingLeft:12, paddingRight:12}}>
-                                            <ToDoSettingsItem
-                                                valueIcon = 'calendar-today'
-                                                valueTitle = 'Data?'
-                                                value = {this.task.createdDate.toLocaleDateString() + ' ' + this.task.createdDate.toLocaleTimeString()}
-                                            />
-                                            <ToDoSettingsItem
-                                                valueIcon = 'outlined-flag'
-                                                valueTitle = 'Kategoria?'
-                                                value = {this.task.category}
-                                            />
-                                            <ToDoSettingsItem
-                                                valueIcon = 'folder-open'
-                                                valueTitle = 'Projekt?'
-                                                value = {this.task.project}
-                                            />
-                                            <TextInput 
-                                                    style={{textAlignVertical:'top',minHeight:100, maxHeight:300,borderColor: 'rgb(240,240,240)', padding:10, marginTop:20,borderWidth: 1, borderRadius:25,backgroundColor:'rgb(255,255,255)'}}
-                                                    name="input"
-                                                    multiline={true}
-                                                    maxLength={1000}
-                                                    defaultValue={this.task.comment}
-                                                    onChangeText = {(input) => this.changeHandler(input)}
-                                                    onSubmitEditing={() => {
-                                                        this.submitHandler()
-                                                    }}
-                                                    placeholder="Dodaj komentarz..."
-                                            />    
-                                            <Text style={{padding:10, fontSize:12,fontFamily:'OpenSansReg'}}>
-                                                {strings("taskCreatedAt")}{this.task.createdDate.toLocaleDateString() + ' ' + this.task.createdDate.toLocaleTimeString()}
-                                            </Text>
+                                                <ToDoSettingsItem
+                                                    valueIcon = 'outlined-flag'
+                                                    valueTitle = 'Kategoria?'
+                                                    value = {this.task.category}
+                                                />
+                                                <ToDoSettingsItem
+                                                    valueIcon = 'folder-open'
+                                                    valueTitle = 'Projekt?'
+                                                    value = {this.task.project}
+                                                />
+                                                <TextInput 
+                                                        style={{textAlignVertical:'top',minHeight:100, maxHeight:300,borderColor: 'rgb(240,240,240)', padding:10, marginTop:20,borderWidth: 1, borderRadius:25,backgroundColor:'rgb(255,255,255)'}}
+                                                        name="input"
+                                                        multiline={true}
+                                                        maxLength={1000}
+                                                        defaultValue={this.task.comment}
+                                                        onChangeText = {(input) => this.changeHandler(input)}
+                                                        onSubmitEditing={() => {
+                                                            this.submitHandler()
+                                                        }}
+                                                        placeholder="Dodaj komentarz..."
+                                                />    
+                                                <Text style={{padding:10, fontSize:12,fontFamily:'OpenSansReg'}}>
+                                                    {strings("taskCreatedAt")}{this.task.createdDate.toLocaleDateString() + ' ' + this.task.createdDate.toLocaleTimeString()}
+                                                </Text>
+                                            </FlexLayout>
                                         </FlexLayout>
-                                    </FlexLayout>
                             </Modal>
                     </Pressable>     
                 </>

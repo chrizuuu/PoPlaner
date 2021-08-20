@@ -28,8 +28,9 @@
     "toLongBreak": " sessions to long break",
 
     "allTasks": "All tasks",
-    "priorityTasks": "Priorities"
+    "priorityTasks": "Priorities",
 
+    "taskCreatedAt": "Created at: "
 
 
 }

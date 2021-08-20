@@ -201,7 +201,7 @@ export default class PomodoroScreen extends React.Component {
         let timePercent = ((this.state.type.time - this.state.time)/this.state.type.time) * 100
 
       return (
-        <FlexLayout style={{color:'#292929',paddingLeft:25,paddingRight:25,}}> 
+        <FlexLayout style={{color:'#282828'}}> 
                 <HeaderBar 
                     screenName='Pomodoro timer' 
                     headerTextSize={20}

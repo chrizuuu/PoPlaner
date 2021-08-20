@@ -7,14 +7,17 @@ import {Icon} from 'react-native-elements';
 
 export default ItemFlatList = ({valueIcon,valueTitle,value,_onPress }) => {
 
+    let bgColor = value !== null ? 'rgb(255,255,255)' : 'rgb(245,245,245)'
+
     const styles = StyleSheet.create ({
         inlineContainer:{
             justifyContent:'space-between',
             borderWidth:1,
             borderRadius:25,
-            borderColor:'rgba(240,240,240,1)',
+            borderColor:'rgb(234, 234, 234)',
             paddingVertical:8,
             paddingHorizontal:15,
+            backgroundColor: bgColor,
         },
         valueTextStyle: {
             fontSize:14,
@@ -23,6 +26,7 @@ export default ItemFlatList = ({valueIcon,valueTitle,value,_onPress }) => {
             marginRight:15
         },
     })
+
 
   return (
     <Pressable style={sharedStyles.margintop20} onPress={_onPress}>

@@ -32,7 +32,7 @@ const ToDoDashboad = () => {
 
     const submitHandler = (value) => {
         createTask(value.nativeEvent.text,displayOnlyPriorityTasks)
-        setTasks(tasks) //to fix - have to use current tasks value
+        setTasks(tasks)
         Keyboard.dismiss
         setInput('')
     }
@@ -44,9 +44,8 @@ const ToDoDashboad = () => {
     const styles = StyleSheet.create({
         headerWrapper: {
             justifyContent:'space-between',
-            marginBottom:25,
-            marginLeft:15,
-            marginRight:15
+            padding:20,
+            backgroundColor:'rgb(250,250,250)'
         },
         header: {
             fontFamily:"OpenSansBold",
@@ -61,19 +60,6 @@ const ToDoDashboad = () => {
         headerPriorityTasks: {
             opacity: displayOnlyPriorityTasks === false ? 0.3 : 1
         },
-
-
-        counter: {
-            backgroundColor:'#53D3AF',
-            borderRadius:10,
-            fontSize:14,
-            width:30,
-            height:30,
-            fontFamily:'OpenSansBold',
-            textAlignVertical:'center',
-            textAlign:'center',
-            marginLeft:25
-        }
     })
  
     return (
@@ -81,15 +67,15 @@ const ToDoDashboad = () => {
             <View 
                 style={{
                     flex:1,
-                    paddingTop:20,
-                    paddingBottom:25
+                    paddingBottom:25,
+                    backgroundColor:'rgb(244, 244, 244)'
                 }}
             >
                     <View style={{flex:1}}>
                         <View 
                             style={[                                
                                 sharedStyles.wrapperInLine,
-                                styles.headerWrapper
+                                styles.headerWrapper,
                             ]}
                         >
                             <Text onPress={() => setDisplayOnlyPriorityTasks(false)} style= {[styles.header,styles.headerAllTask]}>
