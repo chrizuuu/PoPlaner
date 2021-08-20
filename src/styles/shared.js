@@ -13,9 +13,13 @@ const sharedStyles = StyleSheet.create ({
         marginLeft:25,
         marginRight:25,
     },
+    paddingSide25: {
+        paddingLeft:25,
+        paddingRight:25,
+    },
 
     borderRadius:{ borderRadius:15},
-    padding:{padding:10},
+    padding10:{padding:10},
 
     container: {
         height:'100%',

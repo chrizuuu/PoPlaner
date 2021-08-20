@@ -5,7 +5,7 @@ import InLineLayout from './Layouts/InLineLayout';
 import sharedStyles from '../styles/shared';
 import {Icon} from 'react-native-elements';
 
-export default ItemFlatList = ({valueIcon,valueTitle,value,_onPress }) => {
+export default TaskPropertyItem = ({valueIcon,valueTitle,value,_onPress }) => {
 
     let bgColor = value !== null ? 'rgb(255,255,255)' : 'rgb(245,245,245)'
 

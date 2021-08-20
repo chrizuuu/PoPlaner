@@ -30,7 +30,12 @@
     "allTasks": "All tasks",
     "priorityTasks": "Priorities",
 
-    "taskCreatedAt": "Created at: "
+    "taskCreatedAt": "Created at: ",
+    "taskPropertyDate": "Date? ",
+    "taskPropertyProject": "Project? ",
+    "taskPropertyCategory": "Category? ",
+    "addComment": "Add comment...",
+    
 
 
 }
