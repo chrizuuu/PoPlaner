@@ -34,6 +34,14 @@ const styles = StyleSheet.create({
         marginRight:0,
         marginTop:0,
         marginBottom:0,
+        backgroundColor:'rgb(255,255,255)',
+
+    },
+    modalFooter: {
+        alignItems:'center',
+        flexDirection:'row',
+        width:'100%',
+        justifyContent:'space-between'
     },
 
     wrapperSettingsItem: {
@@ -211,6 +219,20 @@ export default class TaskItem extends React.Component {
                                         {strings("taskCreatedAt")}{this.task.createdDate.toLocaleDateString() + ' ' + this.task.createdDate.toLocaleTimeString()}
                                     </Text>
                                 </FlexLayout>
+                                <View style={[styles.modalFooter,sharedStyles.padding10]}>
+                                    <Icon 
+                                        name='arrow-forward' 
+                                        color='#484848'
+                                        size={28} 
+                                        onPress={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)} 
+                                    />
+                                    <Icon 
+                                        name='delete-outline' 
+                                        color='#EE5436'
+                                        size={28} 
+                                        onPress={() => this.deleteTask()}
+                                    />
+                                </View>
                             </FlexLayout>
                         </Modal>
                     </Pressable>     
