@@ -28,6 +28,12 @@
 
     "allTasks": "Wszystkie zadania",
     "priorityTasks": "Priorytety",
+    
+    "taskCreatedAt": "Utworzone: ",
+    "taskPropertyDate": "Data? ",
+    "taskPropertyProject": "Projekt? ",
+    "taskPropertyCategory": "Kategoria? ",
+    "addComment": "Dodaj komentarz...",
 
 
 }

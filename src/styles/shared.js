@@ -13,35 +13,22 @@ const sharedStyles = StyleSheet.create ({
         marginLeft:25,
         marginRight:25,
     },
+    paddingSide25: {
+        paddingLeft:25,
+        paddingRight:25,
+    },
 
     borderRadius:{ borderRadius:15},
-    padding:{padding:10},
+    padding10:{padding:10},
 
     container: {
         height:'100%',
         width:'100%',
         backgroundColor:'#fff',
     },
-    wrapperFlexCenter: {
-        flex:1,
-        alignItems:'center',
-        justifyContent:'center',
-    },
 
     wrapperFlex: {
         flex:1,
-        paddingLeft:25,
-        paddingRight:25
-    },
-
-    wrapperFlexStart: {
-        flex:1,
-        justifyContent:'flex-start',
-    },
-    
-    wrapperFlexSpaceBetween: {
-        flex:1,
-        justifyContent:'space-between',
     },
 
     wrapperInLine: {

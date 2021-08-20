@@ -6,48 +6,42 @@ import styleHeader from './style';
 import sharedStyles from '../../styles/shared';
 import { TouchableOpacity } from 'react-native';
 
-const HeaderBar = ({style,screenName,leftIcon,leftFunc,rightIcon,rightFunc}) => {
+const HeaderBar = ({style,screenName,leftIcon,rightIcon,headerTextSize}) => {
     return (
         <View 
             style = {[
                 sharedStyles.margintop20,
                 {...style}]} 
-        
         >
         <InLineLayout style={styleHeader.wrapper}>
-            {(leftIcon && leftFunc) ? 
-                <TouchableOpacity 
+            {(leftIcon) ? 
+
+                <View
                     style={styleHeader.iconWrapper} 
-                    onPress={leftFunc}
                 >
-                    <Icon 
-                        type='material' 
-                        name={leftIcon} 
-                    />
-                </TouchableOpacity>
+                    {leftIcon}
+                </View>
 
             : <View style={styleHeader.iconWrapper} />}
 
-                <Text style= {[styleHeader.textStyle]}>
+                <Text style= {[styleHeader.textStyle,{fontSize:headerTextSize}]}>
                     {screenName}
                 </Text>
 
-            {(rightIcon && rightFunc )? 
+            {(rightIcon)? 
 
-                <TouchableOpacity 
+                <View
                     style={styleHeader.iconWrapper} 
-                    onPress={rightFunc}
                 >
-                    <Icon
-                        type='material' 
-                        name={rightIcon} 
-                    />
-                </TouchableOpacity>
+                    {rightIcon}
+                </View>
+
             : <View style={styleHeader.iconWrapper} /> }
         </InLineLayout>
     </View>
     )
 }
+
 
 export default HeaderBar
 
