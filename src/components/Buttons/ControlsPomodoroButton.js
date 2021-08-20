@@ -1,13 +1,26 @@
 import React from 'react';
-import {TouchableOpacity, View,Text} from 'react-native';
+import {TouchableOpacity, View,StyleSheet} from 'react-native';
 import {Icon} from 'react-native-elements';
 import styleButton from './style';
 import InLineLayout from '../Layouts/InLineLayout'
 
 export default ControlsButton = ({start,pause,reset,skip,status,style}) => {
+
+    const styles = StyleSheet.create({
+        normalBtn: {
+            width:72,
+            height:72
+        },
+        smallBtn: {
+            borderColor:'#EFF1F4', 
+            borderWidth:1,
+            height:54,
+            width:54
+        }
+    })
+
     const backgroundColorChanger = status === 'Playing' ? '#EE5436' : '#53D3AF'
     return(
-
         <View 
             style = {[
             {...style},
@@ -15,16 +28,13 @@ export default ControlsButton = ({start,pause,reset,skip,status,style}) => {
             }]}
         >
             {(!status || status == 'Finished' )? 
-
             <TouchableOpacity 
                 style={[
-                    styleButton.buttonControls,
-                    {backgroundColor:'#53D3AF',
-                    width:72,
-                    height:72}
-                    ]} 
+                    styleButton.buttonControls,styles.normalBtn,
+                    {backgroundColor:'#53D3AF',}
+                ]} 
                 onPress={start}
-                >
+            >
                 <Icon 
                     type='material' 
                     name='play-arrow' 
@@ -33,18 +43,11 @@ export default ControlsButton = ({start,pause,reset,skip,status,style}) => {
                 />
 
             </TouchableOpacity> 
-
         : null}
         {(status === 'Playing' || status === 'Paused') ? 
                     <InLineLayout style={{width:'70%'}}>
                         <TouchableOpacity 
-                            style={[
-                                styleButton.buttonControls,
-                                {borderColor:'#EFF1F4',
-                                borderWidth:1,
-                                height:54,
-                                width:54}
-                                ]} 
+                            style={[styleButton.buttonControls,styles.smallBtn]} 
                             onPress={reset}
                         >
                             <Icon 
@@ -58,11 +61,9 @@ export default ControlsButton = ({start,pause,reset,skip,status,style}) => {
                         {
                             <TouchableOpacity
                                 style={[
-                                    styleButton.buttonControls,
-                                    {backgroundColor:backgroundColorChanger,
-                                    width:72,
-                                    height:72
-                                }]} 
+                                    styleButton.buttonControls,styles.normalBtn,
+                                    {backgroundColor:backgroundColorChanger,}
+                                ]} 
                                 onPress={pause}
                             >
                                 <Icon
@@ -74,13 +75,7 @@ export default ControlsButton = ({start,pause,reset,skip,status,style}) => {
                             </TouchableOpacity >
                         }
                         <TouchableOpacity 
-                            style={[
-                                styleButton.buttonControls,
-                                {borderColor:'#EFF1F4', 
-                                borderWidth:1,
-                                height:54,
-                                width:54}
-                                ]} 
+                            style={[styleButton.buttonControls,styles.smallBtn]} 
                             onPress={skip}
                         >
                             <Icon 
