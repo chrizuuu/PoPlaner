@@ -9,6 +9,7 @@ import sharedStyles from "../../styles/shared";
 import FlexLayout from "../Layouts/FlexLayout"
 import TaskPropertyItem from "../TaskPropertyItem";
 import {strings} from "../../translations/translations"
+import CustomizingHeaderBar from "../Header/CustomizingHeaderBar";
 
 const styles = StyleSheet.create({
     container: {
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
         fontSize:14,
         fontFamily:"OpenSansReg",
         color:'#282828',
-        overflow:'hidden' 
+        overflow:'hidden', 
     },
     modalStyle: {
         height:'100%',
@@ -50,13 +51,22 @@ const styles = StyleSheet.create({
         paddingRight:12,
         backgroundColor:'rgb(245,245,245)',
     },
+    saveCommentBtn:{
+        marginTop:20,
+        textAlign:'center',
+        padding:5,
+        marginBottom:5,
+        backgroundColor:'rgb(83,211,175)',
+        borderRadius:25,
+        right:0,    
+    },
+    
     textInputStyle:{
         textAlignVertical:'top',
         minHeight:100,
         maxHeight:300,
         borderColor: 'rgb(240,240,240)', 
         padding:10,
-        marginTop:20,
         borderWidth: 1, 
         borderRadius:25,
         backgroundColor:'rgb(255,255,255)'
@@ -71,19 +81,31 @@ export default class TaskItem extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            inputTitle: this.task.title,
             inputComment: null,
             taskPageIsOpen: false,
         }
     }
     task = realm.objectForPrimaryKey("Task",this.props.item_id)
 
-    changeHandler = (value) => {
+    changeCommentHandler = (value) => {
         this.setState({inputComment:value})
     }
 
-    submitHandler = () => {
+    changeTitleHandler = (value) => {
+        this.setState({inputTitle:value})
+    }
+
+    submitCommentHandler = () => {
         realm.write(() => {
             this.task.comment = this.state.inputComment;
+        })       
+         Keyboard.dismiss
+    }
+
+    submitTitleHandler = () => {
+        realm.write(() => {
+            this.task.title = this.state.inputTitle;
         })       
          Keyboard.dismiss
     }
@@ -115,7 +137,7 @@ export default class TaskItem extends React.Component {
     render() {
         let priorityTaskStatus = this.task.priority === true
             ? 
-                {color:'rgba(83,211,175,1)',
+                {color:'rgb(83,211,175)',
                 icon:'star'}
             : 
                 {color:'rgba(48,48,48,0.3)',
@@ -164,18 +186,30 @@ export default class TaskItem extends React.Component {
                             style={styles.modalStyle} 
                         >
                             <FlexLayout>
-                                <HeaderBar
+                                <CustomizingHeaderBar
                                     screenName={this.task.title}
                                     headerTextSize={16}
                                     style={sharedStyles.paddingSide25}
-                                    leftIcon={
+                                    leftSide={
                                         <CheckBox 
                                             status={this.task.isDone} 
                                             onChange={() => this.updateIsDone()}
                                             style={{marginRight:20}} 
                                         />  
                                     }
-                                    rightIcon={
+                                    centerSide={
+                                        <TextInput 
+                                            style={[styles.titleTask,{marginLeft:25}]}
+                                            name="input"
+                                            maxLength={100}
+                                            defaultValue={this.task.title}
+                                            onChangeText = {(input) => this.changeTitleHandler(input)}
+                                            onSubmitEditing={() => {
+                                                this.submitTitleHandler()
+                                            }}
+                                        />    
+                                    }
+                                    rightSide={
                                         <Icon 
                                             type='material' 
                                             name={priorityTaskStatus.icon}
@@ -203,18 +237,22 @@ export default class TaskItem extends React.Component {
                                         valueTitle = {strings('taskPropertyProject')}
                                         value = {this.task.project}
                                     />
+                                    <Text 
+                                        style={styles.saveCommentBtn}
+                                        onPressg={() => {
+                                            this.submitCommentHandler()
+                                        }}> Zapisz komentarz 
+                                    </Text>
                                     <TextInput 
                                         style={styles.textInputStyle}
                                         name="input"
                                         multiline={true}
                                         maxLength={1000}
                                         defaultValue={this.task.comment}
-                                        onChangeText = {(input) => this.changeHandler(input)}
-                                        onSubmitEditing={() => {
-                                            this.submitHandler()
-                                        }}
+                                        onChangeText = {(input) => this.changeCommentHandler(input)}
                                         placeholder={strings('addComment')}
                                     />    
+
                                     <Text style={[sharedStyles.padding10,styles.text]}>
                                         {strings("taskCreatedAt")}{this.task.createdDate.toLocaleDateString() + ' ' + this.task.createdDate.toLocaleTimeString()}
                                     </Text>

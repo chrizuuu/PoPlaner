@@ -1,4 +1,5 @@
 import React from 'react';
+import { View,Text,Button } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PomodoroScreen from '../screens/Dasboard/Pomodoro/PomodoroScreen';
 import ScheduleScreen from '../screens/Dasboard/ScheduleScreen';
@@ -54,8 +55,7 @@ const TabsNav = () => {
         return <Icon type='ionicon' name={iconName} size={size} color={color} />;
       },
     })} >
-            <HomeTab.Screen name="Todo" component={ToDoDashboard} />
-
+      <HomeTab.Screen name="Todo" component={ToDoDashboard} />
       <HomeTab.Screen name="Dashboard" component={DashboardScreen} />
       <HomeTab.Screen name="Schedule" component={ScheduleScreen} />
       <HomeTab.Screen name="Pomodoro" component={PomodoroScreen} />
