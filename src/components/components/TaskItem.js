@@ -97,17 +97,21 @@ export default class TaskItem extends React.Component {
     }
 
     submitCommentHandler = () => {
-        realm.write(() => {
-            this.task.comment = this.state.inputComment;
-        })       
-         Keyboard.dismiss
+        if (this.state.inputComment !== "" & this.state.inputComment.trim().length > 0) {
+            realm.write(() => {
+                this.task.comment = this.state.inputComment;
+            })       
+            Keyboard.dismiss
+        }
     }
 
     submitTitleHandler = () => {
-        realm.write(() => {
-            this.task.title = this.state.inputTitle;
-        })       
-         Keyboard.dismiss
+        if (this.state.inputTitle !== "" & this.state.inputTitle.trim().length > 0) {
+            realm.write(() => {
+                this.task.title = this.state.inputTitle;
+            })       
+            Keyboard.dismiss
+        }
     }
 
     changePriority = (priority) => {

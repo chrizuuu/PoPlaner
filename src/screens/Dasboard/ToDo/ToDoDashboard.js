@@ -31,10 +31,13 @@ const ToDoDashboad = () => {
 
 
     const submitHandler = (value) => {
-        createTask(value.nativeEvent.text,displayOnlyPriorityTasks)
-        setTasks(tasks)
-        Keyboard.dismiss
-        setInput('')
+        if (value.nativeEvent.text !== "" & value.nativeEvent.text.trim().length > 0) {
+            createTask(value.nativeEvent.text,displayOnlyPriorityTasks)
+            setTasks(tasks)
+            Keyboard.dismiss
+            setInput('')
+        }
+        console.log(!value.nativeEvent.text.trim().length < 1)
     }
 
     const changeHandler = (value) => {
@@ -89,6 +92,25 @@ const ToDoDashboad = () => {
                         </View>
 
                         <FlatList
+                            stickyHeaderIndices={[0]}
+                            ListHeaderComponent={
+                            <TextInput 
+                                style={{
+                                    borderColor: 'rgb(200,200,200)', 
+                                    backgroundColor:'rgb(245,245,245)',
+                                    height:40,
+                                    color:'black',
+                                    paddingVertical:8,
+                                    paddingHorizontal:25
+                                }}
+                                placeholder="Add task..."
+                                onChangeText = {(input) => changeHandler(input)}
+                                value={input}
+                                onSubmitEditing={(event) => {
+                                    submitHandler(event)
+                                }}
+                            />             
+                            }
                             data={tasks}
                             showsVerticalScrollIndicator ={false}
                             keyExtractor={(item) => item.id.toString()}
@@ -102,25 +124,6 @@ const ToDoDashboad = () => {
                         </Text>
 
                     </View> 
-
-
-
-                    <Text style={{paddingVertical: 8}}>
-                        Add task
-                    </Text> 
-                    <TextInput 
-                        style={{
-                            borderColor: 'black', 
-                            borderWidth: 1
-                        }}
-                        name="setTask"
-                        onChangeText = {(input) => changeHandler(input)}
-                        value={input}
-                        onSubmitEditing={(event) => {
-                            submitHandler(event)
-                        }}
-                    />                   
-                    
             </View>
             </>
 
