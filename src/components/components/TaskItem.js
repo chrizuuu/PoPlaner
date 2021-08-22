@@ -1,5 +1,5 @@
 import React from "react";
-import { View,Text,Keyboard,Pressable,StyleSheet,TextInput} from 'react-native';
+import { View,Text,Keyboard,Pressable,StyleSheet,TextInput,ScrollView} from 'react-native';
 import realm from "../../Database/Database";
 import CheckBox from "../Buttons/CheckBox";
 import {Icon} from 'react-native-elements';
@@ -82,7 +82,9 @@ export default class TaskItem extends React.Component {
         super(props)
         this.state = {
             inputTitle: this.task.title,
-            inputComment: null,
+            errorTitleStatus: false,
+            inputComment: this.task.comment,
+            errorCommentStatus: false,
             taskPageIsOpen: false,
         }
     }
@@ -97,11 +99,20 @@ export default class TaskItem extends React.Component {
     }
 
     submitCommentHandler = () => {
+        console.log('startsubmitting')
         if (this.state.inputComment !== "" & this.state.inputComment.trim().length > 0) {
             realm.write(() => {
                 this.task.comment = this.state.inputComment;
             })       
-            Keyboard.dismiss
+            this.setState({
+                errorCommentStatus:false
+            })
+            Keyboard.dismiss()
+        }
+        else {
+            this.setState({
+                errorCommentStatus:true
+            })
         }
     }
 
@@ -111,6 +122,14 @@ export default class TaskItem extends React.Component {
                 this.task.title = this.state.inputTitle;
             })       
             Keyboard.dismiss
+            this.setState({
+                errorTitleStatus:false
+            })
+        }
+        else {
+            this.setState({
+                errorTitleStatus:true
+            })
         }
     }
 
@@ -153,6 +172,8 @@ export default class TaskItem extends React.Component {
 
         return (
                 <>
+                                            <ScrollView keyboardShouldPersistTaps={'always'}>
+
                     <Pressable  onPress={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}>          
                         <View 
                             style={[styles.container,{opacity: isDoneTaskOpacity,}]}>
@@ -202,16 +223,23 @@ export default class TaskItem extends React.Component {
                                         />  
                                     }
                                     centerSide={
-                                        <TextInput 
-                                            style={[styles.titleTask,{marginLeft:25}]}
-                                            name="input"
-                                            maxLength={100}
-                                            defaultValue={this.task.title}
-                                            onChangeText = {(input) => this.changeTitleHandler(input)}
-                                            onSubmitEditing={() => {
-                                                this.submitTitleHandler()
-                                            }}
-                                        />    
+                                        <>
+                                            <TextInput 
+                                                style={[styles.titleTask,{marginLeft:25}]}
+                                                name="input"
+                                                maxLength={100}
+                                                defaultValue={this.task.title}
+                                                onChangeText = {(input) => this.changeTitleHandler(input)}
+                                                onSubmitEditing={() => {
+                                                    this.submitTitleHandler()
+                                                }}
+                                            />    
+                                            {this.state.errorTitleStatus === true ? (
+                                                <Text style={sharedStyles.errorText}>
+                                                    * Please enter the text to proceed.
+                                                </Text>
+                                            ) : null  } 
+                                        </>
                                     }
                                     rightSide={
                                         <Icon 
@@ -243,7 +271,7 @@ export default class TaskItem extends React.Component {
                                     />
                                     <Text 
                                         style={styles.saveCommentBtn}
-                                        onPressg={() => {
+                                        onPress={() => {
                                             this.submitCommentHandler()
                                         }}> Zapisz komentarz 
                                     </Text>
@@ -255,7 +283,12 @@ export default class TaskItem extends React.Component {
                                         defaultValue={this.task.comment}
                                         onChangeText = {(input) => this.changeCommentHandler(input)}
                                         placeholder={strings('addComment')}
-                                    />    
+                                    />                                             
+                                    {this.state.errorCommentStatus === true ? (
+                                        <Text style={sharedStyles.errorText}>
+                                            * Please enter the text to proceed.
+                                        </Text>
+                                    ) : null  } 
 
                                     <Text style={[sharedStyles.padding10,styles.text]}>
                                         {strings("taskCreatedAt")}{this.task.createdDate.toLocaleDateString() + ' ' + this.task.createdDate.toLocaleTimeString()}
@@ -278,6 +311,7 @@ export default class TaskItem extends React.Component {
                             </FlexLayout>
                         </Modal>
                     </Pressable>     
+                    </ScrollView>
                 </>
         );
     }

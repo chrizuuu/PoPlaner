@@ -34,7 +34,15 @@ const sharedStyles = StyleSheet.create ({
     wrapperInLine: {
         flexDirection:'row',
         alignItems:'center',
-    }
+    },
+
+    errorText: {
+        fontFamily:"OpenSansReg",
+        fontSize:12,
+        color:"#EE5436",
+        padding:5,
+        marginLeft:15,
+    },
 
 })
 

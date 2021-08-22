@@ -11,11 +11,13 @@ const ToDoDashboad = () => {
     const [displayOnlyPriorityTasks, setDisplayOnlyPriorityTasks] = useState(false)
     const [tasks, setTasks] = useState(getAllTasks());
     const [input,setInput] = useState()
+    const [errorStatus, setErrorStatus] = useState(false)
 
     function handlerSetTasks() {
         displayOnlyPriorityTasks === true
             ? setTasks(realm.objects("Task").filtered("priority == true").sorted("createdDate", "Descending"))
             : setTasks(realm.objects("Task").sorted("createdDate", "Descending"))
+        setErrorStatus(false)
     }
 
     function onRealmChange() {
@@ -33,11 +35,14 @@ const ToDoDashboad = () => {
     const submitHandler = (value) => {
         if (value.nativeEvent.text !== "" & value.nativeEvent.text.trim().length > 0) {
             createTask(value.nativeEvent.text,displayOnlyPriorityTasks)
+            setErrorStatus(false)
             setTasks(tasks)
-            Keyboard.dismiss
+            Keyboard.dismiss()
             setInput('')
         }
-        console.log(!value.nativeEvent.text.trim().length < 1)
+        else {
+            setErrorStatus(true)
+        }
     }
 
     const changeHandler = (value) => {
@@ -92,24 +97,32 @@ const ToDoDashboad = () => {
                         </View>
 
                         <FlatList
+                            keyboardShouldPersistTaps={'handled'}
                             stickyHeaderIndices={[0]}
                             ListHeaderComponent={
-                            <TextInput 
-                                style={{
-                                    borderColor: 'rgb(200,200,200)', 
-                                    backgroundColor:'rgb(245,245,245)',
-                                    height:40,
-                                    color:'black',
-                                    paddingVertical:8,
-                                    paddingHorizontal:25
-                                }}
-                                placeholder="Add task..."
-                                onChangeText = {(input) => changeHandler(input)}
-                                value={input}
-                                onSubmitEditing={(event) => {
-                                    submitHandler(event)
-                                }}
-                            />             
+                                <>
+                                <TextInput 
+                                    style={{
+                                        borderColor: 'rgb(200,200,200)', 
+                                        backgroundColor:'rgb(245,245,245)',
+                                        height:40,
+                                        color:'black',
+                                        paddingVertical:8,
+                                        paddingHorizontal:25
+                                    }}
+                                    placeholder="Add task..."
+                                    onChangeText = {(input) => changeHandler(input)}
+                                    value={input}
+                                    onSubmitEditing={(event) => {
+                                        submitHandler(event)
+                                    }}
+                                />        
+                                    {errorStatus === true ? (
+                                        <Text style={sharedStyles.errorText}>
+                                        * Please enter the text to proceed.
+                                        </Text>
+                                    ) : null  }     
+                                </>
                             }
                             data={tasks}
                             showsVerticalScrollIndicator ={false}

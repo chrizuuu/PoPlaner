@@ -65,7 +65,8 @@ const createTask = (_title,_priority) => {
             id: new ObjectId(),
             title: _title,
             createdDate: new Date(),
-            priority:_priority
+            priority:_priority,
+            comment:"",
         });
     });
 }
