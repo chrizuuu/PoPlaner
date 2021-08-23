@@ -1,10 +1,21 @@
 import React from "react";
-import { View,Text,Keyboard,Pressable,StyleSheet,TextInput,ScrollView} from 'react-native';
-import realm from "../../Database/Database";
+import { View,
+    Text,
+    Keyboard,
+    Pressable,
+    StyleSheet,
+    TextInput,
+    ScrollView} 
+from 'react-native';
+import realm, 
+    {changePriority,
+    updateIsDone,
+    deleteTask,
+} 
+from "../../Database/Database";
 import CheckBox from "../Buttons/CheckBox";
 import {Icon} from 'react-native-elements';
 import Modal from 'react-native-modal';
-import HeaderBar from "../Header/HeaderBar";
 import sharedStyles from "../../styles/shared";
 import FlexLayout from "../Layouts/FlexLayout"
 import TaskPropertyItem from "../TaskPropertyItem";
@@ -101,9 +112,6 @@ export default class TaskItem extends React.Component {
     submitCommentHandler = () => {
         console.log('startsubmitting')
         if (this.state.inputComment !== "" & this.state.inputComment.trim().length > 0) {
-            realm.write(() => {
-                this.task.comment = this.state.inputComment;
-            })       
             this.setState({
                 errorCommentStatus:false
             })
@@ -121,7 +129,7 @@ export default class TaskItem extends React.Component {
             realm.write(() => {
                 this.task.title = this.state.inputTitle;
             })       
-            Keyboard.dismiss
+            Keyboard.dismiss()
             this.setState({
                 errorTitleStatus:false
             })
@@ -132,25 +140,7 @@ export default class TaskItem extends React.Component {
             })
         }
     }
-
-    changePriority = (priority) => {
-        realm.write(() => {
-            this.task.priority = !this.task.priority;
-        })  
-    }
-
-    updateIsDone = () => {
-        realm.write(() => {
-            this.task.isDone = !this.task.isDone;
-        })
-    }
-
-    deleteTask = () => {
-        realm.write(() => {
-         realm.delete(this.task);
-        });
-      };
-
+    
     setTaskPageIsOpen = (visible) => {
         this.setState({
             taskPageIsOpen: visible
@@ -180,7 +170,7 @@ export default class TaskItem extends React.Component {
                             <View style={[sharedStyles.padding10, styles.wrapperInRow]}> 
                                 <CheckBox 
                                     status={this.task.isDone} 
-                                    onChange={() => this.updateIsDone()}
+                                    onChange={() =>updateIsDone(this.task)}
                                     style={{marginRight:20}} 
                                 />                                    
                                 <Text             
@@ -197,7 +187,7 @@ export default class TaskItem extends React.Component {
                                         color:priorityTaskStatus.color
                                     }} 
                                     size={28} 
-                                    onPress = {() => this.changePriority()}
+                                    onPress = {() => changePriority(this.task)}
                                 />
                             </View>
                         </View>    
@@ -218,7 +208,7 @@ export default class TaskItem extends React.Component {
                                     leftSide={
                                         <CheckBox 
                                             status={this.task.isDone} 
-                                            onChange={() => this.updateIsDone()}
+                                            onChange={() =>updateIsDone(this.task)}
                                             style={{marginRight:20}} 
                                         />  
                                     }
@@ -249,7 +239,7 @@ export default class TaskItem extends React.Component {
                                                 color:priorityTaskStatus.color
                                             }} 
                                             size={28} 
-                                            onPress = {() => this.changePriority()}
+                                            onPress = {() => changePriority(this.task)}
                                         />
                                      }
                                 />
@@ -305,7 +295,7 @@ export default class TaskItem extends React.Component {
                                         name='delete-outline' 
                                         color='#EE5436'
                                         size={28} 
-                                        onPress={() => this.deleteTask()}
+                                        onPress={() => deleteTask(this.task)}
                                     />
                                 </View>
                             </FlexLayout>
