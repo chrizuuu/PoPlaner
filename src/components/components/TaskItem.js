@@ -21,6 +21,7 @@ import FlexLayout from "../Layouts/FlexLayout"
 import TaskPropertyItem from "../TaskPropertyItem";
 import {strings} from "../../translations/translations"
 import CustomizingHeaderBar from "../Header/CustomizingHeaderBar";
+import { FlatList } from "react-native";
 
 const styles = StyleSheet.create({
     container: {
@@ -161,9 +162,8 @@ export default class TaskItem extends React.Component {
             : 1
 
         return (
-                <>
-                                            <ScrollView keyboardShouldPersistTaps={'always'}>
-
+            <>
+                <ScrollView keyboardShouldPersistTaps={'always'}>
                     <Pressable  onPress={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}>          
                         <View 
                             style={[styles.container,{opacity: isDoneTaskOpacity,}]}>
@@ -301,8 +301,8 @@ export default class TaskItem extends React.Component {
                             </FlexLayout>
                         </Modal>
                     </Pressable>     
-                    </ScrollView>
-                </>
+                </ScrollView>
+            </>
         );
     }
 }

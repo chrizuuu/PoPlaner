@@ -24,8 +24,11 @@ class CategorySchema extends Realm.Object {
     static schema = {
         name: "Category",
         properties: {
+            id: "objectId",
             title: "string",
-        }
+        },
+        primaryKey: "id",
+
     }
 }
 
@@ -33,11 +36,15 @@ class ProjectSchema extends Realm.Object {
     static schema = {
         name: "Project",
         properties: {
+            id: "objectId",
             title:"string",
-            isDone:"bool",
+            isDone: {type: "bool", default: false},
             createdDate:"date",
+            deadlineDate:"date?",
             description: "string?"
-        }
+        },
+        primaryKey: "id",
+
     }
 }
 
@@ -96,8 +103,22 @@ const deleteTask = (_task) => {
 
 // Category handlers
 
-
 // Project handlers
+
+const createProject = (_title) => {
+    realm.write(() => {
+        const project = realm.create("Project", {
+            id: new ObjectId(),
+            title: _title,
+            createdDate: new Date(),
+            comment:"",
+        });
+    });
+}
+
+const getAllProjects = () => {
+    return realm.objects("Project").filtered("isDone == false").sorted("createdDate","Descendig")
+}
 
 //Pomodoro handlers 
 
@@ -110,4 +131,6 @@ export {
     changePriority,
     updateIsDone,
     deleteTask,
+    createProject,
+    getAllProjects
 }

@@ -1,16 +1,35 @@
-import React, {useState, useEffect} from 'react';
-import {SafeAreaView, Text, StatusBar, FlatList, View, TouchableOpacity,TextInput,Keyboard,Switch,StyleSheet,} from 'react-native';
-import FlexLayout from '../../../components/Layouts/FlexLayout'
-import realm, { createTask, getAllTasks } from "../../../Database/Database"
+import React, {
+    useState, 
+    useEffect
+} from 'react';
+import {
+    Text, 
+    FlatList,
+    View, 
+    TextInput,
+    Keyboard,
+    StyleSheet,
+    ScrollView
+} from 'react-native';
+import realm, { 
+    createTask, 
+    getAllTasks,
+    getAllProjects,
+    createProject 
+} from "../../../Database/Database"
+import {Icon} from 'react-native-elements';
 import TaskItem from '../../../components/components/TaskItem'
 import { strings } from '../../../translations/translations';
 import sharedStyles from '../../../styles/shared';
-
+import ProjectItem from '../../../components/components/ProjectItem';
 
 const ToDoDashboad = () => {
     const [displayOnlyPriorityTasks, setDisplayOnlyPriorityTasks] = useState(false)
     const [tasks, setTasks] = useState(getAllTasks());
-    const [input,setInput] = useState()
+    const [projects,setProjects] = useState(getAllProjects())
+    const [taskInput,setTaskInput] = useState()
+    const [projectInput,setProjectInput] = useState()
+    const [visibleCreateProject,setVisibleCreateProject] = useState(false)
     const [errorStatus, setErrorStatus] = useState(false)
 
     function handlerSetTasks() {
@@ -21,8 +40,8 @@ const ToDoDashboad = () => {
     }
 
     function onRealmChange() {
-        console.log("Something changed!");
         handlerSetTasks()
+        setProjects(getAllProjects())
       }
       
     realm.addListener("change", onRealmChange);
@@ -31,34 +50,63 @@ const ToDoDashboad = () => {
         handlerSetTasks()
     }, [displayOnlyPriorityTasks])
 
-
-    const submitHandler = (value) => {
+    const submitTaskHandler = (value) => {
         if (value.nativeEvent.text !== "" & value.nativeEvent.text.trim().length > 0) {
             createTask(value.nativeEvent.text,displayOnlyPriorityTasks)
             setErrorStatus(false)
             setTasks(tasks)
             Keyboard.dismiss()
-            setInput('')
+            setTaskInput('')
         }
         else {
             setErrorStatus(true)
         }
     }
 
-    const changeHandler = (value) => {
-        setInput(value)
+    const taskCreateInputHandler = (value) => {
+        setTaskInput(value)
+    }
+
+    const submitProjectHandler = (value) => {
+        if (value.nativeEvent.text !== "" & value.nativeEvent.text.trim().length > 0) {
+            createProject(value.nativeEvent.text,displayOnlyPriorityTasks)
+            setProjects(projects)
+            Keyboard.dismiss()
+            setProjectInput('')
+        }
+        else {
+        }
+    }
+
+    const projectCreateInputHandler = (value) => {
+        setProjectInput(value)
     }
 
     const styles = StyleSheet.create({
         headerWrapper: {
             justifyContent:'space-between',
             padding:20,
-            backgroundColor:'rgb(250,250,250)'
         },
         header: {
             fontFamily:"OpenSansBold",
             fontSize:18,
             color:"#282828",
+        },
+
+        container: {
+            flex:1,
+            paddingBottom:25,
+            backgroundColor:'rgb(244, 244, 244)'
+        },
+        
+        tasksContainer: {
+            flex:2,
+        },
+
+        projectsContainer: {
+            flex:1,
+            borderTopWidth:1,
+            borderTopColor:'rgb(200,200,200)'
         },
 
         headerAllTask: {
@@ -68,75 +116,99 @@ const ToDoDashboad = () => {
         headerPriorityTasks: {
             opacity: displayOnlyPriorityTasks === false ? 0.3 : 1
         },
+        textInput: {
+            borderColor: 'rgb(200,200,200)', 
+            backgroundColor:'rgb(245,245,245)',
+            height:40,
+            color:'black',
+            paddingVertical:8,
+            paddingHorizontal:25
+        },
     })
  
     return (
         <>
-            <View 
-                style={{
-                    flex:1,
-                    paddingBottom:25,
-                    backgroundColor:'rgb(244, 244, 244)'
-                }}
-            >
-                    <View style={{flex:1}}>
-                        <View 
-                            style={[                                
-                                sharedStyles.wrapperInLine,
-                                styles.headerWrapper,
-                            ]}
-                        >
-                            <Text onPress={() => setDisplayOnlyPriorityTasks(false)} style= {[styles.header,styles.headerAllTask]}>
-                                {strings('allTasks')} 
-                            </Text>
+            <View style={styles.container} >
+                <View style={styles.tasksContainer}>
+                    <View 
+                        style={[                                
+                            sharedStyles.wrapperInLine,
+                            styles.headerWrapper,
+                            {backgroundColor:'rgb(250,250,250)'}
+                        ]}
+                    >
+                        <Text onPress={() => setDisplayOnlyPriorityTasks(false)} style= {[styles.header,styles.headerAllTask]}>
+                            {strings('allTasks')} 
+                        </Text>
 
-                            <Text onPress={() => setDisplayOnlyPriorityTasks(true)} style= {[styles.header,styles.headerPriorityTasks]}>
-                                {strings('priorityTasks')}
-                            </Text>
-
-                        </View>
-
-                        <FlatList
-                            keyboardShouldPersistTaps={'handled'}
-                            stickyHeaderIndices={[0]}
-                            ListHeaderComponent={
-                                <>
+                        <Text onPress={() => setDisplayOnlyPriorityTasks(true)} style= {[styles.header,styles.headerPriorityTasks]}>
+                            {strings('priorityTasks')}
+                        </Text>
+                    </View>
+                    <FlatList
+                        keyboardShouldPersistTaps={'handled'}
+                        stickyHeaderIndices={[0]}
+                        ListHeaderComponent={
+                            <>
                                 <TextInput 
-                                    style={{
-                                        borderColor: 'rgb(200,200,200)', 
-                                        backgroundColor:'rgb(245,245,245)',
-                                        height:40,
-                                        color:'black',
-                                        paddingVertical:8,
-                                        paddingHorizontal:25
-                                    }}
+                                    style={styles.textInput}
                                     placeholder="Add task..."
-                                    onChangeText = {(input) => changeHandler(input)}
-                                    value={input}
+                                    onChangeText = {(taskInput) => taskCreateInputHandler(taskInput)}
+                                    value={taskInput}
                                     onSubmitEditing={(event) => {
-                                        submitHandler(event)
+                                        submitTaskHandler(event)
                                     }}
-                                />        
-                                    {errorStatus === true ? (
-                                        <Text style={sharedStyles.errorText}>
+                                /> 
+
+                                {errorStatus === true 
+                                ? (
+                                    <Text style={sharedStyles.errorText}>
                                         * Please enter the text to proceed.
-                                        </Text>
-                                    ) : null  }     
-                                </>
-                            }
-                            data={tasks}
+                                    </Text>
+                                ) 
+                                : null  }     
+                            </>
+                        }
+                        data={tasks}
+                        showsVerticalScrollIndicator ={false}
+                        keyExtractor={(item) => item.id.toString()}
+                        renderItem={({item}) => {
+                        return (
+                            <TaskItem item_id={item.id} />
+                        )}} 
+                    />
+                </View>
+                
+                <View style={styles.projectsContainer}>
+                    <View 
+                        style={[                                
+                            sharedStyles.wrapperInLine,
+                            styles.headerWrapper,            
+                            ]}
+                    >
+                        <Text style= {[styles.header]}>
+                            Projects
+                        </Text>
+
+                        <Icon 
+                            type='material' 
+                            name='add'
+                            size={28} 
+                        />
+                    </View>    
+                        <FlatList
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            keyboardShouldPersistTaps={'handled'}
+                            data={projects}
                             showsVerticalScrollIndicator ={false}
                             keyExtractor={(item) => item.id.toString()}
                             renderItem={({item}) => {
                             return (
-                                <TaskItem item_id={item.id} />
+                                <ProjectItem item_id={item.id} />
                             )}} 
-                        />
-                        <Text onPress={() => allTasksDisplay()} style= {styles.header}>
-                                Projects
-                        </Text>
-
-                    </View> 
+                        />    
+                </View> 
             </View>
             </>
 
