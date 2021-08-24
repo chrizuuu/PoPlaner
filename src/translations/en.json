@@ -35,6 +35,12 @@
     "taskPropertyProject": "Project? ",
     "taskPropertyCategory": "Category? ",
     "addComment": "Add comment...",
+
+    "createProject": "New project",
+
+    "inputEmptyError": "* Please enter the text to proceed.",
+
+
     
 
 

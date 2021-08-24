@@ -4,12 +4,16 @@ import { View,
     Pressable,
     StyleSheet,
     TextInput,
-    ScrollView} 
+    ScrollView,
+    Keyboard
+} 
 from 'react-native';
 import realm from "../../Database/Database";
 import {Icon} from 'react-native-elements';
 import Modal from 'react-native-modal';
 import sharedStyles from "../../styles/shared";
+import FlexLayout from "../Layouts/FlexLayout";
+import CustomizingHeaderBar from "../Header/CustomizingHeaderBar";
 
 
 const styles = StyleSheet.create({
@@ -72,10 +76,9 @@ const styles = StyleSheet.create({
         marginTop:0,
         marginBottom:0,
         backgroundColor:'rgb(255,255,255)',
-
     },
 
-    textInputStyle:{
+    commentInput:{
         textAlignVertical:'top',
         minHeight:100,
         maxHeight:300,
@@ -92,6 +95,7 @@ export default class ProjectItem extends React.Component {
         super(props)
         this.state = {
             inputTitle: this.project.title,
+            errorInputTitle:false,
             projectPageIsOpen: false,
         }
     }
@@ -99,8 +103,29 @@ export default class ProjectItem extends React.Component {
 
     setProjectPageIsOpen = (visible) => {
         this.setState({
-            projectPageIsOpen: visible
+            projectPageIsOpen: visible,
         })
+    }
+
+    changeTitleHandler = (value) => {
+        this.setState({inputTitle:value})
+    }
+
+    submitTitleHandler = () => {
+        if (this.state.inputTitle !== "" & this.state.inputTitle.trim().length > 0) {
+            realm.write(() => {
+                this.project.title = this.state.inputTitle;
+            })       
+            Keyboard.dismiss()
+            this.setState({
+                errorInputTitle:false
+            })
+        }
+        else {
+            this.setState({
+                errorInputTitle:true
+            })
+        }
     }
 
     render() {
@@ -109,6 +134,7 @@ export default class ProjectItem extends React.Component {
         let progressPercent = onlyDoneProjectTasks / allProjectTasks 
         return (
             <>
+
                     <Pressable  onPress={() => this.setProjectPageIsOpen(!this.state.projectPageIsOpen)}>   
                         <View style={[styles.container]}>
                             <View style={[styles.wrapperInRow]}>                 
@@ -153,8 +179,26 @@ export default class ProjectItem extends React.Component {
                             onBackdropPress={() => this.setProjectPageIsOpen(!this.state.projectPageIsOpen)}
                             style={styles.modalStyle} 
                         > 
+                            <FlexLayout>
+                                <CustomizingHeaderBar
+                                    style={sharedStyles.paddingSide25}
+                                    centerSide={
+                                        <TextInput 
+                                            style={[styles.titleTask,{marginLeft:25}]}
+                                            name="input"
+                                            maxLength={100}
+                                            defaultValue={this.project.title}
+                                            onChangeText = {(input) => this.changeTitleHandler(input)}
+                                            onSubmitEditing={() => {
+                                                this.submitTitleHandler()
+                                            }}
+                                    />    
+                                    }
+                                />
+                            </FlexLayout>
                         </Modal>
-                    </Pressable>     
+                    </Pressable> 
+                        
             </>
         );
     }

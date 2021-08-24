@@ -1,7 +1,7 @@
 import React, {
     useState, 
     useEffect
-} from 'react';
+} from "react";
 import {
     Text, 
     FlatList,
@@ -10,25 +10,28 @@ import {
     Keyboard,
     StyleSheet,
     ScrollView
-} from 'react-native';
+} from "react-native";
 import realm, { 
     createTask, 
     getAllTasks,
     getAllProjects,
     createProject 
 } from "../../../Database/Database"
-import {Icon} from 'react-native-elements';
-import TaskItem from '../../../components/components/TaskItem'
-import { strings } from '../../../translations/translations';
-import sharedStyles from '../../../styles/shared';
-import ProjectItem from '../../../components/components/ProjectItem';
+import {Icon} from "react-native-elements";
+import Modal from "react-native-modal";
+import TaskItem from "../../../components/components/TaskItem"
+import { strings } from "../../../translations/translations";
+import sharedStyles from "../../../styles/shared";
+import ProjectItem from "../../../components/components/ProjectItem";
+import FlexLayout from "../../../components/Layouts/FlexLayout";
+import PropertyItem from "../../../components/components/PropertyItem";
+import CreateProjectModal from "../../../components/ModalComponents/CreateProjectModal";
 
 const ToDoDashboad = () => {
     const [displayOnlyPriorityTasks, setDisplayOnlyPriorityTasks] = useState(false)
     const [tasks, setTasks] = useState(getAllTasks());
     const [projects,setProjects] = useState(getAllProjects())
     const [taskInput,setTaskInput] = useState()
-    const [projectInput,setProjectInput] = useState()
     const [visibleCreateProject,setVisibleCreateProject] = useState(false)
     const [errorStatus, setErrorStatus] = useState(false)
 
@@ -42,6 +45,7 @@ const ToDoDashboad = () => {
     function onRealmChange() {
         handlerSetTasks()
         setProjects(getAllProjects())
+        setVisibleCreateProject(false)
       }
       
     realm.addListener("change", onRealmChange);
@@ -56,7 +60,7 @@ const ToDoDashboad = () => {
             setErrorStatus(false)
             setTasks(tasks)
             Keyboard.dismiss()
-            setTaskInput('')
+            setTaskInput("")
         }
         else {
             setErrorStatus(true)
@@ -66,25 +70,9 @@ const ToDoDashboad = () => {
     const taskCreateInputHandler = (value) => {
         setTaskInput(value)
     }
-
-    const submitProjectHandler = (value) => {
-        if (value.nativeEvent.text !== "" & value.nativeEvent.text.trim().length > 0) {
-            createProject(value.nativeEvent.text,displayOnlyPriorityTasks)
-            setProjects(projects)
-            Keyboard.dismiss()
-            setProjectInput('')
-        }
-        else {
-        }
-    }
-
-    const projectCreateInputHandler = (value) => {
-        setProjectInput(value)
-    }
-
     const styles = StyleSheet.create({
         headerWrapper: {
-            justifyContent:'space-between',
+            justifyContent:"space-between",
             padding:20,
         },
         header: {
@@ -96,7 +84,7 @@ const ToDoDashboad = () => {
         container: {
             flex:1,
             paddingBottom:25,
-            backgroundColor:'rgb(244, 244, 244)'
+            backgroundColor:"rgb(244, 244, 244)"
         },
         
         tasksContainer: {
@@ -106,7 +94,7 @@ const ToDoDashboad = () => {
         projectsContainer: {
             flex:1,
             borderTopWidth:1,
-            borderTopColor:'rgb(200,200,200)'
+            borderTopColor:"rgb(200,200,200)"
         },
 
         headerAllTask: {
@@ -117,10 +105,10 @@ const ToDoDashboad = () => {
             opacity: displayOnlyPriorityTasks === false ? 0.3 : 1
         },
         textInput: {
-            borderColor: 'rgb(200,200,200)', 
-            backgroundColor:'rgb(245,245,245)',
+            borderColor: "rgb(200,200,200)", 
+            backgroundColor:"rgb(245,245,245)",
             height:40,
-            color:'black',
+            color:"black",
             paddingVertical:8,
             paddingHorizontal:25
         },
@@ -134,19 +122,19 @@ const ToDoDashboad = () => {
                         style={[                                
                             sharedStyles.wrapperInLine,
                             styles.headerWrapper,
-                            {backgroundColor:'rgb(250,250,250)'}
+                            {backgroundColor:"rgb(250,250,250)"}
                         ]}
                     >
                         <Text onPress={() => setDisplayOnlyPriorityTasks(false)} style= {[styles.header,styles.headerAllTask]}>
-                            {strings('allTasks')} 
+                            {strings("allTasks")} 
                         </Text>
 
                         <Text onPress={() => setDisplayOnlyPriorityTasks(true)} style= {[styles.header,styles.headerPriorityTasks]}>
-                            {strings('priorityTasks')}
+                            {strings("priorityTasks")}
                         </Text>
                     </View>
                     <FlatList
-                        keyboardShouldPersistTaps={'handled'}
+                        keyboardShouldPersistTaps={"handled"}
                         stickyHeaderIndices={[0]}
                         ListHeaderComponent={
                             <>
@@ -178,7 +166,7 @@ const ToDoDashboad = () => {
                         )}} 
                     />
                 </View>
-                
+        
                 <View style={styles.projectsContainer}>
                     <View 
                         style={[                                
@@ -191,15 +179,16 @@ const ToDoDashboad = () => {
                         </Text>
 
                         <Icon 
-                            type='material' 
-                            name='add'
+                            type="material" 
+                            name="add"
                             size={28} 
+                            onPress={() => setVisibleCreateProject(!visibleCreateProject)}
                         />
                     </View>    
                         <FlatList
                             horizontal
                             showsHorizontalScrollIndicator={false}
-                            keyboardShouldPersistTaps={'handled'}
+                            keyboardShouldPersistTaps={"handled"}
                             data={projects}
                             showsVerticalScrollIndicator ={false}
                             keyExtractor={(item) => item.id.toString()}
@@ -209,6 +198,18 @@ const ToDoDashboad = () => {
                             )}} 
                         />    
                 </View> 
+                <Modal 
+                    animationIn="slideInUp"
+                    animationOut="slideOutDown"
+                    swipeDirection="down"
+                    isVisible={visibleCreateProject} 
+                    backdropOpacity={0.4}
+                    onSwipeComplete={() => setVisibleCreateProject(!visibleCreateProject)}
+                    onBackdropPress={() => setVisibleCreateProject(!visibleCreateProject)}
+
+                > 
+                    <CreateProjectModal closeFunc={() => setVisibleCreateProject(!visibleCreateProject)} />
+                </Modal>
             </View>
             </>
 

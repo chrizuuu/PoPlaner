@@ -41,7 +41,7 @@ class ProjectSchema extends Realm.Object {
             isDone: {type: "bool", default: false},
             createdDate:"date",
             deadlineDate:"date?",
-            description: "string?"
+            description: {type:"string", default: ""}
         },
         primaryKey: "id",
 
@@ -105,13 +105,13 @@ const deleteTask = (_task) => {
 
 // Project handlers
 
-const createProject = (_title) => {
+const createProject = (_title,_comment) => {
     realm.write(() => {
         const project = realm.create("Project", {
             id: new ObjectId(),
             title: _title,
             createdDate: new Date(),
-            comment:"",
+            description:_comment,
         });
     });
 }

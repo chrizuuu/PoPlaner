@@ -35,5 +35,10 @@
     "taskPropertyCategory": "Kategoria? ",
     "addComment": "Dodaj komentarz...",
 
+    "createProject": "Nowy projekt",
+
+
+    "inputEmptyError": "* Wprowadź tekst, aby kontynuować.",
+
 
 }

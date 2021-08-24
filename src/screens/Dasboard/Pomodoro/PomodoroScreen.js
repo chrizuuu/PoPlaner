@@ -299,13 +299,9 @@ export default class PomodoroScreen extends React.Component {
                 animationOut="slideOutRight"
                 isVisible={this.state.settingsIsOpen} 
                 swipeDirection='right'
-                onSwipeComplete={() => this.setIsOpen(!this.state.settingsIsOpen)}                     onBackdropPress={() => this.setIsOpen(!this.state.settingsIsOpen)} 
-                style={{
-                    height:'100%',
-                    marginRight:0,
-                    marginTop:0,
-                    marginBottom:0,
-                }}
+                onSwipeComplete={() => this.setIsOpen(!this.state.settingsIsOpen)}
+                onBackdropPress={() => this.setIsOpen(!this.state.settingsIsOpen)} 
+                style={styles.settingsModal}
             >
                 <FlexLayout>
                     <HeaderBar 
