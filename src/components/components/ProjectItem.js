@@ -129,8 +129,8 @@ export default class ProjectItem extends React.Component {
     }
 
     render() {
-        let allProjectTasks = realm.objects("Task").filtered("project.id == $0", this.project.id).length
-        let onlyDoneProjectTasks = realm.objects("Task").filtered("project.id == $0 AND isDone = true", this.project.id).length
+        let allProjectTasks = realm.objects("Task").filtered("project._id == $0", this.project._id).length
+        let onlyDoneProjectTasks = realm.objects("Task").filtered("project._id == $0 AND isDone = true", this.project._id).length
         let progressPercent = onlyDoneProjectTasks / allProjectTasks 
         return (
             <>

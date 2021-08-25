@@ -165,10 +165,10 @@ const ToDoDashboad = () => {
                         }
                         data={tasks}
                         showsVerticalScrollIndicator ={false}
-                        keyExtractor={(item) => item.id.toString()}
+                        keyExtractor={(item) => item._id.toString()}
                         renderItem={({item}) => {
                         return (
-                            <TaskItem item_id={item.id} />
+                            <TaskItem item_id={item._id} />
                         )}} 
                     />
                 </View>
@@ -197,10 +197,10 @@ const ToDoDashboad = () => {
                             keyboardShouldPersistTaps={"handled"}
                             data={projects}
                             showsVerticalScrollIndicator ={false}
-                            keyExtractor={(item) => item.id.toString()}
+                            keyExtractor={(item) => item._id.toString()}
                             renderItem={({item}) => {
                             return (
-                                <ProjectItem item_id={item.id} />
+                                <ProjectItem item_id={item._id} />
                             )}} 
                         />    
                 </View> 

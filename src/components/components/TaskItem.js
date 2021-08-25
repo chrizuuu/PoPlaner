@@ -155,8 +155,8 @@ export default class TaskItem extends React.Component {
     }
 
     saveProject = (value) => {
-        console.log(value)
         realm.write(() => {
+            value.tasks.push(this.task)
             this.task.project = value
         })
     }
@@ -265,22 +265,24 @@ export default class TaskItem extends React.Component {
                                         valueTitle = {strings('taskPropertyCategory')}
                                         value = {this.task.category}
                                     />
-                                    <PropertyItem
-                                        valueIcon = 'folder-open'
-                                        valueTitle = {strings('taskPropertyProject')}
-                                        value = {this.task.project}
-                                    >
-                                    </PropertyItem>
+                                    {
+                                        this.task.project !== null ?
+                                            <PropertyItem
+                                                valueIcon = 'outlined-flag'
+                                                valueTitle = {strings('taskPropertyCategory')}
+                                                value = {this.task.project.title}
+                                            /> 
+                                        : null   
+                                    }
                                     <Picker  
-                                            selectedValue={this.task.project}
-                                            onValueChange={(itemValue) =>
-                                                this.saveProject(itemValue.id)
-                                              }>
-                                                {
-                                                    projects.map((item) => 
-                                                      <Picker.Item key={item.id} label={item.title} value={item}  />
+                                        onValueChange={(itemValue) =>
+                                            this.saveProject(itemValue)
+                                        }>
+                                            {
+                                                projects.map((item) => 
+                                                    <Picker.Item key={item._id} label={item.title} value={item}  />
                                                     )
-                                                }
+                                            }
                                     </Picker>
                                     <Text 
                                         style={styles.saveCommentBtn}

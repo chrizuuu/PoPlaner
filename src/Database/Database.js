@@ -11,23 +11,11 @@ class TaskSchema extends Realm.Object {
             isDone: {type: "bool", default: false},
             priority: {type: "bool", default:false},
             comment: "string?",
-            project:"Project?",
-            category:"Category?",
             createdDate: "date",
             deadlineDate:"date?",
-            //timeNeeded: "int?",
+            project: "Project?"
         },
-    }
-}
 
-class CategorySchema extends Realm.Object {
-    static schema = {
-        name: "Category",
-        primaryKey: "_id",
-        properties: {
-            _id: "objectId",
-            title: "string",
-        },
 
     }
 }
@@ -42,11 +30,13 @@ class ProjectSchema extends Realm.Object {
             isDone: {type: "bool", default: false},
             createdDate:"date",
             deadlineDate:"date?",
-            description: {type:"string", default: ""}
+            description: {type:"string", default: ""},
+            tasks: "Task[]"
         },
 
     }
 }
+
 
 class PomodoroTimerSchema extends Realm.Object {
     static schema = {
@@ -62,7 +52,7 @@ class PomodoroTimerSchema extends Realm.Object {
         },
     }
 }
-let realm = new Realm({schema: [TaskSchema,CategorySchema,ProjectSchema,PomodoroTimerSchema], schemaVersion: 3});
+let realm = new Realm({schema: [TaskSchema,ProjectSchema,PomodoroTimerSchema], schemaVersion: 1});
 
 // Task handlers
 
