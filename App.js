@@ -4,6 +4,7 @@ import {StatusBar} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import TabsNav from './src/navigations/tabsNav';
+import DrawerNav from './src/navigations/drawerNav';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import {strings,setI18Config} from './src/translations/translations'
@@ -33,7 +34,7 @@ const App = () => {
     <StatusBar/>
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown:false,}}>
-        <Stack.Screen name="HomeTab" component={TabsNav}/>
+        <Stack.Screen name="HomeTab" component={DrawerNav}/>
       </Stack.Navigator>
     </NavigationContainer>
     </>
