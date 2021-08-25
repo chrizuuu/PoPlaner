@@ -180,21 +180,19 @@ export default class ProjectItem extends React.Component {
                             style={styles.modalStyle} 
                         > 
                             <FlexLayout>
-                                <CustomizingHeaderBar
-                                    style={sharedStyles.paddingSide25}
-                                    centerSide={
-                                        <TextInput 
-                                            style={[styles.titleTask,{marginLeft:25}]}
-                                            name="input"
-                                            maxLength={100}
-                                            defaultValue={this.project.title}
-                                            onChangeText = {(input) => this.changeTitleHandler(input)}
-                                            onSubmitEditing={() => {
-                                                this.submitTitleHandler()
-                                            }}
+                                <View style={sharedStyles.wrapperInLine}>
+                                    <TextInput 
+                                        style={[styles.titleTask,{marginLeft:25}]}
+                                        name="input"
+                                        maxLength={100}
+                                        defaultValue={this.project.title}
+                                        onChangeText = {(input) => this.changeTitleHandler(input)}
+                                        onSubmitEditing={() => {
+                                            this.submitTitleHandler()
+                                        }}
                                     />    
-                                    }
-                                />
+                                </View>
+                                
                             </FlexLayout>
                         </Modal>
                     </Pressable> 

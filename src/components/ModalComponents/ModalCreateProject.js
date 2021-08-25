@@ -15,7 +15,7 @@ import { createProject } from "../../Database/Database";
 import ErrorText from "../../components/Text/ErrorText";
 
 
-const CreateProjectModal = ({closeFunc}) => {
+const ModalCreateProject = ({closeFunc}) => {
     const [titleInput,setTitleInput] = useState("")
     const [descriptionInput,setDescriptionInput] = useState()
     const [titleInputError,setTitleInputError] = useState(false)
@@ -50,7 +50,6 @@ const CreateProjectModal = ({closeFunc}) => {
         },
         wrapper: {
             width: "100%",
-            height: 400,
             backgroundColor:"#fff",
         },
         headerWrapper: {
@@ -94,12 +93,12 @@ const CreateProjectModal = ({closeFunc}) => {
         },
 
         footerWrapper: {
-            flex:1,
             borderTopWidth:1,
             borderTopColor:'rgb(240,240,240)',
             justifyContent:'space-evenly',
         },
         footerItems: {
+            padding:15,
             textAlign:'center',
             textAlignVertical:'center',
             height:'100%',
@@ -123,7 +122,7 @@ const CreateProjectModal = ({closeFunc}) => {
                 </Text>
                 <TextInput 
                     style={styles.titleInput}
-                    placeholder="Type name of your project..."
+                    placeholder={strings("createProjectTitle")}
                     onChangeText = {(titleInput) => titleInputHandler(titleInput)}
                     value={titleInput}
                 />
@@ -135,7 +134,7 @@ const CreateProjectModal = ({closeFunc}) => {
                 }   
 
                 <Text style={[styles.headerProperties]}>
-                    Opcjonalnie
+                    {strings("createProjectPropertiesHeader")}
                 </Text>
                 <View style={styles.propertiesWrapper}>
                     <PropertyItem
@@ -145,7 +144,7 @@ const CreateProjectModal = ({closeFunc}) => {
                     <TextInput 
                         style={[styles.commentInput]}
                         name="input"
-                        placeholder="Type description.."
+                        placeholder={strings("createProjectDescription")}
                         multiline={true}
                         maxLength={1000}
                         onChangeText = {(input) => descriptionInputHandler(input)}
@@ -171,4 +170,4 @@ const CreateProjectModal = ({closeFunc}) => {
     )
 }
 
-export default CreateProjectModal
+export default ModalCreateProject

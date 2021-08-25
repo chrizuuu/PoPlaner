@@ -29,14 +29,19 @@
 
     "allTasks": "All tasks",
     "priorityTasks": "Priorities",
+    "allProjects": "Projects",
 
     "taskCreatedAt": "Created at: ",
     "taskPropertyDate": "Date? ",
     "taskPropertyProject": "Project? ",
     "taskPropertyCategory": "Category? ",
     "addComment": "Add comment...",
+    "saveComment": "Save comment",
 
     "createProject": "New project",
+    "createProjectTitle": "Type name of your project...",
+    "createProjectPropertiesHeader": "Optional",
+    "createProjectDescription": "Type description...",
 
     "inputEmptyError": "* Please enter the text to proceed.",
 

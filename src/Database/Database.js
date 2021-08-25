@@ -4,8 +4,9 @@ import { ObjectId } from "bson";
 class TaskSchema extends Realm.Object {
     static schema = {
         name: "Task",
+        primaryKey: "_id",
         properties: {
-            id: "objectId",
+            _id: "objectId",
             title: "string",
             isDone: {type: "bool", default: false},
             priority: {type: "bool", default:false},
@@ -16,18 +17,17 @@ class TaskSchema extends Realm.Object {
             deadlineDate:"date?",
             //timeNeeded: "int?",
         },
-        primaryKey: "id",
     }
 }
 
 class CategorySchema extends Realm.Object {
     static schema = {
         name: "Category",
+        primaryKey: "_id",
         properties: {
-            id: "objectId",
+            _id: "objectId",
             title: "string",
         },
-        primaryKey: "id",
 
     }
 }
@@ -35,15 +35,15 @@ class CategorySchema extends Realm.Object {
 class ProjectSchema extends Realm.Object {
     static schema = {
         name: "Project",
+        primaryKey: "_id",
         properties: {
-            id: "objectId",
+            _id: "objectId",
             title:"string",
             isDone: {type: "bool", default: false},
             createdDate:"date",
             deadlineDate:"date?",
             description: {type:"string", default: ""}
         },
-        primaryKey: "id",
 
     }
 }
@@ -51,15 +51,15 @@ class ProjectSchema extends Realm.Object {
 class PomodoroTimerSchema extends Realm.Object {
     static schema = {
         name:'PomodoroTimer',
+        primaryKey: "_id",
         properties: {
-            id:"objectId",
+            _id:"objectId",
             tasks:"Task[]",
             startTime:"date",
             endTime:"date?",
             duration:"int?",
             
         },
-        primaryKey: "id",
     }
 }
 let realm = new Realm({schema: [TaskSchema,CategorySchema,ProjectSchema,PomodoroTimerSchema], schemaVersion: 3});
@@ -69,7 +69,7 @@ let realm = new Realm({schema: [TaskSchema,CategorySchema,ProjectSchema,Pomodoro
 const createTask = (_title,_priority) => {
     realm.write(() => {
         const task = realm.create("Task", {
-            id: new ObjectId(),
+            _id: new ObjectId(),
             title: _title,
             createdDate: new Date(),
             priority:_priority,
@@ -108,7 +108,7 @@ const deleteTask = (_task) => {
 const createProject = (_title,_comment) => {
     realm.write(() => {
         const project = realm.create("Project", {
-            id: new ObjectId(),
+            _id: new ObjectId(),
             title: _title,
             createdDate: new Date(),
             description:_comment,

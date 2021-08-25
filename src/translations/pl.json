@@ -28,15 +28,19 @@
 
     "allTasks": "Wszystkie zadania",
     "priorityTasks": "Priorytety",
+    "allProjects": "Projekty",
     
     "taskCreatedAt": "Utworzone: ",
     "taskPropertyDate": "Data? ",
     "taskPropertyProject": "Projekt? ",
     "taskPropertyCategory": "Kategoria? ",
     "addComment": "Dodaj komentarz...",
+    "saveComment": "Zapisz komentarz",
 
     "createProject": "Nowy projekt",
-
+    "createProjectTitle": "Wprowadz nazwe dla swojego projektu...",
+    "createProjectPropertiesHeader": "Opcjonalnie",
+    "createProjectDescription": "Dodaj opis...",
 
     "inputEmptyError": "* Wprowadź tekst, aby kontynuować.",
 

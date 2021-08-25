@@ -9,7 +9,8 @@ import {
     TextInput,
     Keyboard,
     StyleSheet,
-    ScrollView
+    ScrollView,
+    KeyboardAvoidingView
 } from "react-native";
 import realm, { 
     createTask, 
@@ -25,7 +26,8 @@ import sharedStyles from "../../../styles/shared";
 import ProjectItem from "../../../components/components/ProjectItem";
 import FlexLayout from "../../../components/Layouts/FlexLayout";
 import PropertyItem from "../../../components/components/PropertyItem";
-import CreateProjectModal from "../../../components/ModalComponents/CreateProjectModal";
+import ModalCreateProject from "../../../components/ModalComponents/ModalCreateProject";
+import ErrorText from "../../../components/Text/ErrorText";
 
 const ToDoDashboad = () => {
     const [displayOnlyPriorityTasks, setDisplayOnlyPriorityTasks] = useState(false)
@@ -125,11 +127,17 @@ const ToDoDashboad = () => {
                             {backgroundColor:"rgb(250,250,250)"}
                         ]}
                     >
-                        <Text onPress={() => setDisplayOnlyPriorityTasks(false)} style= {[styles.header,styles.headerAllTask]}>
+                        <Text 
+                            onPress={() => setDisplayOnlyPriorityTasks(false)} 
+                            style= {[styles.header,styles.headerAllTask]}
+                        >
                             {strings("allTasks")} 
                         </Text>
 
-                        <Text onPress={() => setDisplayOnlyPriorityTasks(true)} style= {[styles.header,styles.headerPriorityTasks]}>
+                        <Text 
+                            onPress={() => setDisplayOnlyPriorityTasks(true)} 
+                            style= {[styles.header,styles.headerPriorityTasks]}
+                        >
                             {strings("priorityTasks")}
                         </Text>
                     </View>
@@ -150,9 +158,7 @@ const ToDoDashboad = () => {
 
                                 {errorStatus === true 
                                 ? (
-                                    <Text style={sharedStyles.errorText}>
-                                        * Please enter the text to proceed.
-                                    </Text>
+                                    <ErrorText errorValue={strings("inputEmptyError")} />
                                 ) 
                                 : null  }     
                             </>
@@ -175,7 +181,7 @@ const ToDoDashboad = () => {
                             ]}
                     >
                         <Text style= {[styles.header]}>
-                            Projects
+                            {strings("allProjects")}
                         </Text>
 
                         <Icon 
@@ -208,7 +214,7 @@ const ToDoDashboad = () => {
                     onBackdropPress={() => setVisibleCreateProject(!visibleCreateProject)}
 
                 > 
-                    <CreateProjectModal closeFunc={() => setVisibleCreateProject(!visibleCreateProject)} />
+                    <ModalCreateProject closeFunc={() => setVisibleCreateProject(!visibleCreateProject)} />
                 </Modal>
             </View>
             </>
