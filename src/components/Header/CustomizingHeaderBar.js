@@ -6,7 +6,7 @@ import styleHeader from './style';
 import sharedStyles from '../../styles/shared';
 import { TouchableOpacity } from 'react-native';
 
-const CustomizingHeaderBar = ({style,leftSide,centerSide,rightSide,headerTextSize}) => {
+const CustomizingHeaderBar = ({style,leftSide,centerSide,rightSide}) => {
     return (
         <View 
             style = {[

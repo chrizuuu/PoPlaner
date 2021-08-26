@@ -5,7 +5,6 @@ import PomodoroScreen from '../screens/Dasboard/Pomodoro/PomodoroScreen';
 import ScheduleScreen from '../screens/Dasboard/ScheduleScreen';
 import ProfileScreen from '../screens/Dasboard/ProfileScreen';
 import DashboardScreen from '../screens/Dasboard/DashboardScreen';
-import ToDoDashboard from '../screens/Dasboard/ToDo/ToDoDashboard';
 
 import {Icon} from 'react-native-elements';
 
@@ -55,8 +54,8 @@ const TabsNav = () => {
         return <Icon type='ionicon' name={iconName} size={size} color={color} />;
       },
     })} >
-      <HomeTab.Screen name="Todo" component={ToDoDashboard} />
       <HomeTab.Screen name="Dashboard" component={DashboardScreen} />
+      <HomeTab.Screen name="Todo" component={ToDoDashboard} />
       <HomeTab.Screen name="Schedule" component={ScheduleScreen} />
       <HomeTab.Screen name="Pomodoro" component={PomodoroScreen} />
       <HomeTab.Screen name="Profile" component={ProfileScreen} />

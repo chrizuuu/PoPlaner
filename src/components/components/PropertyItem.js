@@ -1,11 +1,10 @@
 import React from 'react';
 import {TouchableOpacity, Image, StyleSheet,View,Text, Pressable} from 'react-native';
-import FlexLayout from './Layouts/FlexLayout';
-import InLineLayout from './Layouts/InLineLayout';
-import sharedStyles from '../styles/shared';
+import InLineLayout from '../Layouts/InLineLayout';
+import sharedStyles from '../../styles/shared';
 import {Icon} from 'react-native-elements';
 
-export default TaskPropertyItem = ({valueIcon,valueTitle,value,_onPress }) => {
+export default PropertyItem = ({valueIcon,valueTitle,value,_onPress }) => {
 
     let bgColor = value !== null ? 'rgb(255,255,255)' : 'rgb(245,245,245)'
 
@@ -15,7 +14,7 @@ export default TaskPropertyItem = ({valueIcon,valueTitle,value,_onPress }) => {
             borderWidth:1,
             borderRadius:25,
             borderColor:'rgb(234, 234, 234)',
-            paddingVertical:8,
+            paddingVertical:5,
             paddingHorizontal:15,
             backgroundColor: bgColor,
         },

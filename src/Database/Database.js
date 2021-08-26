@@ -4,65 +4,62 @@ import { ObjectId } from "bson";
 class TaskSchema extends Realm.Object {
     static schema = {
         name: "Task",
+        primaryKey: "_id",
         properties: {
-            id: "objectId",
+            _id: "objectId",
             title: "string",
             isDone: {type: "bool", default: false},
             priority: {type: "bool", default:false},
             comment: "string?",
-            project:"Project?",
-            category:"Category?",
             createdDate: "date",
             deadlineDate:"date?",
-            //timeNeeded: "int?",
+            project: "Project?"
         },
-        primaryKey: "id",
-    }
-}
 
-class CategorySchema extends Realm.Object {
-    static schema = {
-        name: "Category",
-        properties: {
-            title: "string",
-        }
+
     }
 }
 
 class ProjectSchema extends Realm.Object {
     static schema = {
         name: "Project",
+        primaryKey: "_id",
         properties: {
+            _id: "objectId",
             title:"string",
-            isDone:"bool",
+            isDone: {type: "bool", default: false},
             createdDate:"date",
-            description: "string?"
-        }
+            deadlineDate:"date?",
+            description: {type:"string", default: ""},
+            tasks: "Task[]"
+        },
+
     }
 }
+
 
 class PomodoroTimerSchema extends Realm.Object {
     static schema = {
         name:'PomodoroTimer',
+        primaryKey: "_id",
         properties: {
-            id:"objectId",
+            _id:"objectId",
             tasks:"Task[]",
             startTime:"date",
             endTime:"date?",
             duration:"int?",
             
         },
-        primaryKey: "id",
     }
 }
-let realm = new Realm({schema: [TaskSchema,CategorySchema,ProjectSchema,PomodoroTimerSchema], schemaVersion: 3});
+let realm = new Realm({schema: [TaskSchema,ProjectSchema,PomodoroTimerSchema], schemaVersion: 1});
 
 // Task handlers
 
 const createTask = (_title,_priority) => {
     realm.write(() => {
         const task = realm.create("Task", {
-            id: new ObjectId(),
+            _id: new ObjectId(),
             title: _title,
             createdDate: new Date(),
             priority:_priority,
@@ -71,8 +68,12 @@ const createTask = (_title,_priority) => {
     });
 }
 
-const getAllTasks =() => {
+const getAllTasks = () => {
     return realm.objects("Task").filtered("isDone == false").sorted("createdDate","Descendig")
+}
+
+const getPriorityTasks = () => {
+    return realm.objects("Task").filtered("isDone == false AND priority == true").sorted("createdDate","Descendig")
 }
 
 const changePriority = (_task) => {
@@ -96,8 +97,22 @@ const deleteTask = (_task) => {
 
 // Category handlers
 
-
 // Project handlers
+
+const createProject = (_title,_comment) => {
+    realm.write(() => {
+        const project = realm.create("Project", {
+            _id: new ObjectId(),
+            title: _title,
+            createdDate: new Date(),
+            description:_comment,
+        });
+    });
+}
+
+const getAllProjects = () => {
+    return realm.objects("Project").filtered("isDone == false").sorted("createdDate","Descendig")
+}
 
 //Pomodoro handlers 
 
@@ -107,7 +122,10 @@ export default realm;
 export {
     createTask,
     getAllTasks,
+    getPriorityTasks,
     changePriority,
     updateIsDone,
     deleteTask,
+    createProject,
+    getAllProjects
 }

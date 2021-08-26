@@ -5,22 +5,27 @@ import { View,
     Pressable,
     StyleSheet,
     TextInput,
-    ScrollView} 
+    ScrollView,
+} 
 from 'react-native';
 import realm, 
     {changePriority,
     updateIsDone,
     deleteTask,
+    getAllProjects
 } 
 from "../../Database/Database";
 import CheckBox from "../Buttons/CheckBox";
+import { Picker } from "@react-native-picker/picker";
 import {Icon} from 'react-native-elements';
 import Modal from 'react-native-modal';
 import sharedStyles from "../../styles/shared";
 import FlexLayout from "../Layouts/FlexLayout"
-import TaskPropertyItem from "../TaskPropertyItem";
+import PropertyItem from "../components/PropertyItem";
 import {strings} from "../../translations/translations"
 import CustomizingHeaderBar from "../Header/CustomizingHeaderBar";
+import { FlatList } from "react-native";
+import ErrorText from "../Text/ErrorText";
 
 const styles = StyleSheet.create({
     container: {
@@ -47,7 +52,6 @@ const styles = StyleSheet.create({
         marginTop:0,
         marginBottom:0,
         backgroundColor:'rgb(255,255,255)',
-
     },
     modalFooter: {
         alignItems:'center',
@@ -72,7 +76,7 @@ const styles = StyleSheet.create({
         right:0,    
     },
     
-    textInputStyle:{
+    commentInput:{
         textAlignVertical:'top',
         minHeight:100,
         maxHeight:300,
@@ -97,6 +101,7 @@ export default class TaskItem extends React.Component {
             inputComment: this.task.comment,
             errorCommentStatus: false,
             taskPageIsOpen: false,
+            project:null,
         }
     }
     task = realm.objectForPrimaryKey("Task",this.props.item_id)
@@ -110,8 +115,10 @@ export default class TaskItem extends React.Component {
     }
 
     submitCommentHandler = () => {
-        console.log('startsubmitting')
         if (this.state.inputComment !== "" & this.state.inputComment.trim().length > 0) {
+            realm.write(() => {
+                this.task.comment = this.state.inputComment
+            })
             this.setState({
                 errorCommentStatus:false
             })
@@ -147,6 +154,13 @@ export default class TaskItem extends React.Component {
         })
     }
 
+    saveProject = (value) => {
+        realm.write(() => {
+            value.tasks.push(this.task)
+            this.task.project = value
+        })
+    }
+
     render() {
         let priorityTaskStatus = this.task.priority === true
             ? 
@@ -159,14 +173,12 @@ export default class TaskItem extends React.Component {
         let isDoneTaskOpacity = this.task.isDone === true
             ? 0.4
             : 1
-
+        let projects = realm.objects("Project")
         return (
-                <>
-                                            <ScrollView keyboardShouldPersistTaps={'always'}>
-
+            <>
+                <ScrollView keyboardShouldPersistTaps={'always'}>
                     <Pressable  onPress={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}>          
-                        <View 
-                            style={[styles.container,{opacity: isDoneTaskOpacity,}]}>
+                        <View style={[styles.container,{opacity: isDoneTaskOpacity,}]}>
                             <View style={[sharedStyles.padding10, styles.wrapperInRow]}> 
                                 <CheckBox 
                                     status={this.task.isDone} 
@@ -191,19 +203,19 @@ export default class TaskItem extends React.Component {
                                 />
                             </View>
                         </View>    
+
                         <Modal 
                             animationIn="slideInRight"
                             animationOut="slideOutRight"
-                            isVisible={this.state.taskPageIsOpen} 
                             swipeDirection='right'
+                            isVisible={this.state.taskPageIsOpen} 
                             onSwipeComplete={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}
                             onBackdropPress={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}
                             style={styles.modalStyle} 
                         >
                             <FlexLayout>
+
                                 <CustomizingHeaderBar
-                                    screenName={this.task.title}
-                                    headerTextSize={16}
                                     style={sharedStyles.paddingSide25}
                                     leftSide={
                                         <CheckBox 
@@ -225,9 +237,7 @@ export default class TaskItem extends React.Component {
                                                 }}
                                             />    
                                             {this.state.errorTitleStatus === true ? (
-                                                <Text style={sharedStyles.errorText}>
-                                                    * Please enter the text to proceed.
-                                                </Text>
+                                                <ErrorText errorValue={strings("inputEmptyError")} />
                                             ) : null  } 
                                         </>
                                     }
@@ -243,30 +253,43 @@ export default class TaskItem extends React.Component {
                                         />
                                      }
                                 />
+
                                 <FlexLayout style={styles.wrapperSettingsItem}>
-                                    <TaskPropertyItem
+                                    <PropertyItem
                                         valueIcon = 'calendar-today'
                                         valueTitle = {strings('taskPropertyDate')}
                                         value = {this.task.createdDate.toLocaleDateString() + ' ' + this.task.createdDate.toLocaleTimeString()}
                                     />
-                                    <TaskPropertyItem
-                                        valueIcon = 'outlined-flag'
-                                        valueTitle = {strings('taskPropertyCategory')}
-                                        value = {this.task.category}
-                                    />
-                                    <TaskPropertyItem
-                                        valueIcon = 'folder-open'
-                                        valueTitle = {strings('taskPropertyProject')}
-                                        value = {this.task.project}
-                                    />
+                                    {
+                                        this.task.project !== null ?
+                                            <PropertyItem
+                                                valueIcon = 'outlined-flag'
+                                                valueTitle = {strings('taskPropertyProject')}
+                                                value = {this.task.project.title}
+                                            /> 
+                                        : null   
+                                    }
+                                    <Picker  
+                                        onValueChange={(itemValue) =>
+                                            this.saveProject(itemValue)
+                                        }>
+                                            {
+                                                projects.map((item) => 
+                                                    <Picker.Item key={item._id} label={item.title} value={item}  />
+                                                    )
+                                            }
+                                    </Picker>
                                     <Text 
                                         style={styles.saveCommentBtn}
                                         onPress={() => {
                                             this.submitCommentHandler()
-                                        }}> Zapisz komentarz 
+                                        }}
+                                    >
+                                        {strings("saveComment")} 
                                     </Text>
+
                                     <TextInput 
-                                        style={styles.textInputStyle}
+                                        style={styles.commentInput}
                                         name="input"
                                         multiline={true}
                                         maxLength={1000}
@@ -274,16 +297,17 @@ export default class TaskItem extends React.Component {
                                         onChangeText = {(input) => this.changeCommentHandler(input)}
                                         placeholder={strings('addComment')}
                                     />                                             
-                                    {this.state.errorCommentStatus === true ? (
-                                        <Text style={sharedStyles.errorText}>
-                                            * Please enter the text to proceed.
-                                        </Text>
-                                    ) : null  } 
+                                        {this.state.errorCommentStatus === true 
+                                        ? (
+                                            <ErrorText errorValue={strings("inputEmptyError")} />
+                                        ) 
+                                        : null  } 
 
                                     <Text style={[sharedStyles.padding10,styles.text]}>
                                         {strings("taskCreatedAt")}{this.task.createdDate.toLocaleDateString() + ' ' + this.task.createdDate.toLocaleTimeString()}
                                     </Text>
                                 </FlexLayout>
+
                                 <View style={[styles.modalFooter,sharedStyles.padding10]}>
                                     <Icon 
                                         name='arrow-forward' 
@@ -298,11 +322,12 @@ export default class TaskItem extends React.Component {
                                         onPress={() => deleteTask(this.task)}
                                     />
                                 </View>
+
                             </FlexLayout>
                         </Modal>
                     </Pressable>     
-                    </ScrollView>
-                </>
+                </ScrollView>
+            </>
         );
     }
 }

@@ -1,4 +1,10 @@
 {     
+    "headerTitlePriorityTasks": "Priorytety",
+    "headerTitleAllTasks": "Skrzynka spraw",
+    "headerTitleProjects": "Projekty",
+    "headerTitleCalendar": "Kalendarz",
+    "headerTitleProfile": "Profil",
+
     "loginHeader": "Witamy z powrotem!",
     "loginSubHeader":"Miło Cię znowu widzieć!",
     "authLabelEmail": "EMAIL",
@@ -28,12 +34,22 @@
 
     "allTasks": "Wszystkie zadania",
     "priorityTasks": "Priorytety",
+    "allProjects": "Projekty",
     
+    "taskAddForm": "Dodaj zadanie...",
     "taskCreatedAt": "Utworzone: ",
     "taskPropertyDate": "Data? ",
     "taskPropertyProject": "Projekt? ",
     "taskPropertyCategory": "Kategoria? ",
     "addComment": "Dodaj komentarz...",
+    "saveComment": "Zapisz komentarz",
+
+    "createProject": "Nowy projekt",
+    "createProjectTitle": "Wprowadz nazwe dla swojego projektu...",
+    "createProjectPropertiesHeader": "Opcjonalnie",
+    "createProjectDescription": "Dodaj opis...",
+
+    "inputEmptyError": "* Wprowadź tekst, aby kontynuować.",
 
 
 }
