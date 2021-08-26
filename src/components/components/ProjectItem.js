@@ -122,52 +122,48 @@ export default class ProjectItem extends React.Component {
         let progressPercent = onlyDoneProjectTasks / allProjectTasks 
         return (
             <>
-                    <Pressable  onPress={() => this.setProjectPageIsOpen(!this.state.projectPageIsOpen)}>   
-                        <View style={[styles.container]}>
-                                <Text             
-                                    numberOfLines={1}
-                                    style={styles.titleTask}
-                                >
-                                    {this.project.title}
-                                </Text> 
-                                <View style={styles.progressBar}>
-                                    <View style={[styles.progress,{width: 100 * progressPercent + "%"}]} />
-                                </View>
-                                <Text style={styles.tasksCounter}>
-                                {
-                                    onlyDoneProjectTasks
-                                    + '/' +
-                                    allProjectTasks
-                                }
-                                </Text>
-                        </View>  
-
-                        <Modal 
-                            animationIn="slideInRight"
-                            animationOut="slideOutRight"
-                            isVisible={this.state.projectPageIsOpen} 
-                            swipeDirection='right'
-                            onSwipeComplete={() => this.setProjectPageIsOpen(!this.state.projectPageIsOpen)}
-                            onBackdropPress={() => this.setProjectPageIsOpen(!this.state.projectPageIsOpen)}
-                            style={styles.modalStyle} 
-                        > 
-                            <FlexLayout>
-                                <View style={sharedStyles.wrapperInLine}>
-                                    <TextInput 
-                                        style={[styles.titleTask,{marginLeft:25}]}
-                                        name="input"
-                                        maxLength={100}
-                                        defaultValue={this.project.title}
-                                        onChangeText = {(input) => this.changeTitleHandler(input)}
-                                        onSubmitEditing={() => {
-                                            this.submitTitleHandler()
-                                        }}
-                                    />    
-                                </View>
-                            </FlexLayout>
-                        </Modal>
-                    </Pressable> 
-                        
+                    <View style={[styles.container]}>
+                        <Text             
+                            numberOfLines={1}
+                            style={styles.titleTask}
+                        >
+                            {this.project.title}
+                        </Text> 
+                        <View style={styles.progressBar}>
+                            <View style={[styles.progress,{width: 100 * progressPercent + "%"}]} />
+                        </View>
+                        <Text style={styles.tasksCounter}>
+                            {
+                                onlyDoneProjectTasks
+                                + '/' +
+                                allProjectTasks
+                            }
+                        </Text>
+                    </View>  
+                    <Modal 
+                        animationIn="slideInRight"
+                        animationOut="slideOutRight"
+                        isVisible={this.state.projectPageIsOpen} 
+                        swipeDirection='right'
+                        onSwipeComplete={() => this.setProjectPageIsOpen(!this.state.projectPageIsOpen)}
+                        onBackdropPress={() => this.setProjectPageIsOpen(!this.state.projectPageIsOpen)}
+                        style={styles.modalStyle} 
+                    > 
+                        <FlexLayout>
+                            <View style={sharedStyles.wrapperInLine}>
+                                <TextInput 
+                                    style={[styles.titleTask,{marginLeft:25}]}
+                                    name="input"
+                                    maxLength={100}
+                                    defaultValue={this.project.title}
+                                    onChangeText = {(input) => this.changeTitleHandler(input)}
+                                    onSubmitEditing={() => {
+                                        this.submitTitleHandler()
+                                    }}
+                                />    
+                            </View>
+                        </FlexLayout>
+                    </Modal>
             </>
         );
     }

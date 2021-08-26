@@ -8,6 +8,7 @@ import {
     View, 
     StyleSheet,
     TouchableOpacity,
+    Pressable,
 } from "react-native";
 import realm, { 
     getAllProjects,
@@ -19,6 +20,7 @@ import { strings } from "../../../translations/translations";
 import sharedStyles from "../../../styles/shared";
 import ProjectItem from "../../../components/components/ProjectItem";
 import ModalCreateProject from "../../../components/ModalComponents/ModalCreateProject";
+import TasksList from "./TasksList";
 
 const ProjectsList = ({navigation}) => {
     const [projects,setProjects] = useState(getAllProjects())

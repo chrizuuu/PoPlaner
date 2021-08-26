@@ -26,7 +26,7 @@ import { translate } from "i18n-js";
 
 const windowHeight = Dimensions.get('window').height;
 
-const TasksList = ({navigation,tasksType,priority,project_id}) => {
+const TasksList = ({navigation,tasksType,priority}) => {
     const [tasks, setTasks] = useState(tasksType);
     const [taskInput,setTaskInput] = useState()
     const [addFormVisible,setAddFormVisible] = useState(false)
@@ -81,11 +81,11 @@ const TasksList = ({navigation,tasksType,priority,project_id}) => {
         container: {
             flex:1,
             position:'absolute',
-            top:-60,
-            transform: addFormVisible? [{translateY: 60}] :[ {translateY:0}],
+            transform: addFormVisible? [{translateY:0}] :[ {translateY:-60}],
             width:'100%',
-            height:windowHeight+60,
-            backgroundColor:"rgb(244, 244, 244)"
+            height: '100%',
+            backgroundColor:"rgb(244, 244, 244)",
+            marginBottom:5
         },
 
         textInputContainer: {
@@ -110,7 +110,6 @@ const TasksList = ({navigation,tasksType,priority,project_id}) => {
                     <FlatList
                         style={{flex:1}}
                         keyboardShouldPersistTaps={"handled"}
-                        stickyHeaderIndices={[0]}
                         ListHeaderComponent={
                             <>
                                 <View style={styles.textInputContainer}>
