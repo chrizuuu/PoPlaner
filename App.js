@@ -3,7 +3,6 @@ import React, {useState} from 'react';
 import {StatusBar} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import TabsNav from './src/navigations/tabsNav';
 import DrawerNav from './src/navigations/drawerNav';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';

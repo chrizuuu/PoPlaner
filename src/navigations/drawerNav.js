@@ -31,6 +31,14 @@ const DrawerNav = () => {
             drawerLabelStyle: {
                 fontFamily:'OpenSansSemiBold'
             },
+            headerTitleAlign: 'center',
+            headerStyle: {
+                height:50,
+            },
+            headerTitleStyle: {
+                fontFamily:'OpenSansBold',
+                fontSize:16,
+            },
             drawerIcon: ({focused, color, size }) => {
                 let iconName;
                 size = focused
@@ -83,7 +91,12 @@ const DrawerNav = () => {
 
         <HomeTab.Screen 
             name="Priority Tasks"
-            options={{ title: strings("headerTitlePriorityTasks") }}
+            options={{ 
+                title: strings("headerTitlePriorityTasks"),
+                headerRight: () => (
+                    <Icon name='star' />
+                )
+            }}
         >
             {() => <TasksList tasksType={getPriorityTasks} />}        
         </HomeTab.Screen>

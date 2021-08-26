@@ -5,7 +5,6 @@ import PomodoroScreen from '../screens/Dasboard/Pomodoro/PomodoroScreen';
 import ScheduleScreen from '../screens/Dasboard/ScheduleScreen';
 import ProfileScreen from '../screens/Dasboard/ProfileScreen';
 import DashboardScreen from '../screens/Dasboard/DashboardScreen';
-import ToDoDashboard from '../screens/Dasboard/ToDo/ToDoDashboard';
 
 import {Icon} from 'react-native-elements';
 
