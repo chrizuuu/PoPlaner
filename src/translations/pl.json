@@ -1,4 +1,10 @@
 {     
+    "headerTitlePriorityTasks": "Priorytety",
+    "headerTitleAllTasks": "Skrzynka spraw",
+    "headerTitleProjects": "Projekty",
+    "headerTitleCalendar": "Kalendarz",
+    "headerTitleProfile": "Profil",
+
     "loginHeader": "Witamy z powrotem!",
     "loginSubHeader":"Miło Cię znowu widzieć!",
     "authLabelEmail": "EMAIL",

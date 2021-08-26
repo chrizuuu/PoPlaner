@@ -8,6 +8,7 @@ import DashboardScreen from '../screens/Dasboard/DashboardScreen';
 import TasksList from '../screens/Dasboard/ToDo/TasksList';
 import ProjectsList from '../screens/Dasboard/ToDo/ProjectsList';
 import realm, {getAllTasks,getPriorityTasks} from '../Database/Database'
+import { strings } from '../translations/translations';
 
 import {Icon} from 'react-native-elements';
 
@@ -75,17 +76,49 @@ const DrawerNav = () => {
                 return <Icon type='ionicon' name={iconName} size={size} color={color} />;
             },
     })} >
-        <HomeTab.Screen name="Dashboard" component={DashboardScreen} />
-        <HomeTab.Screen name="Priority Tasks">
+        <HomeTab.Screen 
+            name="Dashboard" 
+            component={DashboardScreen} 
+        />
+
+        <HomeTab.Screen 
+            name="Priority Tasks"
+            options={{ title: strings("headerTitlePriorityTasks") }}
+        >
             {() => <TasksList tasksType={getPriorityTasks} />}        
         </HomeTab.Screen>
-        <HomeTab.Screen name="All Tasks" > 
+
+        <HomeTab.Screen 
+            name="All Tasks"
+            options={{ 
+                title: strings("headerTitleAllTasks") ,
+                
+            }} 
+            
+        > 
             {() => <TasksList tasksType={getAllTasks} />}        
         </HomeTab.Screen>
-        <HomeTab.Screen name="Projects" component={ProjectsList}  />
-        <HomeTab.Screen name="Calendar" component={ScheduleScreen} />
-        <HomeTab.Screen name="Pomodoro" component={PomodoroScreen} />
-        <HomeTab.Screen name="Profile" component={ProfileScreen} />
+
+        <HomeTab.Screen 
+            name="Projects" 
+            component={ProjectsList}  
+            options={{ title: strings("headerTitleProjects")}}
+        />
+        <HomeTab.Screen 
+            name="Calendar" 
+            component={ScheduleScreen} 
+            options={{ title: strings("headerTitleCalendar") }}
+        />
+        <HomeTab.Screen 
+            name="Pomodoro" 
+            component={PomodoroScreen} 
+            options={{ title: 'Pomodoro Timer' }}
+        />
+        <HomeTab.Screen 
+            name="Profile" 
+            component={ProfileScreen} 
+            options={{ title: strings("headerTitleProfile")}}
+        />
     </HomeTab.Navigator>
   )
 }

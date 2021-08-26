@@ -1,4 +1,10 @@
 {     
+    "headerTitlePriorityTasks": "Priority",
+    "headerTitleAllTasks": "Inbox",
+    "headerTitleProjects": "Projects",
+    "headerTitleCalendar": "Calendar",
+    "headerTitleProfile": "Profile",
+
     "loginHeader": "Welcome again!",
     "loginSubHeader":"Nice to see you again!",
     "authLabelEmail": "EMAIL",
