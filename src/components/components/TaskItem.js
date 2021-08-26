@@ -260,16 +260,11 @@ export default class TaskItem extends React.Component {
                                         valueTitle = {strings('taskPropertyDate')}
                                         value = {this.task.createdDate.toLocaleDateString() + ' ' + this.task.createdDate.toLocaleTimeString()}
                                     />
-                                    <PropertyItem
-                                        valueIcon = 'outlined-flag'
-                                        valueTitle = {strings('taskPropertyCategory')}
-                                        value = {this.task.category}
-                                    />
                                     {
                                         this.task.project !== null ?
                                             <PropertyItem
                                                 valueIcon = 'outlined-flag'
-                                                valueTitle = {strings('taskPropertyCategory')}
+                                                valueTitle = {strings('taskPropertyProject')}
                                                 value = {this.task.project.title}
                                             /> 
                                         : null   

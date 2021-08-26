@@ -55,12 +55,12 @@ const DrawerNav = () => {
                         ? 'calendar'
                         : 'calendar-outline' 
                 } 
-                else if (route.name === 'Priority Tasks') {
+                else if (route.name === 'Priority') {
                     iconName = focused 
                         ? 'star'
                         : 'star-outline';
                 } 
-                else if (route.name === 'All Tasks') {
+                else if (route.name === 'Inbox') {
                     iconName = focused 
                         ? 'list'
                         : 'list-outline';
@@ -90,32 +90,29 @@ const DrawerNav = () => {
         />
 
         <HomeTab.Screen 
-            name="Priority Tasks"
-            options={{ 
-                title: strings("headerTitlePriorityTasks"),
-                headerRight: () => (
-                    <Icon name='star' />
-                )
-            }}
+            name="Priority"
+            options={({ navigation, route }) => ({ 
+                title: strings("headerTitlePriorityTasks"),    
+            })}
         >
-            {() => <TasksList tasksType={getPriorityTasks} />}        
+            {(props) => <TasksList {...props} tasksType={getPriorityTasks} priority={true} />}        
         </HomeTab.Screen>
 
         <HomeTab.Screen 
-            name="All Tasks"
-            options={{ 
-                title: strings("headerTitleAllTasks") ,
-                
-            }} 
-            
-        > 
-            {() => <TasksList tasksType={getAllTasks} />}        
+            name="Inbox"
+            options={({ navigation, route }) => ({ 
+                title: strings("headerTitleAllTasks"),  
+            })}
+        >
+            {(props) => <TasksList {...props} tasksType={getAllTasks} priority={false} />}        
         </HomeTab.Screen>
 
         <HomeTab.Screen 
             name="Projects" 
             component={ProjectsList}  
-            options={{ title: strings("headerTitleProjects")}}
+            options={({ navigation, route }) => ({ 
+                title: strings("headerTitleProjects"),  
+            })}
         />
         <HomeTab.Screen 
             name="Calendar" 

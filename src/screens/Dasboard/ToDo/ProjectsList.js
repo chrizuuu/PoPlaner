@@ -1,11 +1,13 @@
 import React, {
     useState, 
+    useLayoutEffect,
 } from "react";
 import {
     Text, 
     FlatList,
     View, 
     StyleSheet,
+    TouchableOpacity,
 } from "react-native";
 import realm, { 
     getAllProjects,
@@ -18,9 +20,25 @@ import sharedStyles from "../../../styles/shared";
 import ProjectItem from "../../../components/components/ProjectItem";
 import ModalCreateProject from "../../../components/ModalComponents/ModalCreateProject";
 
-const ProjectsList = () => {
+const ProjectsList = ({navigation}) => {
     const [projects,setProjects] = useState(getAllProjects())
     const [visibleCreateProject,setVisibleCreateProject] = useState(false)
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+        headerRight: () => (
+            <TouchableOpacity 
+                style={{marginRight:11}} 
+                onPress={() => setVisibleCreateProject(true)}
+            >
+                <Icon 
+                    type='ionicon'
+                    name='add-circle-outline' 
+                />      
+            </TouchableOpacity>    
+            ),
+        });
+    }, [navigation]);
 
 
     function onRealmChange() {
@@ -47,11 +65,6 @@ const ProjectsList = () => {
             backgroundColor:"rgb(244, 244, 244)"
         },
         
-        projectsContainer: {
-            flex:1,
-            borderTopWidth:1,
-            borderTopColor:"rgb(200,200,200)"
-        },
 
         textInput: {
             borderColor: "rgb(200,200,200)", 
@@ -66,52 +79,31 @@ const ProjectsList = () => {
     return (
         <>
             <View style={styles.container} >     
-                <View style={styles.projectsContainer}>
-                    <View 
-                        style={[                                
-                            sharedStyles.wrapperInLine,
-                            styles.headerWrapper,            
-                            ]}
-                    >
-                        <Text style= {[styles.header]}>
-                            {strings("allProjects")}
-                        </Text>
-
-                        <Icon 
-                            type="material" 
-                            name="add"
-                            size={28} 
-                            onPress={() => setVisibleCreateProject(!visibleCreateProject)}
-                        />
-                    </View>    
-                        <FlatList
-                            showsVerticalScrollIndicator={false}
-                            keyboardShouldPersistTaps={"handled"}
-                            data={projects}
-                            showsVerticalScrollIndicator ={false}
-                            keyExtractor={(item) => item._id.toString()}
-                            renderItem={({item}) => {
-                            return (
-                                <ProjectItem item_id={item._id} />
-                            )}} 
-                        />    
-                </View> 
-                <Modal 
-                    animationIn="slideInUp"
-                    animationOut="slideOutDown"
-                    swipeDirection="down"
-                    isVisible={visibleCreateProject} 
-                    backdropOpacity={0.4}
-                    onSwipeComplete={() => setVisibleCreateProject(!visibleCreateProject)}
-                    onBackdropPress={() => setVisibleCreateProject(!visibleCreateProject)}
-
-                > 
-                    <ModalCreateProject closeFunc={() => setVisibleCreateProject(!visibleCreateProject)} />
-                </Modal>
-            </View>
-            </>
-
+                <FlatList
+                    showsVerticalScrollIndicator={false}
+                    keyboardShouldPersistTaps={"handled"}
+                    data={projects}
+                    showsVerticalScrollIndicator ={false}
+                    keyExtractor={(item) => item._id.toString()}
+                    renderItem={({item}) => {
+                        return (
+                            <ProjectItem item_id={item._id} />
+                    )}} 
+                />    
+            </View> 
+            <Modal 
+                animationIn="slideInUp"
+                animationOut="slideOutDown"
+                swipeDirection="down"
+                isVisible={visibleCreateProject} 
+                backdropOpacity={0.4}
+                onSwipeComplete={() => setVisibleCreateProject(!visibleCreateProject)}
+                onBackdropPress={() => setVisibleCreateProject(!visibleCreateProject)}
+            > 
+                <ModalCreateProject closeFunc={() => setVisibleCreateProject(!visibleCreateProject)} />
+            </Modal>
+        </>
     );
 };
 
-export default ProjectsList
+export default React.memo(ProjectsList)

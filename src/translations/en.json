@@ -37,6 +37,7 @@
     "priorityTasks": "Priorities",
     "allProjects": "Projects",
 
+    "taskAddForm": "Add task...",
     "taskCreatedAt": "Created at: ",
     "taskPropertyDate": "Date? ",
     "taskPropertyProject": "Project? ",
