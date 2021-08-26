@@ -173,49 +173,6 @@ const ToDoDashboad = () => {
                     />
                 </View>
         
-                <View style={styles.projectsContainer}>
-                    <View 
-                        style={[                                
-                            sharedStyles.wrapperInLine,
-                            styles.headerWrapper,            
-                            ]}
-                    >
-                        <Text style= {[styles.header]}>
-                            {strings("allProjects")}
-                        </Text>
-
-                        <Icon 
-                            type="material" 
-                            name="add"
-                            size={28} 
-                            onPress={() => setVisibleCreateProject(!visibleCreateProject)}
-                        />
-                    </View>    
-                        <FlatList
-                            horizontal
-                            showsHorizontalScrollIndicator={false}
-                            keyboardShouldPersistTaps={"handled"}
-                            data={projects}
-                            showsVerticalScrollIndicator ={false}
-                            keyExtractor={(item) => item._id.toString()}
-                            renderItem={({item}) => {
-                            return (
-                                <ProjectItem item_id={item._id} />
-                            )}} 
-                        />    
-                </View> 
-                <Modal 
-                    animationIn="slideInUp"
-                    animationOut="slideOutDown"
-                    swipeDirection="down"
-                    isVisible={visibleCreateProject} 
-                    backdropOpacity={0.4}
-                    onSwipeComplete={() => setVisibleCreateProject(!visibleCreateProject)}
-                    onBackdropPress={() => setVisibleCreateProject(!visibleCreateProject)}
-
-                > 
-                    <ModalCreateProject closeFunc={() => setVisibleCreateProject(!visibleCreateProject)} />
-                </Modal>
             </View>
             </>
 

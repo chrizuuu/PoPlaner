@@ -68,8 +68,12 @@ const createTask = (_title,_priority) => {
     });
 }
 
-const getAllTasks =() => {
+const getAllTasks = () => {
     return realm.objects("Task").filtered("isDone == false").sorted("createdDate","Descendig")
+}
+
+const getPriorityTasks = () => {
+    return realm.objects("Task").filtered("isDone == false AND priority == true").sorted("createdDate","Descendig")
 }
 
 const changePriority = (_task) => {
@@ -118,6 +122,7 @@ export default realm;
 export {
     createTask,
     getAllTasks,
+    getPriorityTasks,
     changePriority,
     updateIsDone,
     deleteTask,

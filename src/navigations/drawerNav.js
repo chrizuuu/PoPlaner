@@ -5,7 +5,9 @@ import PomodoroScreen from '../screens/Dasboard/Pomodoro/PomodoroScreen';
 import ScheduleScreen from '../screens/Dasboard/ScheduleScreen';
 import ProfileScreen from '../screens/Dasboard/ProfileScreen';
 import DashboardScreen from '../screens/Dasboard/DashboardScreen';
-import ToDoDashboard from '../screens/Dasboard/ToDo/ToDoDashboard';
+import TasksList from '../screens/Dasboard/ToDo/TasksList';
+import ProjectsList from '../screens/Dasboard/ToDo/ProjectsList';
+import realm, {getAllTasks,getPriorityTasks} from '../Database/Database'
 
 import {Icon} from 'react-native-elements';
 
@@ -73,13 +75,17 @@ const DrawerNav = () => {
                 return <Icon type='ionicon' name={iconName} size={size} color={color} />;
             },
     })} >
-      <HomeTab.Screen name="Dashboard" component={DashboardScreen} />
-      <HomeTab.Screen name="Priority Tasks" component={ToDoDashboard} />
-      <HomeTab.Screen name="All Tasks" component={ToDoDashboard} />
-      <HomeTab.Screen name="Projects" component={ToDoDashboard} />
-      <HomeTab.Screen name="Calendar" component={ScheduleScreen} />
-      <HomeTab.Screen name="Pomodoro" component={PomodoroScreen} />
-      <HomeTab.Screen name="Profile" component={ProfileScreen} />
+        <HomeTab.Screen name="Dashboard" component={DashboardScreen} />
+        <HomeTab.Screen name="Priority Tasks">
+            {() => <TasksList tasksType={getPriorityTasks} />}        
+        </HomeTab.Screen>
+        <HomeTab.Screen name="All Tasks" > 
+            {() => <TasksList tasksType={getAllTasks} />}        
+        </HomeTab.Screen>
+        <HomeTab.Screen name="Projects" component={ProjectsList}  />
+        <HomeTab.Screen name="Calendar" component={ScheduleScreen} />
+        <HomeTab.Screen name="Pomodoro" component={PomodoroScreen} />
+        <HomeTab.Screen name="Profile" component={ProfileScreen} />
     </HomeTab.Navigator>
   )
 }

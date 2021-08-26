@@ -5,7 +5,7 @@ import { View,
     StyleSheet,
     TextInput,
     ScrollView,
-    Keyboard
+    Keyboard,
 } 
 from 'react-native';
 import realm from "../../Database/Database";
@@ -18,35 +18,23 @@ import CustomizingHeaderBar from "../Header/CustomizingHeaderBar";
 
 const styles = StyleSheet.create({
     container: {
-        flex:1,
-        backgroundColor:'rgb(230,230,230)',
         paddingHorizontal:10,
-        paddingVertical:25,
-        margin:10,
-        borderRadius:15,
-        maxHeight:200,
-        minWidth:200,
-    },
-    wrapperInRow: {
+        paddingVertical:10,
         flexDirection:'row',
+        borderTopWidth:1.5,
+        borderColor:'rgba(28,28,28,0.1)',
         justifyContent:'space-between',
         alignItems:'center',
     },
     titleTask: {
-        flex:1,
+        flex:2,
         fontSize:16,
-        fontFamily:"OpenSansBold",
-        color:'#282828',
-        overflow:'hidden', 
-    },
-    date: {
-        flex:1,
-        fontSize:14,
-        fontFamily:"OpenSansReg",
+        fontFamily:"OpenSansSemiBold",
         color:'#282828',
         overflow:'hidden', 
     },
     progressWrapper: {
+        marginTop:20,
         paddingHorizontal:5,
     },
 
@@ -134,28 +122,14 @@ export default class ProjectItem extends React.Component {
         let progressPercent = onlyDoneProjectTasks / allProjectTasks 
         return (
             <>
-
                     <Pressable  onPress={() => this.setProjectPageIsOpen(!this.state.projectPageIsOpen)}>   
                         <View style={[styles.container]}>
-                            <View style={[styles.wrapperInRow]}>                 
                                 <Text             
                                     numberOfLines={1}
                                     style={styles.titleTask}
                                 >
                                     {this.project.title}
                                 </Text> 
-                                <Icon 
-                                    type='material' 
-                                    name='more-horiz'
-                                    size={28} 
-                                />
-                            </View>
-
-                            <Text style={styles.date}>
-                                {this.project.createdDate.toLocaleDateString()}
-                            </Text>
-
-                            <View style={[styles.wrapperInRow,styles.progressWrapper]}>
                                 <View style={styles.progressBar}>
                                     <View style={[styles.progress,{width: 100 * progressPercent + "%"}]} />
                                 </View>
@@ -166,8 +140,6 @@ export default class ProjectItem extends React.Component {
                                     allProjectTasks
                                 }
                                 </Text>
-                            </View>
-                 
                         </View>  
 
                         <Modal 
@@ -192,7 +164,6 @@ export default class ProjectItem extends React.Component {
                                         }}
                                     />    
                                 </View>
-                                
                             </FlexLayout>
                         </Modal>
                     </Pressable> 
