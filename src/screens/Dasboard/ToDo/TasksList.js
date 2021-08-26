@@ -3,15 +3,12 @@ import React, {
     useLayoutEffect
 } from "react";
 import {
-    Text, 
     FlatList,
     View, 
     TextInput,
     Keyboard,
     StyleSheet,
-    ScrollView,
-    KeyboardAvoidingView,
-    Pressable
+    Dimensions
 } from "react-native";
 import realm, { 
     createTask, 
@@ -26,6 +23,8 @@ import ErrorText from "../../../components/Text/ErrorText";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { add, transform } from "lodash";
 import { translate } from "i18n-js";
+
+const windowHeight = Dimensions.get('window').height;
 
 const TasksList = ({navigation,tasksType,priority,project_id}) => {
     const [tasks, setTasks] = useState(tasksType);
@@ -80,22 +79,13 @@ const TasksList = ({navigation,tasksType,priority,project_id}) => {
     }
     const styles = StyleSheet.create({
         container: {
+            flex:1,
             position:'absolute',
             top:-60,
             transform: addFormVisible? [{translateY: 60}] :[ {translateY:0}],
             width:'100%',
-            paddingBottom:25,
+            height:windowHeight+60,
             backgroundColor:"rgb(244, 244, 244)"
-        },
-        
-        tasksContainer: {
-            flex:2,
-        },
-
-        projectsContainer: {
-            flex:1,
-            borderTopWidth:1,
-            borderTopColor:"rgb(200,200,200)"
         },
 
         textInputContainer: {
@@ -118,6 +108,7 @@ const TasksList = ({navigation,tasksType,priority,project_id}) => {
         <>
                 <View style={styles.container}>
                     <FlatList
+                        style={{flex:1}}
                         keyboardShouldPersistTaps={"handled"}
                         stickyHeaderIndices={[0]}
                         ListHeaderComponent={

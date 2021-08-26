@@ -49,16 +49,6 @@ const ProjectsList = ({navigation}) => {
     realm.addListener("change", onRealmChange);
 
     const styles = StyleSheet.create({
-        headerWrapper: {
-            justifyContent:"space-between",
-            padding:20,
-        },
-        header: {
-            fontFamily:"OpenSansBold",
-            fontSize:18,
-            color:"#282828",
-        },
-
         container: {
             flex:1,
             paddingBottom:25,
