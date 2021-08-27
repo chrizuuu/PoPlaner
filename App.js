@@ -6,7 +6,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import DrawerNav from './src/navigations/drawerNav';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
-import {strings,setI18Config} from './src/translations/translations'
+import {setI18Config} from './src/translations/translations'
+import TasksList from './src/screens/Dasboard/ToDo/TasksList';
 
 const Stack = createStackNavigator();
 
@@ -34,6 +35,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown:false,}}>
         <Stack.Screen name="HomeTab" component={DrawerNav}/>
+        <Stack.Screen name="ProjectTasks" component={TasksList} />
       </Stack.Navigator>
     </NavigationContainer>
     </>

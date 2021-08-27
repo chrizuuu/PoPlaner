@@ -1,5 +1,4 @@
 import React from 'react';
-import { View,Text,Button } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import PomodoroScreen from '../screens/Dasboard/Pomodoro/PomodoroScreen';
 import ScheduleScreen from '../screens/Dasboard/ScheduleScreen';
@@ -7,7 +6,7 @@ import ProfileScreen from '../screens/Dasboard/ProfileScreen';
 import DashboardScreen from '../screens/Dasboard/DashboardScreen';
 import TasksList from '../screens/Dasboard/ToDo/TasksList';
 import ProjectsList from '../screens/Dasboard/ToDo/ProjectsList';
-import realm, {getAllTasks,getPriorityTasks} from '../Database/Database'
+import {getAllTasks,getPriorityTasks} from '../Database/Database'
 import { strings } from '../translations/translations';
 
 import {Icon} from 'react-native-elements';
