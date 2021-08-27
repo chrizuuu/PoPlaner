@@ -80,15 +80,15 @@ const TasksList = ({navigation,tasksType,priority}) => {
     const styles = StyleSheet.create({
         container: {
             flex:1,
-            position:'absolute',
-            transform: addFormVisible? [{translateY:0}] :[ {translateY:-60}],
             width:'100%',
-            height: '100%',
+            height: windowHeight,
             backgroundColor:"rgb(244, 244, 244)",
             marginBottom:5
         },
 
         textInputContainer: {
+            transform: addFormVisible? [{translateY:0}] :[ {translateY:-60}],
+            display:addFormVisible? 'flex': 'none',
             flexDirection:'row',
             alignItems:'center',
             borderColor: "rgb(48,48,48)",
@@ -102,6 +102,15 @@ const TasksList = ({navigation,tasksType,priority}) => {
             marginHorizontal:15,
             marginVertical:10,
         },
+        listFooter: {
+            height:40,
+            width:'100%',
+            backgroundColor:"rgb(255,255,255)",
+            borderTopWidth:1,
+            flexDirection:'row',
+            justifyContent:'space-between',
+            alignItems:'center'
+        }
     })
  
     return (
@@ -145,7 +154,7 @@ const TasksList = ({navigation,tasksType,priority}) => {
                             return (
                                 <TaskItem item_id={item._id} />
                         )}} 
-                    />
+                    /> 
                 </View>
         </>
 
