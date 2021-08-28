@@ -5,11 +5,12 @@ import ScheduleScreen from '../screens/Dasboard/ScheduleScreen';
 import ProfileScreen from '../screens/Dasboard/ProfileScreen';
 import DashboardScreen from '../screens/Dasboard/DashboardScreen';
 import TasksList from '../screens/Dasboard/ToDo/TasksList';
-import ProjectsList from '../screens/Dasboard/ToDo/ProjectsList';
-import {getAllTasks,getPriorityTasks} from '../Database/Database'
+import ProjectsListScreen from '../screens/Dasboard/ToDo/ProjectsListScreen';
+import {getAllTasks,getPriorityTasks, getTasks} from '../Database/DatabaseFunctions'
 import { strings } from '../translations/translations';
 
 import {Icon} from 'react-native-elements';
+import { FlatList } from 'react-native-gesture-handler';
 
 const HomeTab = createDrawerNavigator();
 
@@ -108,14 +109,14 @@ const DrawerNav = () => {
 
         <HomeTab.Screen 
             name="Projects" 
-            component={ProjectsList}  
+            component={ProjectsListScreen}  
             options={({ navigation, route }) => ({ 
                 title: strings("headerTitleProjects"),  
             })}
         />
         <HomeTab.Screen 
             name="Calendar" 
-            component={ScheduleScreen} 
+            component={TasksList} 
             options={{ title: strings("headerTitleCalendar") }}
         />
         <HomeTab.Screen 

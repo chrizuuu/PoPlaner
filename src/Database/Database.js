@@ -1,5 +1,7 @@
 import Realm from "realm";
 import { ObjectId } from "bson";
+import {createProject} from "./DatabaseFunctions"
+
 
 class TaskSchema extends Realm.Object {
     static schema = {
@@ -52,76 +54,16 @@ class PomodoroTimerSchema extends Realm.Object {
         },
     }
 }
-let realm = new Realm({schema: [TaskSchema,ProjectSchema,PomodoroTimerSchema], schemaVersion: 1});
+const realm = new Realm({schema: [TaskSchema,ProjectSchema,PomodoroTimerSchema], schemaVersion: 1});
 
-// Task handlers
-
-const createTask = (_title,_priority,_project) => {
-    realm.write(() => {
-        const task = realm.create("Task", {
-            _id: new ObjectId(),
-            title: _title,
-            createdDate: new Date(),
-            priority:_priority,
-            project: _project,
-            comment:"",
-        });
-    });
+const initDB = () => {
+    if (realm.objects("Project").length < 1){
+        createProject('Wszystkie sprawy');
+    }
 }
-
-const getTasks = (priorityValue) => {
-    return realm.objects("Task").filtered("isDone == false AND priority == $0",priorityValue).sorted("createdDate","Descendig")
-}
-
-const changePriority = (_task) => {
-    realm.write(() => {
-        _task.priority = !_task.priority;
-    })  
-}
-
-const updateIsDone = (_task) => {
-    realm.write(() => {
-        _task.isDone = !_task.isDone;
-    })
-}
-
-const deleteTask = (_task) => {
-    realm.write(() => {
-     realm.delete(_task);
-    });
-};
-
-
-// Category handlers
-
-// Project handlers
-
-const createProject = (_title,_comment) => {
-    realm.write(() => {
-        const project = realm.create("Project", {
-            _id: new ObjectId(),
-            title: _title,
-            createdDate: new Date(),
-            description:_comment,
-        });
-    });
-}
-
-const getAllProjects = () => {
-    return realm.objects("Project").filtered("isDone == false").sorted("createdDate","Descendig")
-}
-
-//Pomodoro handlers 
+initDB()
 
 export default realm;
 // Export other functions so other files can access it
 
-export {
-    createTask,
-    getTasks,
-    changePriority,
-    updateIsDone,
-    deleteTask,
-    createProject,
-    getAllProjects,
-}
+

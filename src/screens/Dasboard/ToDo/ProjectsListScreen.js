@@ -10,10 +10,11 @@ import {
     TouchableOpacity,
     Pressable,
 } from "react-native";
-import realm, { 
+import realm from "../../../Database/Database";
+import{ 
     getAllProjects,
     createProject 
-} from "../../../Database/Database"
+} from "../../../Database/DatabaseFunctions"
 import {Icon} from "react-native-elements";
 import Modal from "react-native-modal";
 import { strings } from "../../../translations/translations";
@@ -22,7 +23,7 @@ import ProjectItem from "../../../components/components/ProjectItem";
 import ModalCreateProject from "../../../components/ModalComponents/ModalCreateProject";
 import TasksList from "./TasksList";
 
-const ProjectsList = ({navigation}) => {
+const ProjectsListScreen = ({navigation}) => {
     const [projects,setProjects] = useState(getAllProjects())
     const [visibleCreateProject,setVisibleCreateProject] = useState(false)
 
@@ -105,4 +106,4 @@ const ProjectsList = ({navigation}) => {
     );
 };
 
-export default React.memo(ProjectsList)
+export default React.memo(ProjectsListScreen)

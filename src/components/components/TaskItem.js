@@ -8,13 +8,14 @@ import { View,
     ScrollView,
 } 
 from 'react-native';
-import realm, 
+import realm from "../../Database/Database";
+import
     {changePriority,
     updateIsDone,
     deleteTask,
     getAllProjects
 } 
-from "../../Database/Database";
+from "../../Database/DatabaseFunctions";
 import CheckBox from "../Buttons/CheckBox";
 import { Picker } from "@react-native-picker/picker";
 import {Icon} from 'react-native-elements';
@@ -156,6 +157,10 @@ export default class TaskItem extends React.Component {
 
     saveProject = (value) => {
         realm.write(() => {
+            console.log(this.task.project.tasks.length > 0)
+            //let taskToDelete = this.task.project.tasks.indexOf(this.task)
+            //console.log('xd')
+            //this.task.project.tasks.splice(taskToDelete,1)
             value.tasks.push(this.task)
             this.task.project = value
         })
@@ -269,6 +274,7 @@ export default class TaskItem extends React.Component {
                                             /> 
                                         : null   
                                     }
+
                                     <Picker  
                                         onValueChange={(itemValue) =>
                                             this.saveProject(itemValue)
@@ -279,6 +285,7 @@ export default class TaskItem extends React.Component {
                                                     )
                                             }
                                     </Picker>
+
                                     <Text 
                                         style={styles.saveCommentBtn}
                                         onPress={() => {
