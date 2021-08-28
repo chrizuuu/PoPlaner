@@ -8,14 +8,13 @@ import { View,
     ScrollView,
 } 
 from 'react-native';
-import realm from "../../Database/Database";
-import
+import realm,
     {changePriority,
     updateIsDone,
     deleteTask,
     getAllProjects
 } 
-from "../../Database/DatabaseFunctions";
+from "../../Database/Database";
 import CheckBox from "../Buttons/CheckBox";
 import { Picker } from "@react-native-picker/picker";
 import {Icon} from 'react-native-elements';
@@ -102,7 +101,6 @@ export default class TaskItem extends React.Component {
             inputComment: this.task.comment,
             errorCommentStatus: false,
             taskPageIsOpen: false,
-            project:null,
         }
     }
     task = realm.objectForPrimaryKey("Task",this.props.item_id)
@@ -157,10 +155,8 @@ export default class TaskItem extends React.Component {
 
     saveProject = (value) => {
         realm.write(() => {
-            console.log(this.task.project.tasks.length > 0)
-            //let taskToDelete = this.task.project.tasks.indexOf(this.task)
-            //console.log('xd')
-            //this.task.project.tasks.splice(taskToDelete,1)
+            let taskToDelete = this.task.project.tasks.indexOf(this.task)
+            this.task.project.tasks.splice(taskToDelete,1)
             value.tasks.push(this.task)
             this.task.project = value
         })
@@ -260,30 +256,26 @@ export default class TaskItem extends React.Component {
                                 />
 
                                 <FlexLayout style={styles.wrapperSettingsItem}>
-                                    <PropertyItem
+                                {     /* <PropertyItem
                                         valueIcon = 'calendar-today'
                                         valueTitle = {strings('taskPropertyDate')}
-                                        value = {this.task.createdDate.toLocaleDateString() + ' ' + this.task.createdDate.toLocaleTimeString()}
+                                        value = {this.task.deadlineDate.toLocaleDateString() + ' ' + this.task.deadlineDate.toLocaleTimeString()}
                                     />
-                                    {
-                                        this.task.project !== null ?
-                                            <PropertyItem
-                                                valueIcon = 'outlined-flag'
-                                                valueTitle = {strings('taskPropertyProject')}
-                                                value = {this.task.project.title}
-                                            /> 
-                                        : null   
-                                    }
+
+                                       
+                              <PropertyItem
+                                        valueIcon = 'outlined-flag'
+                                        valueTitle = {strings('taskPropertyProject')}
+                                        value = {this.task.project.title}
+/> */ }
 
                                     <Picker  
                                         onValueChange={(itemValue) =>
                                             this.saveProject(itemValue)
                                         }>
-                                            {
-                                                projects.map((item) => 
-                                                    <Picker.Item key={item._id} label={item.title} value={item}  />
-                                                    )
-                                            }
+                                            {projects.map((item) => 
+                                                <Picker.Item key={item._id} label={item.title} value={item}  />
+                                            )}
                                     </Picker>
 
                                     <Text 

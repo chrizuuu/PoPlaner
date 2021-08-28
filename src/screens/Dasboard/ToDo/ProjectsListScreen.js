@@ -10,11 +10,10 @@ import {
     TouchableOpacity,
     Pressable,
 } from "react-native";
-import realm from "../../../Database/Database";
-import{ 
+import realm,{ 
     getAllProjects,
     createProject 
-} from "../../../Database/DatabaseFunctions"
+} from "../../../Database/Database"
 import {Icon} from "react-native-elements";
 import Modal from "react-native-modal";
 import { strings } from "../../../translations/translations";

@@ -10,13 +10,12 @@ import {
     StyleSheet,
     Dimensions
 } from "react-native";
-import realm from "../../../Database/Database";
-import { 
+import realm, { 
     createTask, 
     getAllProjects,
     createProject, 
     getTasks
-} from "../../../Database/DatabaseFunctions"
+} from "../../../Database/Database"
 import {Icon} from 'react-native-elements';
 import TaskItem from "../../../components/components/TaskItem"
 import { strings } from "../../../translations/translations";

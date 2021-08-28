@@ -6,7 +6,7 @@ import ProfileScreen from '../screens/Dasboard/ProfileScreen';
 import DashboardScreen from '../screens/Dasboard/DashboardScreen';
 import TasksList from '../screens/Dasboard/ToDo/TasksList';
 import ProjectsListScreen from '../screens/Dasboard/ToDo/ProjectsListScreen';
-import {getAllTasks,getPriorityTasks, getTasks} from '../Database/DatabaseFunctions'
+import {getAllTasks,getPriorityTasks, getTasks} from '../Database/Database'
 import { strings } from '../translations/translations';
 
 import {Icon} from 'react-native-elements';
