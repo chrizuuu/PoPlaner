@@ -122,7 +122,6 @@ export default class ProjectItem extends React.Component {
         let progressPercent = onlyDoneProjectTasks / allProjectTasks 
         return (
             <>
-            <Text>{this.project.tasks.length}</Text>
                     <View style={[styles.container]}>
                         <Text             
                             numberOfLines={1}

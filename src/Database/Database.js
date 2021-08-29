@@ -1,5 +1,6 @@
 import Realm from "realm";
 import { ObjectId } from "bson";
+let initProject = null;
 
 class TaskSchema extends Realm.Object {
     static schema = {
@@ -72,8 +73,12 @@ const createTask = (_title,_priority,_project) => {
     });
 }
 
-const getTasks = (priorityValue) => {
-    return realm.objects("Task").filtered("isDone == false AND priority == $0",priorityValue).sorted("createdDate","Descendig")
+const getAllTasks = () => {
+    return realm.objects("Task").filtered("isDone == false AND project == $0",initProject).sorted("createdDate","Descendig")
+}
+
+const getPriorityTasks = () => {
+    return realm.objects("Task").filtered("isDone == false AND priority == true").sorted("createdDate","Descendig")
 }
 
 const getProjectTasks = (project) => {
@@ -100,7 +105,6 @@ const deleteTask = (_task) => {
 };
 
 
-// Category handlers
 
 // Project handlers
 
@@ -116,8 +120,10 @@ const createProject = (_title,_comment) => {
 }
 
 const getAllProjects = () => {
-    return realm.objects("Project").filtered("isDone == false").sorted("createdDate","Descendig")
+    return realm.objects("Project").filtered("isDone == false AND visible == true").sorted("createdDate","Descendig")
 }
+
+// init objects on first run
 
 const initDB = () => {
     if (realm.objects("Project").length < 1){
@@ -130,15 +136,18 @@ const initDB = () => {
             });
         });
     }
+    else {
+        return initProject = realm.objects("Project").filtered("visible == false")[0]
+    }
 }
 initDB()
 
 export default realm;
-// Export other functions so other files can access it
 
 export {
     createTask,
-    getTasks,
+    getAllTasks,
+    getPriorityTasks,
     getProjectTasks,
     changePriority,
     updateIsDone,
