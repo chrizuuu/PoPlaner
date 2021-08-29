@@ -191,7 +191,6 @@ export default class TaskItem extends React.Component {
                     <Pressable  onPress={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}>          
                         <View style={[styles.container,{opacity: isDoneTaskOpacity,}]}>
                             <View style={[sharedStyles.padding10, styles.wrapperInRow]}> 
-                            
                                 <CheckBox 
                                     status={this.task.isDone} 
                                     onChange={() =>updateIsDone(this.task)}
@@ -204,7 +203,7 @@ export default class TaskItem extends React.Component {
                                     </Text>
 
                                     <View style={{flexDirection:'row'}}>
-                                        {this.task.deadlineDate.toLocaleDateString()
+                                        {this.task.deadlineDate
                                         ?
                                             <TaskPropertyOnList 
                                                 icon = 'today'
@@ -214,7 +213,7 @@ export default class TaskItem extends React.Component {
                                             null
                                         }
 
-                                        {this.task.project
+                                        {(this.task.project && this.props.displayProjectProperty)
                                         ?
                                             <TaskPropertyOnList 
                                                 icon = 'flag'
@@ -224,7 +223,6 @@ export default class TaskItem extends React.Component {
                                             null
                                         }
                                     </View>
-
                                 </View>
                                 
                                 <Icon 

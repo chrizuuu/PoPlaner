@@ -24,7 +24,7 @@ import { translate } from "i18n-js";
 
 const windowHeight = Dimensions.get('window').height;
 
-const TasksList = ({navigation,tasksType,priority}) => {
+const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
     const [tasks, setTasks] = useState(tasksType);
     const [taskInput,setTaskInput] = useState()
     const [addFormVisible,setAddFormVisible] = useState(false)
@@ -150,7 +150,7 @@ const TasksList = ({navigation,tasksType,priority}) => {
                         keyExtractor={(item) => item._id.toString()}
                         renderItem={({item}) => {
                             return (
-                                <TaskItem item_id={item._id} />
+                                <TaskItem item_id={item._id} displayProjectProperty={displayProjectProperty} />
                         )}} 
                     /> 
                 </View>
