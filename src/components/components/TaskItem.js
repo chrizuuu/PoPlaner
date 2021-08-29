@@ -26,6 +26,7 @@ import PropertyItem from "../components/PropertyItem";
 import {strings} from "../../translations/translations"
 import CustomizingHeaderBar from "../Header/CustomizingHeaderBar";
 import ErrorText from "../Text/ErrorText";
+import TaskPropertyOnList from "./TaskPropertyOnList";
 
 const styles = StyleSheet.create({
     container: {
@@ -39,13 +40,15 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         alignItems:"center",
     },
+
     titleTask: {
         flex:1,
         fontSize:14,
-        fontFamily:"OpenSansReg",
+        fontFamily:"OpenSansSemiBold",
         color:"#282828",
         overflow:"hidden", 
     },
+
     modalStyle: {
         height:"100%",
         marginRight:0,
@@ -90,6 +93,7 @@ const styles = StyleSheet.create({
         fontSize:12,
         fontFamily:"OpenSansReg"
     }
+
 })
 
 export default class TaskItem extends React.Component {
@@ -187,17 +191,42 @@ export default class TaskItem extends React.Component {
                     <Pressable  onPress={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}>          
                         <View style={[styles.container,{opacity: isDoneTaskOpacity,}]}>
                             <View style={[sharedStyles.padding10, styles.wrapperInRow]}> 
+                            
                                 <CheckBox 
                                     status={this.task.isDone} 
                                     onChange={() =>updateIsDone(this.task)}
                                     style={{marginRight:20}} 
-                                />                                    
-                                <Text             
-                                    numberOfLines={1}
-                                    style={styles.titleTask}
-                                >
-                                    {this.task.title}
-                                </Text> 
+                                />
+
+                                <View style={{flex:1}}>                                    
+                                    <Text numberOfLines={1} style={styles.titleTask}>
+                                        {this.task.title}
+                                    </Text>
+
+                                    <View style={{flexDirection:'row'}}>
+                                        {this.task.deadlineDate.toLocaleDateString()
+                                        ?
+                                            <TaskPropertyOnList 
+                                                icon = 'today'
+                                                propertyName={this.task.deadlineDate.toLocaleDateString()}
+                                            /> 
+                                        :
+                                            null
+                                        }
+
+                                        {this.task.project
+                                        ?
+                                            <TaskPropertyOnList 
+                                                icon = 'flag'
+                                                propertyName={this.task.project.title}
+                                            /> 
+                                        :
+                                            null
+                                        }
+                                    </View>
+
+                                </View>
+                                
                                 <Icon 
                                     type="material" 
                                     name={priorityTaskStatus.icon}
@@ -261,14 +290,7 @@ export default class TaskItem extends React.Component {
                                      }
                                 />
 
-                                <FlexLayout style={styles.wrapperSettingsItem}>
-                                {     /* <PropertyItem
-                                        valueIcon = "calendar-today"
-                                        valueTitle = {strings("taskPropertyDate")}
-                                        value = {this.task.deadlineDate.toLocaleDateString() + " " + this.task.deadlineDate.toLocaleTimeString()}
-                                    />
-                                */ }
-                                       
+                                <FlexLayout style={styles.wrapperSettingsItem}>               
                                     <PropertyItem                         
                                         valueIcon = "outlined-flag"
                                         valueTitle = {strings("taskPropertyProject")}
