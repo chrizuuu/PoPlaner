@@ -116,7 +116,7 @@ const createProject = (_title,_comment) => {
             createdDate: new Date(),
             description:_comment,
         });
-    });
+    }); 
 }
 
 const getAllProjects = () => {

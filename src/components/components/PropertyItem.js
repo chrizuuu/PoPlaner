@@ -4,13 +4,13 @@ import InLineLayout from '../Layouts/InLineLayout';
 import sharedStyles from '../../styles/shared';
 import {Icon} from 'react-native-elements';
 
-export default PropertyItem = ({valueIcon,valueTitle,valueContainer,_onPress }) => {
+export default PropertyItem = ({valueIcon,valueTitle,valueContainer,onPress }) => {
 
     const styles = StyleSheet.create ({
         inlineContainer:{
             justifyContent:'space-between',
             borderWidth:1,
-            borderRadius:25,
+            borderRadius:5,
             height:50,
             borderColor:'rgb(234, 234, 234)',
             paddingVertical:5,
@@ -27,7 +27,7 @@ export default PropertyItem = ({valueIcon,valueTitle,valueContainer,_onPress }) 
 
 
   return (
-    <Pressable style={sharedStyles.margintop20}>
+    <Pressable style={sharedStyles.margintop20} onPress={onPress}>
             <InLineLayout style={styles.inlineContainer}>
                 <InLineLayout style={{justifyContent:'flex-start',flex:2,}}>
                     <Icon size={20} name={valueIcon} />

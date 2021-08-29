@@ -95,7 +95,7 @@ const DrawerNav = () => {
                 title: strings("headerTitlePriorityTasks"),    
             })}
         >
-            {(props) => <TasksList {...props} tasksType={getPriorityTasks} />}        
+            {(props) => <TasksList {...props} tasksType={getPriorityTasks} priority={true} />}        
         </HomeTab.Screen>
 
         <HomeTab.Screen 
@@ -104,7 +104,7 @@ const DrawerNav = () => {
                 title: strings("headerTitleAllTasks"),  
             })}
         >
-            {(props) => <TasksList {...props} tasksType={getAllTasks} />}        
+            {(props) => <TasksList {...props} tasksType={getAllTasks} priority={false} />}        
         </HomeTab.Screen>
 
         <HomeTab.Screen 

@@ -17,6 +17,7 @@ import realm,
 from "../../Database/Database";
 import CheckBox from "../Buttons/CheckBox";
 import { Picker } from "@react-native-picker/picker";
+import DatePicker from "react-native-date-picker"
 import {Icon} from "react-native-elements";
 import Modal from "react-native-modal";
 import sharedStyles from "../../styles/shared";
@@ -24,7 +25,6 @@ import FlexLayout from "../Layouts/FlexLayout"
 import PropertyItem from "../components/PropertyItem";
 import {strings} from "../../translations/translations"
 import CustomizingHeaderBar from "../Header/CustomizingHeaderBar";
-import { FlatList } from "react-native";
 import ErrorText from "../Text/ErrorText";
 
 const styles = StyleSheet.create({
@@ -101,7 +101,7 @@ export default class TaskItem extends React.Component {
             inputComment: this.task.comment,
             errorCommentStatus: false,
             taskPageIsOpen: false,
-            taskProjectPickerIsOpen:false,
+            taskDeadlineDatePicker:false,
         }
     }
     task = realm.objectForPrimaryKey("Task",this.props.item_id)
@@ -163,6 +163,11 @@ export default class TaskItem extends React.Component {
         })
     }
 
+    setDeadlineDate = (value) => {
+        realm.write(() => {
+            this.task.deadlineDate = value
+        })
+    }
     render() {
         let priorityTaskStatus = this.task.priority === true
             ? 
@@ -292,6 +297,28 @@ export default class TaskItem extends React.Component {
                                             </>
                                         }
                                     /> 
+                                    <PropertyItem 
+                                        valueIcon="today"
+                                        valueTitle={strings("taskPropertyDate")}
+                                        onPress={() => this.setState({
+                                            taskDeadlineDatePicker:!this.state.taskDeadlineDatePicker
+                                        })}
+                                        valueContainer = {
+                                            <Text>
+                                                { this.task.deadlineDate? this.task.deadlineDate.toLocaleDateString() + ' ' + this.task.deadlineDate.toLocaleTimeString() : ''}    
+                                            </Text>
+                                        }
+                                    />
+                                    <DatePicker
+                                        style={{
+                                            alignSelf:'flex-end',
+                                            display: this.state.taskDeadlineDatePicker ? 'flex' : 'none',
+                                            backgroundColor:'rgb(255,255,255)',
+                                        }}
+                                        date={this.task.deadlineDate? this.task.deadlineDate : new Date()}
+                                        onDateChange={(value) => this.setDeadlineDate(value)}
+                                    />
+                                    
 
                                     <Text 
                                         style={styles.saveCommentBtn}

@@ -24,7 +24,7 @@ import { translate } from "i18n-js";
 
 const windowHeight = Dimensions.get('window').height;
 
-const TasksList = ({navigation,tasksType}) => {
+const TasksList = ({navigation,tasksType,priority}) => {
     const [tasks, setTasks] = useState(tasksType);
     const [taskInput,setTaskInput] = useState()
     const [addFormVisible,setAddFormVisible] = useState(false)
