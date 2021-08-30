@@ -12,8 +12,6 @@ import {
 } from "react-native";
 import realm, { 
     createTask, 
-    getAllProjects,
-    createProject, 
     getTasks
 } from "../../../Database/Database"
 import {Icon} from 'react-native-elements';
@@ -26,8 +24,8 @@ import { translate } from "i18n-js";
 
 const windowHeight = Dimensions.get('window').height;
 
-const TasksList = ({route,navigation,priority}) => {
-    const [tasks, setTasks] = useState(getTasks(priority));
+const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
+    const [tasks, setTasks] = useState(tasksType);
     const [taskInput,setTaskInput] = useState()
     const [addFormVisible,setAddFormVisible] = useState(false)
     const [errorStatus, setErrorStatus] = useState(false)
@@ -50,7 +48,7 @@ const TasksList = ({route,navigation,priority}) => {
 
 
     function onRealmChange() {
-        setTasks(getTasks(priority))
+        setTasks(tasksType)
       }
       
     realm.addListener("change", onRealmChange);
@@ -152,7 +150,7 @@ const TasksList = ({route,navigation,priority}) => {
                         keyExtractor={(item) => item._id.toString()}
                         renderItem={({item}) => {
                             return (
-                                <TaskItem item_id={item._id} />
+                                <TaskItem item_id={item._id} displayProjectProperty={displayProjectProperty} />
                         )}} 
                     /> 
                 </View>
