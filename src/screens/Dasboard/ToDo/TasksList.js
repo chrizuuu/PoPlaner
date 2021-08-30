@@ -10,6 +10,7 @@ import {
     Keyboard,
     StyleSheet,
     Dimensions,
+    Pressable
 } from "react-native";
 import realm, { 
     createTask, 
@@ -22,23 +23,35 @@ import ErrorText from "../../../components/Text/ErrorText";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { add, transform } from "lodash";
 import { translate } from "i18n-js";
-import { Pressable } from "react-native";
 import { set } from "react-native-reanimated";
 
 const windowHeight = Dimensions.get('window').height;
 
 const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
     const [tasks, setTasks] = useState(tasksType);
-    const [taskInput,setTaskInput] = useState()
+    const [taskInput,setTaskInput] = useState("")
     const [addFormVisible,setAddFormVisible] = useState(false)
     const [backdropActive,setBackdropActive] = useState(false)
     const [errorStatus, setErrorStatus] = useState(false)
     const inputTaskTitle = useRef(null)
 
+    function onRealmChange() {
+        setTasks(tasksType)
+      }
+      
+    realm.addListener("change", onRealmChange);
+
+
     const handleAddFormVisibile = () => {
         setAddFormVisible(true)
+        setBackdropActive(true)
         setTimeout(() => inputTaskTitle.current.focus(), 0)
     }
+
+    const addFormDismiss = () => {
+        setAddFormVisible(false)
+        Keyboard.dismiss()
+    } 
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -56,17 +69,6 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
         });
     }, [navigation]);
 
-    function onRealmChange() {
-        setTasks(tasksType)
-      }
-      
-    realm.addListener("change", onRealmChange);
-
-    const addFormDismiss = () => {
-        setAddFormVisible(false)
-        Keyboard.dismiss()
-    } 
-    
     const submitTaskHandler = (value) => {
         if (value.nativeEvent.text !== "" & value.nativeEvent.text.trim().length > 0) {
             createTask(value.nativeEvent.text,priority)
@@ -89,6 +91,17 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
         else {
             setErrorStatus(true)
             setTaskInput(value)
+        }
+    }
+
+    const backdropHandler = () => {
+        if (taskInput !== "" & taskInput.trim().length > 0) {
+            Keyboard.dismiss()
+        }
+        else {
+            setErrorStatus(false)
+            setAddFormVisible(false)
+            setBackdropActive(false)
         }
     }
 
@@ -130,6 +143,7 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
             position:'absolute',
             width:'100%',
             height:'100%',
+            top:60,
         }
     })
  
@@ -147,7 +161,7 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
                                     type='ionicon' 
                                     name='close-outline' 
                                     style={{marginRight:10,}} 
-                                    onPress={() =>addFormHandler() }
+                                    onPress={() =>addFormDismiss() }
                                 />
                                 <TextInput 
                                     style={{flex:1}}
@@ -183,7 +197,7 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
             {addFormVisible
             ?    
                 <Pressable 
-                    onPress={() => setAddFormVisible(false)} 
+                    onPress={() => backdropHandler()} 
                     style={styles.backdropPressable} 
                 />
             : null

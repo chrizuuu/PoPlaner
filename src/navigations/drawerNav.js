@@ -1,22 +1,35 @@
 import React from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator ,  DrawerContentScrollView,DrawerItemList,} from '@react-navigation/drawer';
 import PomodoroScreen from '../screens/Dasboard/Pomodoro/PomodoroScreen';
 import ScheduleScreen from '../screens/Dasboard/ScheduleScreen';
 import ProfileScreen from '../screens/Dasboard/ProfileScreen';
 import DashboardScreen from '../screens/Dasboard/DashboardScreen';
 import TasksList from '../screens/Dasboard/ToDo/TasksList';
 import ProjectsListScreen from '../screens/Dasboard/ToDo/ProjectsListScreen';
-import {getAllTasks,getPriorityTasks, getTasks} from '../Database/Database'
+import {getAllTasks,getPriorityTasks, getAllProjects} from '../Database/Database'
 import { strings } from '../translations/translations';
 
-import {Icon} from 'react-native-elements';
+import {Icon,Button} from 'react-native-elements';
 import { FlatList } from 'react-native-gesture-handler';
 
 const HomeTab = createDrawerNavigator();
 
+function CustomDrawerContent({navigation}) {
+    return (
+        <Button
+        title="Go somewhere"
+        onPress={() => {
+          // Navigate using the `navigation` prop that you received
+          navigation.navigate('Inbox');
+        }}
+      /> 
+    );
+  }
+
 const DrawerNav = () => {
   return (
     <HomeTab.Navigator
+        drawerContent={(props) => <CustomDrawerContent {...props} />}
         keyboardDismissMode = 'null'
         detachInactiveScreens={false}
         screenOptions={({ route }) => ({
