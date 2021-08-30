@@ -34,7 +34,7 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
     const [errorStatus, setErrorStatus] = useState(false)
     const inputTaskTitle = useRef(null)
 
-    const addFormVisibile = () => {
+    const handleAddFormVisibile = () => {
         setAddFormVisible(true)
         setTimeout(() => inputTaskTitle.current.focus(), 0)
     }
@@ -44,7 +44,7 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
         headerRight: () => (
             <TouchableOpacity 
                 style={{marginRight:11}} 
-                onPress={() => addFormVisibile()}
+                onPress={() => handleAddFormVisibile()}
             >
                 <Icon 
                     type='ionicon'
@@ -123,7 +123,6 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
             position:'absolute',
             width:'100%',
             height:'100%',
-            display: addFormVisibile? 'flex' : 'none',
         }
     })
  
@@ -174,10 +173,14 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
                     )}} 
                 /> 
             </View>
-            <Pressable 
-                onPress={() => setAddFormVisible(false)} 
-                style={styles.backdropPressable} 
-            />
+            {addFormVisible
+            ?    
+                <Pressable 
+                    onPress={() => setAddFormVisible(false)} 
+                    style={styles.backdropPressable} 
+                />
+            : null
+            }
         </>
 
     );
