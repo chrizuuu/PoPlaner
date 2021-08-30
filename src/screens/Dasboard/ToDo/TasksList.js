@@ -1,6 +1,7 @@
 import React, {
     useState, 
-    useLayoutEffect
+    useLayoutEffect,
+    useRef
 } from "react";
 import {
     FlatList,
@@ -21,6 +22,8 @@ import ErrorText from "../../../components/Text/ErrorText";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { add, transform } from "lodash";
 import { translate } from "i18n-js";
+import { Pressable } from "react-native";
+import { set } from "react-native-reanimated";
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -29,13 +32,19 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
     const [taskInput,setTaskInput] = useState()
     const [addFormVisible,setAddFormVisible] = useState(false)
     const [errorStatus, setErrorStatus] = useState(false)
+    const inputTaskTitle = useRef(null)
+
+    const addFormVisibile = () => {
+        setAddFormVisible(true)
+        setTimeout(() => inputTaskTitle.current.focus(), 0)
+    }
 
     useLayoutEffect(() => {
         navigation.setOptions({
         headerRight: () => (
             <TouchableOpacity 
                 style={{marginRight:11}} 
-                onPress={() => setAddFormVisible(true)}
+                onPress={() => addFormVisibile()}
             >
                 <Icon 
                     type='ionicon'
@@ -45,6 +54,8 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
             ),
         });
     }, [navigation]);
+
+
 
 
     function onRealmChange() {
@@ -58,7 +69,6 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
         Keyboard.dismiss()
     } 
     
-
     const submitTaskHandler = (value) => {
         if (value.nativeEvent.text !== "" & value.nativeEvent.text.trim().length > 0) {
             createTask(value.nativeEvent.text,priority)
@@ -108,52 +118,66 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
             flexDirection:'row',
             justifyContent:'space-between',
             alignItems:'center'
+        },
+        backdropPressable: {
+            position:'absolute',
+            width:'100%',
+            height:'100%',
+            display: addFormVisibile? 'flex' : 'none',
         }
     })
  
     return (
         <>
-                <View style={styles.container}>
-                    <FlatList
-                        style={{flex:1}}
-                        keyboardShouldPersistTaps={"handled"}
-                        ListHeaderComponent={
-                            <>
-                                <View style={styles.textInputContainer}>
-                                    <Icon 
-                                        size={32} 
-                                        type='ionicon' 
-                                        name='close-outline' 
-                                        style={{marginRight:10,}} 
-                                        onPress={() =>addFormHandler() }
-                                    />
-                                    <TextInput 
-                                        style={{flex:1}}
-                                        placeholder={strings("taskAddForm")}
-                                        onChangeText = {(taskInput) => taskCreateInputHandler(taskInput)}
-                                        value={taskInput}
-                                        onSubmitEditing={(event) => {
-                                            submitTaskHandler(event)
-                                        }}
-                                    />
-                                </View>
-                                {errorStatus === true 
-                                    ? (
-                                        <ErrorText errorValue={strings("inputEmptyError")} />
-                                    ) 
-                                    : null  
-                                }        
-                            </>
-                        }
-                        data={tasks}
-                        showsVerticalScrollIndicator ={false}
-                        keyExtractor={(item) => item._id.toString()}
-                        renderItem={({item}) => {
-                            return (
-                                <TaskItem item_id={item._id} displayProjectProperty={displayProjectProperty} />
-                        )}} 
-                    /> 
-                </View>
+            <View style={styles.container}>
+                <FlatList
+                    style={{flex:1}}
+                    keyboardShouldPersistTaps="always"
+                    ListHeaderComponent={
+                        <>
+                            <View style={styles.textInputContainer}>
+                                <Icon 
+                                    size={32} 
+                                    type='ionicon' 
+                                    name='close-outline' 
+                                    style={{marginRight:10,}} 
+                                    onPress={() =>addFormHandler() }
+                                />
+                                <TextInput 
+                                    style={{flex:1}}
+                                    placeholder={strings("taskAddForm")}
+                                    onChangeText = {(taskInput) => taskCreateInputHandler(taskInput)}
+                                    value={taskInput}
+                                    onSubmitEditing={(event) => {
+                                        submitTaskHandler(event)
+                                    }}
+                                    ref={inputTaskTitle}
+                                />
+                            </View>
+                            {errorStatus === true 
+                                ? (
+                                    <ErrorText errorValue={strings("inputEmptyError")} />
+                                ) 
+                                : null  
+                            }        
+                        </>
+                    }
+                    data={tasks}
+                    showsVerticalScrollIndicator ={false}
+                    keyExtractor={(item) => item._id.toString()}
+                    renderItem={({item}) => {
+                        return (
+                            <TaskItem 
+                                item_id={item._id} 
+                                displayProjectProperty={displayProjectProperty} 
+                            />
+                    )}} 
+                /> 
+            </View>
+            <Pressable 
+                onPress={() => setAddFormVisible(false)} 
+                style={styles.backdropPressable} 
+            />
         </>
 
     );

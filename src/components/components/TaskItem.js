@@ -188,7 +188,7 @@ export default class TaskItem extends React.Component {
         let projects = realm.objects("Project")
         return (
             <>
-                <ScrollView keyboardShouldPersistTaps={"always"}>
+                <ScrollView keyboardShouldPersistTaps="always">
                     <Pressable  onPress={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}>          
                         <View style={[styles.container,{opacity: isDoneTaskOpacity,}]}>
                             <View style={[sharedStyles.padding10, styles.wrapperInRow]}> 
@@ -249,7 +249,6 @@ export default class TaskItem extends React.Component {
                             style={styles.modalStyle} 
                         >
                             <FlexLayout>
-
                                 <CustomizingHeaderBar
                                     style={sharedStyles.paddingSide25}
                                     leftSide={
