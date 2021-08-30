@@ -8,7 +8,7 @@ import {
     TextInput,
     Keyboard,
     StyleSheet,
-    Dimensions
+    Dimensions,
 } from "react-native";
 import realm, { 
     createTask, 
@@ -26,7 +26,7 @@ import { translate } from "i18n-js";
 
 const windowHeight = Dimensions.get('window').height;
 
-const TasksList = ({navigation,priority}) => {
+const TasksList = ({route,navigation,priority}) => {
     const [tasks, setTasks] = useState(getTasks(priority));
     const [taskInput,setTaskInput] = useState()
     const [addFormVisible,setAddFormVisible] = useState(false)

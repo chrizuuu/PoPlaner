@@ -35,7 +35,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown:false,}}>
         <Stack.Screen name="HomeTab" component={DrawerNav}/>
-        <Stack.Screen name="ProjectTasks" component={TasksList} />
+        <Stack.Screen name="ProjectTasks" component={TasksList} getProjectID={({ params }) => params.projectID} /> 
       </Stack.Navigator>
     </NavigationContainer>
     </>

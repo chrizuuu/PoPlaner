@@ -80,9 +80,8 @@ const ProjectsList = ({navigation}) => {
                     renderItem={({item}) => {
                         return (
                         <Pressable onPress={() => {
-                            /* 1. Navigate to the Details route with params */
                             navigation.navigate('ProjectTasks', {
-                                project:item,
+                                project:item.title,
                             });
                           }} >
                             <ProjectItem item_id={item._id} />
