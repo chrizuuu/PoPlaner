@@ -31,6 +31,7 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
     const [tasks, setTasks] = useState(tasksType);
     const [taskInput,setTaskInput] = useState()
     const [addFormVisible,setAddFormVisible] = useState(false)
+    const [backdropActive,setBackdropActive] = useState(false)
     const [errorStatus, setErrorStatus] = useState(false)
     const inputTaskTitle = useRef(null)
 
@@ -55,16 +56,13 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
         });
     }, [navigation]);
 
-
-
-
     function onRealmChange() {
         setTasks(tasksType)
       }
       
     realm.addListener("change", onRealmChange);
 
-    const addFormHandler = () => {
+    const addFormDismiss = () => {
         setAddFormVisible(false)
         Keyboard.dismiss()
     } 
@@ -75,16 +73,25 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
             setErrorStatus(false)
             setTasks(tasks)
             setTaskInput("")
-            addFormHandler()
+            addFormDismiss()
         }
         else {
             setErrorStatus(true)
+            setTimeout(() => inputTaskTitle.current.focus(), 0)
         }
     }
 
     const taskCreateInputHandler = (value) => {
-        setTaskInput(value)
+        if (value !== "" & value.trim().length > 0) {
+            setErrorStatus(false)
+            setTaskInput(value)
+        }
+        else {
+            setErrorStatus(true)
+            setTaskInput(value)
+        }
     }
+
     const styles = StyleSheet.create({
         container: {
             flex:1,
