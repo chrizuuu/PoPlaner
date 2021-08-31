@@ -26,7 +26,7 @@ class ProjectSchema extends Realm.Object {
         name: "Project",
         primaryKey: "_id",
         properties: {
-            _id: "objectId",
+            _id: "int",
             title:"string",
             isDone: {type: "bool", default: false},
             createdDate:"date",
@@ -83,7 +83,6 @@ const getPriorityTasks = () => {
 
 const getProjectTasks = (project) => {
     return realm.objects("Task").filtered("isDone == false AND project == $0",project).sorted("createdDate","Descendig")
-
 }
 
 const changePriority = (_task) => {
@@ -111,7 +110,7 @@ const deleteTask = (_task) => {
 const createProject = (_title,_comment) => {
     realm.write(() => {
         const project = realm.create("Project", {
-            _id: new ObjectId(),
+            _id: realm.objects('Project').max('_id')+1,
             title: _title,
             createdDate: new Date(),
             description:_comment,
@@ -129,7 +128,7 @@ const initDB = () => {
     if (realm.objects("Project").length < 1){
         realm.write(() => {
             return initProject = realm.create("Project", {
-                _id: new ObjectId(),
+                _id:1,
                 title: "Wszystkie sprawy",
                 createdDate: new Date(),
                 visible:false,

@@ -8,7 +8,7 @@ import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import {setI18Config} from './src/translations/translations'
 import TasksList from './src/screens/Dasboard/ToDo/TasksList';
-
+import DrawerNavigator from './src/navigations/newdrawer';
 const Stack = createStackNavigator();
 
 const customFonts = {
@@ -32,11 +32,8 @@ const App = () => {
   return (
     <>
     <StatusBar/>
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown:false,}}>
-        <Stack.Screen name="HomeTab" component={DrawerNav}/>
-        <Stack.Screen name="ProjectTasks" component={TasksList} getProjectID={({ params }) => params.projectID} /> 
-      </Stack.Navigator>
+    <NavigationContainer >
+      <DrawerNavigator />
     </NavigationContainer>
     </>
   );

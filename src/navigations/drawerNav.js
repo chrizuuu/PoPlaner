@@ -1,35 +1,22 @@
 import React from 'react';
-import { createDrawerNavigator ,  DrawerContentScrollView,DrawerItemList,} from '@react-navigation/drawer';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import PomodoroScreen from '../screens/Dasboard/Pomodoro/PomodoroScreen';
 import ScheduleScreen from '../screens/Dasboard/ScheduleScreen';
 import ProfileScreen from '../screens/Dasboard/ProfileScreen';
-import DashboardScreen from '../screens/Dasboard/DashboardScreen';
 import TasksList from '../screens/Dasboard/ToDo/TasksList';
 import ProjectsListScreen from '../screens/Dasboard/ToDo/ProjectsListScreen';
-import {getAllTasks,getPriorityTasks, getAllProjects} from '../Database/Database'
+import {getAllTasks,getPriorityTasks, getTasks} from '../Database/Database'
 import { strings } from '../translations/translations';
 
-import {Icon,Button} from 'react-native-elements';
+
+import {Icon} from 'react-native-elements';
 import { FlatList } from 'react-native-gesture-handler';
 
 const HomeTab = createDrawerNavigator();
 
-function CustomDrawerContent({navigation}) {
-    return (
-        <Button
-        title="Go somewhere"
-        onPress={() => {
-          // Navigate using the `navigation` prop that you received
-          navigation.navigate('Inbox');
-        }}
-      /> 
-    );
-  }
-
 const DrawerNav = () => {
   return (
     <HomeTab.Navigator
-        drawerContent={(props) => <CustomDrawerContent {...props} />}
         keyboardDismissMode = 'null'
         detachInactiveScreens={false}
         screenOptions={({ route }) => ({
@@ -57,13 +44,8 @@ const DrawerNav = () => {
                 size = focused
                 ? 24
                 : 20
-
-                if (route.name === 'Dashboard') {
-                    iconName = focused 
-                        ? 'home'
-                        : 'home-outline';
-                } 
-                else if (route.name === 'Calendar') {
+                
+                if (route.name === 'Calendar') {
                     iconName = focused 
                         ? 'calendar'
                         : 'calendar-outline' 
@@ -98,11 +80,6 @@ const DrawerNav = () => {
             },
     })} >
         <HomeTab.Screen 
-            name="Dashboard" 
-            component={DashboardScreen} 
-        />
-
-        <HomeTab.Screen 
             name="Priority"
             options={({ navigation, route }) => ({ 
                 title: strings("headerTitlePriorityTasks"),    
@@ -129,7 +106,7 @@ const DrawerNav = () => {
         />
         <HomeTab.Screen 
             name="Calendar" 
-            component={TasksList} 
+            component={ScheduleScreen} 
             options={{ title: strings("headerTitleCalendar") }}
         />
         <HomeTab.Screen 
