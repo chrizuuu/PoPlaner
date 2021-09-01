@@ -6,7 +6,7 @@ import PomodoroScreen from '../screens/Dasboard/Pomodoro/PomodoroScreen';
 import ScheduleScreen from '../screens/Dasboard/ScheduleScreen';
 import ProfileScreen from '../screens/Dasboard/ProfileScreen';
 import TasksList from '../screens/Dasboard/ToDo/TasksList';
-import TasksList2 from '../screens/Dasboard/ToDo/TasksList2';
+import ProjectTasks from '../screens/Dasboard/ToDo/ProjectTasks';
 import ProjectsListScreen from '../screens/Dasboard/ToDo/ProjectsListScreen';
 import {getAllTasks,getPriorityTasks, getProjectTasks} from '../Database/Database'
 import { strings } from '../translations/translations';
@@ -147,7 +147,7 @@ function StackNavigator({navigation}) {
         />
         <Stack.Screen 
           name="ProjectTasks"
-          component={TasksList2}
+          component={ProjectTasks}
         />
       </Stack.Navigator>
     );

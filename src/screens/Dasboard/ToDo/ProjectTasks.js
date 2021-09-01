@@ -26,7 +26,7 @@ import ErrorText from "../../../components/Text/ErrorText";
 import { TouchableOpacity } from "react-native-gesture-handler";
 const windowHeight = Dimensions.get('window').height;
 
-const TasksList2 = ({navigation,route}) => {
+const ProjectTasks = ({navigation,route}) => {
     const {projectId,priority,displayProjectProperty} = route.params
     const project = realm.objectForPrimaryKey("Project",projectId)
 
@@ -42,9 +42,12 @@ const TasksList2 = ({navigation,route}) => {
         setTasks(getProjectTasks(project))
       }
       
-    realm.addListener("change", onRealmChange);
-
-
+    useEffect(() => {
+        realm.addListener("change", onRealmChange);
+        return () => {
+          realm.removeAllListeners()
+        };
+    });
     const handleAddFormVisibile = () => {
         setAddFormVisible(true)
         setBackdropActive(true)
@@ -58,23 +61,28 @@ const TasksList2 = ({navigation,route}) => {
 
     useLayoutEffect(() => {
         navigation.setOptions({
-        headerRight: () => (
-            <TouchableOpacity 
-                style={{marginRight:11}} 
-                onPress={() => handleAddFormVisibile()}
-            >
-                <Icon 
-                    type='ionicon'
-                    name='add-circle-outline' 
-                />      
-            </TouchableOpacity>    
+            headerRight: () => (
+                <TouchableOpacity 
+                    style={{marginRight:11}} 
+                    onPress={() => handleAddFormVisibile()}
+                >
+                    <Icon 
+                        type='ionicon'
+                        name='add-circle-outline' 
+                    />      
+                </TouchableOpacity>    
             ),
         });
+        return () => {
+            navigation.setOptions({
+                headerRight: () => {}
+            })
+        }
     }, [navigation]);
 
     const submitTaskHandler = (value) => {
         if (value.nativeEvent.text !== "" & value.nativeEvent.text.trim().length > 0) {
-            createTask(value.nativeEvent.text,priority)
+            createTask(value.nativeEvent.text,priority,project)
             setErrorStatus(false)
             setTasks(tasks)
             setTaskInput("")
@@ -210,4 +218,4 @@ const TasksList2 = ({navigation,route}) => {
     );
 };
 
-export default React.memo(TasksList2)
+export default React.memo(ProjectTasks)

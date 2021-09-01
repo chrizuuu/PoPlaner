@@ -28,9 +28,7 @@ class ProjectSchema extends Realm.Object {
         properties: {
             _id: "int",
             title:"string",
-            isDone: {type: "bool", default: false},
             createdDate:"date",
-            deadlineDate:"date?",
             description: {type:"string", default: ""},
             tasks: "Task[]",
             visible: {type:'bool', default: true},
@@ -38,7 +36,6 @@ class ProjectSchema extends Realm.Object {
 
     }
 }
-
 
 class PomodoroTimerSchema extends Realm.Object {
     static schema = {
@@ -54,6 +51,7 @@ class PomodoroTimerSchema extends Realm.Object {
         },
     }
 }
+
 const realm = new Realm({schema: [TaskSchema,ProjectSchema,PomodoroTimerSchema], schemaVersion: 1});
 
 // Task handlers

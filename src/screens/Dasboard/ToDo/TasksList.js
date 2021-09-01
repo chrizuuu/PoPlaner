@@ -1,6 +1,7 @@
 import React, {
     useState, 
     useLayoutEffect,
+    useEffect,
     useRef
 } from "react";
 import {
@@ -38,10 +39,14 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
     function onRealmChange() {
         setTasks(tasksType)
       }
-      
-    realm.addListener("change", onRealmChange);
 
-
+    useEffect(() => {
+        realm.addListener("change", onRealmChange);
+        return () => {
+          realm.removeAllListeners()
+        };
+      });
+    
     const handleAddFormVisibile = () => {
         setAddFormVisible(true)
         setBackdropActive(true)
@@ -55,18 +60,23 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
 
     useLayoutEffect(() => {
         navigation.setOptions({
-        headerRight: () => (
-            <TouchableOpacity 
-                style={{marginRight:11}} 
-                onPress={() => handleAddFormVisibile()}
-            >
-                <Icon 
-                    type='ionicon'
-                    name='add-circle-outline' 
-                />      
-            </TouchableOpacity>    
+            headerRight: () => (
+                <TouchableOpacity 
+                    style={{marginRight:11}} 
+                    onPress={() => handleAddFormVisibile()}
+                >
+                    <Icon 
+                        type='ionicon'
+                        name='add-circle-outline' 
+                    />      
+                </TouchableOpacity>    
             ),
         });
+        return () => {
+            navigation.setOptions({
+                headerRight: () => {}
+            })
+        }
     }, [navigation]);
 
     const submitTaskHandler = (value) => {
