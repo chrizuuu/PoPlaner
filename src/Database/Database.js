@@ -117,7 +117,7 @@ const createProject = (_title,_comment) => {
 }
 
 const getAllProjects = () => {
-    return realm.objects("Project").filtered("isDone == false AND visible == true").sorted("createdDate","Descendig")
+    return realm.objects("Project").filtered("visible == true").sorted("createdDate","Descendig")
 }
 
 // init objects on first run

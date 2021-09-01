@@ -52,26 +52,6 @@ function CustomDrawerContent(props) {
             props.navigation.navigate('Pomodoro');
           }}
         />   
-          
-       {realm.objects("Project").filtered("visible == true").map((project) =>
-          <DrawerItem
-            key={project._id}
-            label={project.title}
-            onPress={({navigation}) => {
-              props.navigation.dispatch(
-                CommonActions.navigate({
-                  name: 'ProjectTasks',
-                  key: project._id.toString(),
-                  params: {
-                    projectId:project._id,
-                    priority:false,
-                    displayProjectProperty:false,
-                  },
-                })
-              );
-            }}
-          />
-        )}    
       </DrawerContentScrollView>
     );
   }

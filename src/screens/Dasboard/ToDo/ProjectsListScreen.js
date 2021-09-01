@@ -18,6 +18,7 @@ import {Icon} from "react-native-elements";
 import Modal from "react-native-modal";
 import { strings } from "../../../translations/translations";
 import sharedStyles from "../../../styles/shared";
+import { CommonActions } from '@react-navigation/native';
 import ProjectItem from "../../../components/components/ProjectItem";
 import ModalCreateProject from "../../../components/ModalComponents/ModalCreateProject";
 import TasksList from "./TasksList";
@@ -80,10 +81,19 @@ const ProjectsListScreen = ({navigation}) => {
                     renderItem={({item}) => {
                         return (
                         <Pressable onPress={() => {
-                            navigation.navigate('ProjectTasks', {
-                                project:item.title,
-                            });
-                          }} >
+                            navigation.dispatch(
+                                CommonActions.navigate({
+                                  name: 'ProjectTasks',
+                                  key: item._id.toString(),
+                                  params: {
+                                    projectId:item._id,
+                                    priority:false,
+                                    displayProjectProperty:false,
+                                  },
+                                })
+                              );
+                            }} 
+                        >
                             <ProjectItem item_id={item._id} />
                         </Pressable>
                     )}} 

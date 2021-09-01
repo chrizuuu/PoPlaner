@@ -13,8 +13,6 @@ import {Icon} from 'react-native-elements';
 import Modal from 'react-native-modal';
 import sharedStyles from "../../styles/shared";
 import FlexLayout from "../Layouts/FlexLayout";
-import CustomizingHeaderBar from "../Header/CustomizingHeaderBar";
-
 
 const styles = StyleSheet.create({
     container: {
