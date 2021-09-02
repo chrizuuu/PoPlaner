@@ -26,6 +26,8 @@ import { strings } from "../../../translations/translations";
 import ErrorText from "../../../components/Text/ErrorText";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import sharedStyles from "../../../styles/shared";
+import FooterList from "../../../components/components/FooterList";
+
 const windowHeight = Dimensions.get("window").height;
 
 const ProjectTasks = ({navigation,route}) => {
@@ -208,16 +210,11 @@ const ProjectTasks = ({navigation,route}) => {
                             />
                     )}} 
                 /> 
-                <View style={[styles.footer,sharedStyles.padding10]}>
-                    <Icon 
-                        type="ionicon"
-                        name="add-outline" 
-                        style={{}}
-                        size={28}
-                        onPress={() => handleAddFormVisibile()}
-                    />                   
-                </View> 
-
+                <FooterList 
+                    leftIcon="add-outline"
+                    leftIconOnPress={() => handleAddFormVisibile()}
+                />
+                
             </View>
             {addFormVisible
             ?    

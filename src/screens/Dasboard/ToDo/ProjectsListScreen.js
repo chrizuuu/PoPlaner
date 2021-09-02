@@ -12,39 +12,18 @@ import {
     Pressable,
 } from "react-native";
 import realm,{ 
-    getAllProjects,
-    createProject 
+    getAllProjects, 
 } from "../../../Database/Database"
-import {Icon} from "react-native-elements";
 import Modal from "react-native-modal";
-import { strings } from "../../../translations/translations";
-import sharedStyles from "../../../styles/shared";
 import { CommonActions,useNavigationState ,useFocusEffect} from '@react-navigation/native';
 import ProjectItem from "../../../components/components/ProjectItem";
 import ModalCreateProject from "../../../components/ModalComponents/ModalCreateProject";
-import TasksList from "./TasksList";
+import FooterList from "../../../components/components/FooterList";
 
 const ProjectsListScreen = ({navigation}) => {
     const [projects,setProjects] = useState(getAllProjects())
     const [visibleCreateProject,setVisibleCreateProject] = useState(false)
     
-    useLayoutEffect(() => {
-        navigation.setOptions({
-        headerRight: () => (
-            <TouchableOpacity 
-                style={{marginRight:11}} 
-                onPress={() => setVisibleCreateProject(true)}
-            >
-                <Icon 
-                    type='ionicon'
-                    name='add-circle-outline' 
-                />      
-            </TouchableOpacity>    
-            ),
-        });
-    }, [navigation]);
-
-
     function onRealmChange() {
         setProjects(getAllProjects())
         setVisibleCreateProject(false)
@@ -62,7 +41,6 @@ const ProjectsListScreen = ({navigation}) => {
     const styles = StyleSheet.create({
         container: {
             flex:1,
-            paddingBottom:25,
             backgroundColor:"rgb(244, 244, 244)"
         },
         
@@ -105,8 +83,13 @@ const ProjectsListScreen = ({navigation}) => {
                             <ProjectItem item_id={item._id} />
                         </Pressable>
                     )}} 
-                />   
-            </View> 
+                />
+                <FooterList 
+                    leftIcon="add-outline"
+                    leftIconOnPress={() => setVisibleCreateProject(true)}
+                />    
+            </View>
+    
             <Modal 
                 animationIn="slideInUp"
                 animationOut="slideOutDown"
