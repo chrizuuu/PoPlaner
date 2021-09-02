@@ -17,14 +17,13 @@ import realm, {
     createTask, 
     getTasks
 } from "../../../Database/Database"
+import { useFocusEffect } from '@react-navigation/native';
 import {Icon} from 'react-native-elements';
 import TaskItem from "../../../components/components/TaskItem"
 import { strings } from "../../../translations/translations";
 import ErrorText from "../../../components/Text/ErrorText";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { add, transform } from "lodash";
-import { translate } from "i18n-js";
-import { set } from "react-native-reanimated";
+import sharedStyles from "../../../styles/shared";
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -39,14 +38,16 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
     function onRealmChange() {
         setTasks(tasksType)
       }
-
-    useEffect(() => {
-        realm.addListener("change", onRealmChange);
-        return () => {
-          realm.removeAllListeners()
-        };
-      });
     
+    useFocusEffect(
+        React.useCallback(() => {
+            setTasks(tasksType)
+            realm.addListener("change", onRealmChange);
+            return () => 
+                realm.removeListener("change",onRealmChange);
+        }, [navigation])
+    );
+
     const handleAddFormVisibile = () => {
         setAddFormVisible(true)
         setBackdropActive(true)
@@ -57,7 +58,7 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
         setAddFormVisible(false)
         Keyboard.dismiss()
     } 
-
+/*
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
@@ -78,7 +79,7 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
             })
         }
     }, [navigation]);
-
+*/
     const submitTaskHandler = (value) => {
         if (value.nativeEvent.text !== "" & value.nativeEvent.text.trim().length > 0) {
             createTask(value.nativeEvent.text,priority)
@@ -121,7 +122,6 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
             width:'100%',
             height: windowHeight,
             backgroundColor:"rgb(244, 244, 244)",
-            marginBottom:5
         },
 
         textInputContainer: {
@@ -154,6 +154,15 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
             width:'100%',
             height:'100%',
             top:60,
+        },
+        footer: {
+            alignItems:"center",
+            flexDirection:"row",
+            width:"100%",
+            justifyContent:"flex-end",
+            borderTopColor:"rgb(240,240,240)",
+            borderTopWidth:1,
+            backgroundColor:"rgb(250,250,250)",
         }
     })
  
@@ -202,7 +211,16 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
                                 displayProjectProperty={displayProjectProperty} 
                             />
                     )}} 
-                /> 
+                />
+                <View style={[styles.footer,sharedStyles.padding10]}>
+                    <Icon 
+                        type="ionicon"
+                        name="add-outline" 
+                        style={{}}
+                        size={28}
+                        onPress={() => handleAddFormVisibile()}
+                    />                   
+                </View>                  
             </View>
             {addFormVisible
             ?    

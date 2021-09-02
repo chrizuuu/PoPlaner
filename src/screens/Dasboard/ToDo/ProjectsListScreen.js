@@ -1,6 +1,7 @@
 import React, {
     useState, 
     useLayoutEffect,
+    useEffect,
 } from "react";
 import {
     Text, 
@@ -18,7 +19,7 @@ import {Icon} from "react-native-elements";
 import Modal from "react-native-modal";
 import { strings } from "../../../translations/translations";
 import sharedStyles from "../../../styles/shared";
-import { CommonActions } from '@react-navigation/native';
+import { CommonActions,useNavigationState ,useFocusEffect} from '@react-navigation/native';
 import ProjectItem from "../../../components/components/ProjectItem";
 import ModalCreateProject from "../../../components/ModalComponents/ModalCreateProject";
 import TasksList from "./TasksList";
@@ -26,7 +27,7 @@ import TasksList from "./TasksList";
 const ProjectsListScreen = ({navigation}) => {
     const [projects,setProjects] = useState(getAllProjects())
     const [visibleCreateProject,setVisibleCreateProject] = useState(false)
-
+    
     useLayoutEffect(() => {
         navigation.setOptions({
         headerRight: () => (
@@ -48,8 +49,15 @@ const ProjectsListScreen = ({navigation}) => {
         setProjects(getAllProjects())
         setVisibleCreateProject(false)
       }
-      
-    realm.addListener("change", onRealmChange);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            getAllProjects()
+            realm.addListener("change", onRealmChange);
+            return () =>  
+                realm.removeListener("change",onRealmChange);
+        }, [navigation])
+    );
 
     const styles = StyleSheet.create({
         container: {
@@ -58,7 +66,6 @@ const ProjectsListScreen = ({navigation}) => {
             backgroundColor:"rgb(244, 244, 244)"
         },
         
-
         textInput: {
             borderColor: "rgb(200,200,200)", 
             backgroundColor:"rgb(245,245,245)",
@@ -83,13 +90,14 @@ const ProjectsListScreen = ({navigation}) => {
                         <Pressable onPress={() => {
                             navigation.dispatch(
                                 CommonActions.navigate({
-                                  name: 'ProjectTasks',
-                                  key: item._id.toString(),
-                                  params: {
-                                    projectId:item._id,
-                                    priority:false,
-                                    displayProjectProperty:false,
-                                  },
+                                    name: "ProjectTasks",
+                                    key: item._id.toString(),
+                                    params: {
+                                        projectId:item._id,
+                                        priority:false,
+                                        displayProjectProperty:false,
+                                        title:item.title,
+                                    },
                                 })
                               );
                             }} 
@@ -97,7 +105,7 @@ const ProjectsListScreen = ({navigation}) => {
                             <ProjectItem item_id={item._id} />
                         </Pressable>
                     )}} 
-                />    
+                />   
             </View> 
             <Modal 
                 animationIn="slideInUp"

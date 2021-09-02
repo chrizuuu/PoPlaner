@@ -19,12 +19,14 @@ import realm, {
     getTasks,
     getProjectTasks
 } from "../../../Database/Database"
-import {Icon} from 'react-native-elements';
+import { useFocusEffect } from '@react-navigation/native';
+import {Icon} from "react-native-elements";
 import TaskItem from "../../../components/components/TaskItem"
 import { strings } from "../../../translations/translations";
 import ErrorText from "../../../components/Text/ErrorText";
 import { TouchableOpacity } from "react-native-gesture-handler";
-const windowHeight = Dimensions.get('window').height;
+import sharedStyles from "../../../styles/shared";
+const windowHeight = Dimensions.get("window").height;
 
 const ProjectTasks = ({navigation,route}) => {
     const {projectId,priority,displayProjectProperty} = route.params
@@ -33,24 +35,42 @@ const ProjectTasks = ({navigation,route}) => {
     const [tasks, setTasks] = useState(getProjectTasks(project));
     const [taskInput,setTaskInput] = useState("")
     const [addFormVisible,setAddFormVisible] = useState(false)
-    const [backdropActive,setBackdropActive] = useState(false)
     const [errorStatus, setErrorStatus] = useState(false)
+    const [projectInfoVisible,setProjectInfoVisible] = useState(false)
     const inputTaskTitle = useRef(null)
 
+    useLayoutEffect(() => {
+        navigation.setOptions({
+        headerRight: () => (
+            <TouchableOpacity 
+                style={{marginRight:11}} 
+                onPress={() => setProjectInfoVisible(true)}
+            >
+                <Icon 
+                    type="ionicon"
+                    name="information-circle-outline"
+                    
+                />      
+            </TouchableOpacity>    
+            ),
+        });
+    }, [navigation]);
 
     function onRealmChange() {
         setTasks(getProjectTasks(project))
       }
-      
-    useEffect(() => {
-        realm.addListener("change", onRealmChange);
-        return () => {
-          realm.removeAllListeners()
-        };
-    });
+    
+    useFocusEffect(
+        React.useCallback(() => {
+            getProjectTasks(project)
+            realm.addListener("change", onRealmChange);
+            return () => 
+                realm.removeListener("change",onRealmChange);
+        }, [navigation])
+    );
+    
     const handleAddFormVisibile = () => {
         setAddFormVisible(true)
-        setBackdropActive(true)
         setTimeout(() => inputTaskTitle.current.focus(), 0)
     }
 
@@ -58,27 +78,6 @@ const ProjectTasks = ({navigation,route}) => {
         setAddFormVisible(false)
         Keyboard.dismiss()
     } 
-
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <TouchableOpacity 
-                    style={{marginRight:11}} 
-                    onPress={() => handleAddFormVisibile()}
-                >
-                    <Icon 
-                        type='ionicon'
-                        name='add-circle-outline' 
-                    />      
-                </TouchableOpacity>    
-            ),
-        });
-        return () => {
-            navigation.setOptions({
-                headerRight: () => {}
-            })
-        }
-    }, [navigation]);
 
     const submitTaskHandler = (value) => {
         if (value.nativeEvent.text !== "" & value.nativeEvent.text.trim().length > 0) {
@@ -112,29 +111,27 @@ const ProjectTasks = ({navigation,route}) => {
         else {
             setErrorStatus(false)
             setAddFormVisible(false)
-            setBackdropActive(false)
         }
     }
 
     const styles = StyleSheet.create({
         container: {
             flex:1,
-            width:'100%',
+            width:"100%",
             height: windowHeight,
             backgroundColor:"rgb(244, 244, 244)",
-            marginBottom:5
         },
 
         textInputContainer: {
             transform: addFormVisible? [{translateY:0}] :[ {translateY:-60}],
-            display:addFormVisible? 'flex': 'none',
-            flexDirection:'row',
-            alignItems:'center',
+            display:addFormVisible? "flex": "none",
+            flexDirection:"row",
+            alignItems:"center",
             borderColor: "rgb(48,48,48)",
             borderWidth:1, 
             borderRadius:5,
             backgroundColor:"rgb(255,255,255)",
-            width:'90%',
+            width:"90%",
             height:40,
             paddingHorizontal:5,
             color:"black",
@@ -143,18 +140,25 @@ const ProjectTasks = ({navigation,route}) => {
         },
         listFooter: {
             height:40,
-            width:'100%',
+            width:"100%",
             backgroundColor:"rgb(255,255,255)",
             borderTopWidth:1,
-            flexDirection:'row',
-            justifyContent:'space-between',
-            alignItems:'center'
+            flexDirection:"row",
+            justifyContent:"space-between",
+            alignItems:"center"
         },
         backdropPressable: {
-            position:'absolute',
-            width:'100%',
-            height:'100%',
+            position:"absolute",
+            width:"100%",
+            height:"100%",
             top:60,
+        },
+        footer: {
+            alignItems:"center",
+            flexDirection:"row",
+            width:"100%",
+            justifyContent:"flex-end",
+            backgroundColor:"rgb(255,255,255)",
         }
     })
  
@@ -169,8 +173,8 @@ const ProjectTasks = ({navigation,route}) => {
                             <View style={styles.textInputContainer}>
                                 <Icon 
                                     size={32} 
-                                    type='ionicon' 
-                                    name='close-outline' 
+                                    type="ionicon" 
+                                    name="close-outline" 
                                     style={{marginRight:10,}} 
                                     onPress={() =>addFormDismiss() }
                                 />
@@ -204,6 +208,16 @@ const ProjectTasks = ({navigation,route}) => {
                             />
                     )}} 
                 /> 
+                <View style={[styles.footer,sharedStyles.padding10]}>
+                    <Icon 
+                        type="ionicon"
+                        name="add-outline" 
+                        style={{}}
+                        size={28}
+                        onPress={() => handleAddFormVisibile()}
+                    />                   
+                </View> 
+
             </View>
             {addFormVisible
             ?    
