@@ -18,12 +18,43 @@ import { TextInput } from "react-native";
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
 
-function CustomDrawerContent({...props}) {
-  const {state} = props
-  const {routes, index} = state; 
+
+
+function CustomDrawerContent(props) {
+  let activeIndex = props.navigation.state.index;
+  let activeRouteName = props.navigation.state.routes[activeIndex].routeName;
+
+  const [activeRoute, setActiveRoute] = useState('');
+
+  useEffect(() => {
+      setActiveRoute(activeRouteName);
+  }, [activeRouteName, activeRoute]);
+
+
+  const navigateToScreen = (route) => () => {
+
+      if (activeRouteName === route){
+          return props.navigation.closeDrawer();
+      }
+
+      const navAction = NavigationActions.navigate({
+          routeName: route
+      });
+
+      props.navigation.dispatch(navAction);
+  };
+
    return (
       <DrawerContentScrollView {...props}>   
+      
         <DrawerItem
+                focused={getActiveRouteState(
+                      props.state.routes,
+                      props.state.index,
+                      'Priority'
+                    )}
+                    activeBackgroundColor='red'
+                    inactiveBackgroundColor='green'
           label={strings("headerTitlePriorityTasks")}
           labelStyle={{fontFamily:"OpenSansSemiBold"}}
           icon={({ color, size }) => <Icon type="ionicon" color={color} size={20} name={"star-outline"} />}
@@ -33,6 +64,7 @@ function CustomDrawerContent({...props}) {
         />
         <DrawerItem
           label={strings("headerTitleAllTasks")}
+          labelStyle={{fontFamily:"OpenSansSemiBold"}}
           icon={({ focused, color, size }) => <Icon type="ionicon" color={color} size={20} name={"list-outline"} />}
           onPress={() => {
             props.navigation.navigate("Inbox");
@@ -40,6 +72,7 @@ function CustomDrawerContent({...props}) {
         />  
         <DrawerItem
           label={strings("headerTitleProjects")}
+          labelStyle={{fontFamily:"OpenSansSemiBold"}}
           icon={({ focused, color, size }) => <Icon type="ionicon" color={color} size={20} name={"flag-outline"} />}
           onPress={() => {
             props.navigation.navigate("Projects");
@@ -47,6 +80,7 @@ function CustomDrawerContent({...props}) {
         />
         <DrawerItem
           label={strings("headerTitleCalendar")}
+          labelStyle={{fontFamily:"OpenSansSemiBold"}}
           icon={({ focused, color, size }) => <Icon type="ionicon" color={color} size={20} name={"calendar-outline"} />}
           onPress={() => {
             props.navigation.navigate("Calendar");
@@ -54,6 +88,7 @@ function CustomDrawerContent({...props}) {
         />  
         <DrawerItem
           label="Pomodoro"
+          labelStyle={{fontFamily:"OpenSansSemiBold"}}
           icon={({ focused, color, size }) => <Icon type="ionicon" color={color} size={20} name={"timer-outline"} />}
           onPress={() => {
             props.navigation.navigate("Pomodoro");
@@ -61,6 +96,7 @@ function CustomDrawerContent({...props}) {
         />   
         <DrawerItem
           label="Profile"
+          labelStyle={{fontFamily:"OpenSansSemiBold"}}
           icon={({ focused, color, size }) => <Icon type="ionicon" color={color} size={20} name={"person-outline"} />}
           onPress={() => {
             props.navigation.navigate("Profile");
