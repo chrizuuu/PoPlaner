@@ -1,5 +1,5 @@
 import React from 'react';
-import { View,Text, Vibration,Pressable,Button,ScrollView,Dimensions,FlatList,StyleSheet,Switch} from 'react-native';
+import { View,Text, Vibration,Pressable,TouchableOpacity,Dimensions,FlatList,StyleSheet,Switch} from 'react-native';
 import Modal from 'react-native-modal';
 import {strings} from '../../../translations/translations'
 import {formatTime} from '../../../components/Helpers/helpers';
@@ -90,6 +90,24 @@ export default class PomodoroScreen extends React.Component {
           settingsIsOpen:false,
       }
     }  
+
+    componentDidMount() {
+        this.props.navigation.setOptions({
+            headerRight: () => (
+                <TouchableOpacity 
+                    style={{marginRight:11}} 
+                    onPress={() => this.setIsOpen(!this.state.settingsIsOpen)}
+                >
+                    <Icon 
+                        type="ionicon"
+                        name="information-circle-outline"
+                        
+                    />      
+                </TouchableOpacity>    
+                ),
+            });
+        }
+    
 
     //
     handlePomodoro = () => {
@@ -213,26 +231,6 @@ export default class PomodoroScreen extends React.Component {
 
       return (
         <FlexLayout style={{color:'#282828'}}> 
-                <HeaderBar 
-                    screenName='Pomodoro timer' 
-                    headerTextSize={20}
-                    style={sharedStyles.marginSide25}
-                    leftIcon = {
-                        <>
-                            <Pressable  >
-                                <Icon name='poll'  />
-                            </Pressable>
-                        </>   
-                    }
-                    rightIcon = {
-                        <>
-                            <Pressable onPress={() => this.setIsOpen(!this.state.settingsIsOpen)} >
-                                <Icon name='settings' />
-                            </Pressable>
-                        </>
-                    }
-                />
-
                 <View style = {styles.wrapper}>
                     <View style={{
                         alignItems:'center',

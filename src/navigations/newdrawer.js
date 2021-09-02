@@ -3,7 +3,7 @@ import {createDrawerNavigator ,  DrawerContentScrollView,DrawerItemList,DrawerIt
 import {createStackNavigator} from "@react-navigation/stack";
 import { getFocusedRouteNameFromRoute, NavigationActions } from "@react-navigation/native";
 import PomodoroScreen from "../screens/Dasboard/Pomodoro/PomodoroScreen";
-import ScheduleScreen from "../screens/Dasboard/ScheduleScreen";
+import ScheduleScreen from "../screens/Dasboard/ToDo/ScheduleScreen";
 import ProfileScreen from "../screens/Dasboard/ProfileScreen";
 import TasksList from "../screens/Dasboard/ToDo/TasksList";
 import ProjectTasks from "../screens/Dasboard/ToDo/ProjectTasks";
@@ -13,7 +13,6 @@ import { strings } from "../translations/translations";
 import { TouchableOpacity,Text,StyleSheet,ScrollView,View } from "react-native";
 import realm from "../Database/Database";
 import {Icon,Button} from "react-native-elements";
-import { TextInput } from "react-native";
 
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()

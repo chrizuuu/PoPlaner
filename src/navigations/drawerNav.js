@@ -1,7 +1,7 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import PomodoroScreen from '../screens/Dasboard/Pomodoro/PomodoroScreen';
-import ScheduleScreen from '../screens/Dasboard/ScheduleScreen';
+import ScheduleScreen from '../screens/Dasboard/ToDo/ScheduleScreen';
 import ProfileScreen from '../screens/Dasboard/ProfileScreen';
 import TasksList from '../screens/Dasboard/ToDo/TasksList';
 import ProjectsListScreen from '../screens/Dasboard/ToDo/ProjectsListScreen';

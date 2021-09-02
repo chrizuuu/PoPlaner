@@ -105,4 +105,4 @@ const ProjectsListScreen = ({navigation}) => {
     );
 };
 
-export default React.memo(ProjectsListScreen)
+export default ProjectsListScreen
