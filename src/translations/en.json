@@ -41,6 +41,7 @@
     "taskCreatedAt": "Created at: ",
     "taskPropertyDate": "Date? ",
     "taskPropertyProject": "Project? ",
+    "taskPropertyProjectDefault": "Select project...",
     "taskPropertyCategory": "Category? ",
     "addComment": "Add comment...",
     "saveComment": "Save comment",

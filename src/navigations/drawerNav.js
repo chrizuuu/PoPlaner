@@ -1,16 +1,17 @@
 import React from 'react';
-import { View,Text,Button } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import PomodoroScreen from '../screens/Dasboard/Pomodoro/PomodoroScreen';
 import ScheduleScreen from '../screens/Dasboard/ScheduleScreen';
 import ProfileScreen from '../screens/Dasboard/ProfileScreen';
-import DashboardScreen from '../screens/Dasboard/DashboardScreen';
 import TasksList from '../screens/Dasboard/ToDo/TasksList';
-import ProjectsList from '../screens/Dasboard/ToDo/ProjectsList';
-import realm, {getAllTasks,getPriorityTasks} from '../Database/Database'
+import ProjectsListScreen from '../screens/Dasboard/ToDo/ProjectsListScreen';
+import ProjectTasks from '../screens/Dasboard/ToDo/ProjectTasks';
+import {getAllTasks,getPriorityTasks, getTasks} from '../Database/Database'
 import { strings } from '../translations/translations';
 
+
 import {Icon} from 'react-native-elements';
+import { FlatList } from 'react-native-gesture-handler';
 
 const HomeTab = createDrawerNavigator();
 
@@ -44,13 +45,8 @@ const DrawerNav = () => {
                 size = focused
                 ? 24
                 : 20
-
-                if (route.name === 'Dashboard') {
-                    iconName = focused 
-                        ? 'home'
-                        : 'home-outline';
-                } 
-                else if (route.name === 'Calendar') {
+                
+                if (route.name === 'Calendar') {
                     iconName = focused 
                         ? 'calendar'
                         : 'calendar-outline' 
@@ -85,17 +81,12 @@ const DrawerNav = () => {
             },
     })} >
         <HomeTab.Screen 
-            name="Dashboard" 
-            component={DashboardScreen} 
-        />
-
-        <HomeTab.Screen 
             name="Priority"
             options={({ navigation, route }) => ({ 
                 title: strings("headerTitlePriorityTasks"),    
             })}
         >
-            {(props) => <TasksList {...props} tasksType={getPriorityTasks} priority={true} />}        
+            {(props) => <TasksList {...props} tasksType={getPriorityTasks} priority={true} displayProjectProperty={true} />}        
         </HomeTab.Screen>
 
         <HomeTab.Screen 
@@ -104,12 +95,12 @@ const DrawerNav = () => {
                 title: strings("headerTitleAllTasks"),  
             })}
         >
-            {(props) => <TasksList {...props} tasksType={getAllTasks} priority={false} />}        
+            {(props) => <TasksList {...props} tasksType={getAllTasks} priority={false} displayProjectProperty={false} />}        
         </HomeTab.Screen>
 
         <HomeTab.Screen 
             name="Projects" 
-            component={ProjectsList}  
+            component={ProjectsListScreen}  
             options={({ navigation, route }) => ({ 
                 title: strings("headerTitleProjects"),  
             })}

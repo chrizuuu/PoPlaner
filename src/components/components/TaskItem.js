@@ -7,8 +7,8 @@ import { View,
     TextInput,
     ScrollView,
 } 
-from 'react-native';
-import realm, 
+from "react-native";
+import realm,
     {changePriority,
     updateIsDone,
     deleteTask,
@@ -17,79 +17,84 @@ import realm,
 from "../../Database/Database";
 import CheckBox from "../Buttons/CheckBox";
 import { Picker } from "@react-native-picker/picker";
-import {Icon} from 'react-native-elements';
-import Modal from 'react-native-modal';
+import DatePicker from "react-native-date-picker"
+import {Icon} from "react-native-elements";
+import Modal from "react-native-modal";
 import sharedStyles from "../../styles/shared";
 import FlexLayout from "../Layouts/FlexLayout"
 import PropertyItem from "../components/PropertyItem";
 import {strings} from "../../translations/translations"
 import CustomizingHeaderBar from "../Header/CustomizingHeaderBar";
-import { FlatList } from "react-native";
 import ErrorText from "../Text/ErrorText";
+import TaskPropertyOnList from "./TaskPropertyOnList";
 
 const styles = StyleSheet.create({
     container: {
         flex:1,
         borderTopWidth:1.5,
-        borderColor:'rgba(28,28,28,0.1)',
-        backgroundColor:'rgb(255,255,255)'
+        borderColor:"rgba(28,28,28,0.1)",
+        backgroundColor:"rgb(255,255,255)"
     },
     wrapperInRow: {
         flex:1,
-        flexDirection:'row',
-        alignItems:'center',
+        flexDirection:"row",
+        alignItems:"center",
     },
+
     titleTask: {
         flex:1,
         fontSize:14,
-        fontFamily:"OpenSansReg",
-        color:'#282828',
-        overflow:'hidden', 
+        fontFamily:"OpenSansSemiBold",
+        color:"#282828",
+        overflow:"hidden", 
+        textAlignVertical:"center"
     },
+
     modalStyle: {
-        height:'100%',
+        height:"100%",
         marginRight:0,
         marginTop:0,
         marginBottom:0,
-        backgroundColor:'rgb(255,255,255)',
+        backgroundColor:"rgb(255,255,255)",
     },
     modalFooter: {
-        alignItems:'center',
-        flexDirection:'row',
-        width:'100%',
-        justifyContent:'space-between'
+        alignItems:"center",
+        flexDirection:"row",
+        width:"100%",
+        justifyContent:"space-between"
     },
 
     wrapperSettingsItem: {
         marginTop:20, 
         paddingLeft:12, 
         paddingRight:12,
-        backgroundColor:'rgb(245,245,245)',
+        backgroundColor:"rgb(245,245,245)",
     },
     saveCommentBtn:{
         marginTop:20,
-        textAlign:'center',
+        textAlign:"center",
         padding:5,
         marginBottom:5,
-        backgroundColor:'rgb(83,211,175)',
+        backgroundColor:"rgb(83,211,175)",
         borderRadius:25,
         right:0,    
     },
     
     commentInput:{
-        textAlignVertical:'top',
+        textAlignVertical:"top",
         minHeight:100,
         maxHeight:300,
-        borderColor: 'rgb(240,240,240)', 
+        borderColor: "rgb(240,240,240)", 
         padding:10,
         borderWidth: 1, 
         borderRadius:25,
-        backgroundColor:'rgb(255,255,255)'
+        backgroundColor:"rgb(255,255,255)"
     },
     text: {
         fontSize:12,
-        fontFamily:'OpenSansReg'
+        fontFamily:"OpenSansReg"
     }
+
 })
 
 export default class TaskItem extends React.Component {
@@ -101,7 +106,7 @@ export default class TaskItem extends React.Component {
             inputComment: this.task.comment,
             errorCommentStatus: false,
             taskPageIsOpen: false,
-            project:null,
+            taskDeadlineDatePicker:false,
         }
     }
     task = realm.objectForPrimaryKey("Task",this.props.item_id)
@@ -156,27 +161,35 @@ export default class TaskItem extends React.Component {
 
     saveProject = (value) => {
         realm.write(() => {
+            let taskToDelete = this.task.project.tasks.indexOf(this.task)
+            this.task.project.tasks.splice(taskToDelete,1)
             value.tasks.push(this.task)
             this.task.project = value
         })
     }
 
+    setDeadlineDate = (value) => {
+        realm.write(() => {
+            this.task.deadlineDate = value
+        })
+    }
     render() {
         let priorityTaskStatus = this.task.priority === true
             ? 
-                {color:'rgb(83,211,175)',
-                icon:'star'}
+                {color:"rgb(83,211,175)",
+                icon:"star"}
             : 
-                {color:'rgba(48,48,48,0.3)',
-                icon:'star-border'}
+                {color:"rgba(48,48,48,0.3)",
+                icon:"star-border"}
 
         let isDoneTaskOpacity = this.task.isDone === true
             ? 0.4
             : 1
+        let displayDatePicker = this.state.taskDeadlineDatePicker ? 'flex' : 'none';
         let projects = realm.objects("Project")
         return (
             <>
-                <ScrollView keyboardShouldPersistTaps={'always'}>
+                <ScrollView keyboardShouldPersistTaps="always">
                     <Pressable  onPress={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}>          
                         <View style={[styles.container,{opacity: isDoneTaskOpacity,}]}>
                             <View style={[sharedStyles.padding10, styles.wrapperInRow]}> 
@@ -184,15 +197,38 @@ export default class TaskItem extends React.Component {
                                     status={this.task.isDone} 
                                     onChange={() =>updateIsDone(this.task)}
                                     style={{marginRight:20}} 
-                                />                                    
-                                <Text             
-                                    numberOfLines={1}
-                                    style={styles.titleTask}
-                                >
-                                    {this.task.title}
-                                </Text> 
+                                />
+
+                                <View style={{flex:1}}>                                    
+                                    <Text numberOfLines={1} style={styles.titleTask}>
+                                        {this.task.title}
+                                    </Text>
+
+                                    <View style={{flexDirection:'row'}}>
+                                        {this.task.deadlineDate
+                                        ?
+                                            <TaskPropertyOnList 
+                                                icon = 'today'
+                                                propertyName={this.task.deadlineDate.toLocaleDateString()}
+                                            /> 
+                                        :
+                                            null
+                                        }
+
+                                        {(this.task.project && this.props.displayProjectProperty)
+                                        ?
+                                            <TaskPropertyOnList 
+                                                icon = 'flag'
+                                                propertyName={this.task.project.title}
+                                            /> 
+                                        :
+                                            null
+                                        }
+                                    </View>
+                                </View>
+                                
                                 <Icon 
-                                    type='material' 
+                                    type="material" 
                                     name={priorityTaskStatus.icon}
                                     iconStyle = {{
                                         marginLeft:15,
@@ -207,14 +243,13 @@ export default class TaskItem extends React.Component {
                         <Modal 
                             animationIn="slideInRight"
                             animationOut="slideOutRight"
-                            swipeDirection='right'
+                            swipeDirection="right"
                             isVisible={this.state.taskPageIsOpen} 
                             onSwipeComplete={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}
                             onBackdropPress={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}
                             style={styles.modalStyle} 
                         >
                             <FlexLayout>
-
                                 <CustomizingHeaderBar
                                     style={sharedStyles.paddingSide25}
                                     leftSide={
@@ -243,7 +278,7 @@ export default class TaskItem extends React.Component {
                                     }
                                     rightSide={
                                         <Icon 
-                                            type='material' 
+                                            type="material" 
                                             name={priorityTaskStatus.icon}
                                             iconStyle = {{
                                                 color:priorityTaskStatus.color
@@ -254,31 +289,58 @@ export default class TaskItem extends React.Component {
                                      }
                                 />
 
-                                <FlexLayout style={styles.wrapperSettingsItem}>
-                                    <PropertyItem
-                                        valueIcon = 'calendar-today'
-                                        valueTitle = {strings('taskPropertyDate')}
-                                        value = {this.task.createdDate.toLocaleDateString() + ' ' + this.task.createdDate.toLocaleTimeString()}
+                                <FlexLayout style={styles.wrapperSettingsItem}>               
+                                    <PropertyItem                         
+                                        valueIcon = "outlined-flag"
+                                        valueTitle = {strings("taskPropertyProject")}
+                                        valueContainer = {
+                                            <>
+                                                <Picker  
+                                                    style={{textAlign:'right'}}
+                                                    onValueChange={(itemValue) =>
+                                                        this.saveProject(itemValue)
+                                                    }>
+                                                        <Picker.Item  
+                                                            style={{fontSize:15,color:'#242424'}} 
+                                                            label={this.task.project.title} v
+                                                            value={this.task.project}
+                                                            enabled={false}  
+                                                        />
+                                                        {projects.map((item) => 
+                                                            <Picker.Item 
+                                                                style={{fontSize:13}} 
+                                                                key={item._id} 
+                                                                label={item.title} 
+                                                                value={item}  
+                                                            />
+                                                        )}
+                                                </Picker>
+                                            </>
+                                        }
+                                    /> 
+                                    <PropertyItem 
+                                        valueIcon="today"
+                                        valueTitle={strings("taskPropertyDate")}
+                                        onPress={() => this.setState({
+                                            taskDeadlineDatePicker:!this.state.taskDeadlineDatePicker
+                                        })}
+                                        valueContainer = {
+                                            <Text>
+                                                { this.task.deadlineDate? this.task.deadlineDate.toLocaleDateString() + ' ' + this.task.deadlineDate.toLocaleTimeString() : ''}    
+                                            </Text>
+                                        }
                                     />
-                                    {
-                                        this.task.project !== null ?
-                                            <PropertyItem
-                                                valueIcon = 'outlined-flag'
-                                                valueTitle = {strings('taskPropertyProject')}
-                                                value = {this.task.project.title}
-                                            /> 
-                                        : null   
-                                    }
-                                    <Picker  
-                                        onValueChange={(itemValue) =>
-                                            this.saveProject(itemValue)
-                                        }>
-                                            {
-                                                projects.map((item) => 
-                                                    <Picker.Item key={item._id} label={item.title} value={item}  />
-                                                    )
-                                            }
-                                    </Picker>
+                                    <DatePicker
+                                        style={{
+                                            alignSelf:'flex-end',
+                                            display: displayDatePicker,
+                                            backgroundColor:'rgb(255,255,255)',
+                                        }}
+                                        date={this.task.deadlineDate? this.task.deadlineDate : new Date()}
+                                        onDateChange={(value) => this.setDeadlineDate(value)}
+                                    />
+                                    
+
                                     <Text 
                                         style={styles.saveCommentBtn}
                                         onPress={() => {
@@ -295,7 +357,7 @@ export default class TaskItem extends React.Component {
                                         maxLength={1000}
                                         defaultValue={this.task.comment}
                                         onChangeText = {(input) => this.changeCommentHandler(input)}
-                                        placeholder={strings('addComment')}
+                                        placeholder={strings("addComment")}
                                     />                                             
                                         {this.state.errorCommentStatus === true 
                                         ? (
@@ -304,20 +366,20 @@ export default class TaskItem extends React.Component {
                                         : null  } 
 
                                     <Text style={[sharedStyles.padding10,styles.text]}>
-                                        {strings("taskCreatedAt")}{this.task.createdDate.toLocaleDateString() + ' ' + this.task.createdDate.toLocaleTimeString()}
+                                        {strings("taskCreatedAt")}{this.task.createdDate.toLocaleDateString() + " " + this.task.createdDate.toLocaleTimeString()}
                                     </Text>
                                 </FlexLayout>
 
                                 <View style={[styles.modalFooter,sharedStyles.padding10]}>
                                     <Icon 
-                                        name='arrow-forward' 
-                                        color='#484848'
+                                        name="arrow-forward" 
+                                        color="#484848"
                                         size={28} 
                                         onPress={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)} 
                                     />
                                     <Icon 
-                                        name='delete-outline' 
-                                        color='#EE5436'
+                                        name="delete-outline" 
+                                        color="#EE5436"
                                         size={28} 
                                         onPress={() => deleteTask(this.task)}
                                     />

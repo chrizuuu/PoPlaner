@@ -1,8 +1,8 @@
 import React, {
     useState, 
     useLayoutEffect,
-    useEffect,
-    useRef
+    useRef,
+    useEffect
 } from "react";
 import {
     FlatList,
@@ -11,46 +11,66 @@ import {
     Keyboard,
     StyleSheet,
     Dimensions,
-    Pressable
+    Pressable,
+    Text
 } from "react-native";
 import realm, { 
     createTask, 
-    getTasks
+    getTasks,
+    getProjectTasks
 } from "../../../Database/Database"
 import { useFocusEffect } from '@react-navigation/native';
-import {Icon} from 'react-native-elements';
+import {Icon} from "react-native-elements";
 import TaskItem from "../../../components/components/TaskItem"
 import { strings } from "../../../translations/translations";
 import ErrorText from "../../../components/Text/ErrorText";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import sharedStyles from "../../../styles/shared";
+const windowHeight = Dimensions.get("window").height;
 
-const windowHeight = Dimensions.get('window').height;
+const ProjectTasks = ({navigation,route}) => {
+    const {projectId,priority,displayProjectProperty} = route.params
+    const project = realm.objectForPrimaryKey("Project",projectId)
 
-const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
-    const [tasks, setTasks] = useState(tasksType);
+    const [tasks, setTasks] = useState(getProjectTasks(project));
     const [taskInput,setTaskInput] = useState("")
     const [addFormVisible,setAddFormVisible] = useState(false)
-    const [backdropActive,setBackdropActive] = useState(false)
     const [errorStatus, setErrorStatus] = useState(false)
+    const [projectInfoVisible,setProjectInfoVisible] = useState(false)
     const inputTaskTitle = useRef(null)
 
+    useLayoutEffect(() => {
+        navigation.setOptions({
+        headerRight: () => (
+            <TouchableOpacity 
+                style={{marginRight:11}} 
+                onPress={() => setProjectInfoVisible(true)}
+            >
+                <Icon 
+                    type="ionicon"
+                    name="information-circle-outline"
+                    
+                />      
+            </TouchableOpacity>    
+            ),
+        });
+    }, [navigation]);
+
     function onRealmChange() {
-        setTasks(tasksType)
+        setTasks(getProjectTasks(project))
       }
     
     useFocusEffect(
         React.useCallback(() => {
-            setTasks(tasksType)
+            getProjectTasks(project)
             realm.addListener("change", onRealmChange);
             return () => 
                 realm.removeListener("change",onRealmChange);
         }, [navigation])
     );
-
+    
     const handleAddFormVisibile = () => {
         setAddFormVisible(true)
-        setBackdropActive(true)
         setTimeout(() => inputTaskTitle.current.focus(), 0)
     }
 
@@ -58,31 +78,10 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
         setAddFormVisible(false)
         Keyboard.dismiss()
     } 
-/*
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <TouchableOpacity 
-                    style={{marginRight:11}} 
-                    onPress={() => handleAddFormVisibile()}
-                >
-                    <Icon 
-                        type='ionicon'
-                        name='add-circle-outline' 
-                    />      
-                </TouchableOpacity>    
-            ),
-        });
-        return () => {
-            navigation.setOptions({
-                headerRight: () => {}
-            })
-        }
-    }, [navigation]);
-*/
+
     const submitTaskHandler = (value) => {
         if (value.nativeEvent.text !== "" & value.nativeEvent.text.trim().length > 0) {
-            createTask(value.nativeEvent.text,priority)
+            createTask(value.nativeEvent.text,priority,project)
             setErrorStatus(false)
             setTasks(tasks)
             setTaskInput("")
@@ -112,28 +111,27 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
         else {
             setErrorStatus(false)
             setAddFormVisible(false)
-            setBackdropActive(false)
         }
     }
 
     const styles = StyleSheet.create({
         container: {
             flex:1,
-            width:'100%',
+            width:"100%",
             height: windowHeight,
             backgroundColor:"rgb(244, 244, 244)",
         },
 
         textInputContainer: {
             transform: addFormVisible? [{translateY:0}] :[ {translateY:-60}],
-            display:addFormVisible? 'flex': 'none',
-            flexDirection:'row',
-            alignItems:'center',
+            display:addFormVisible? "flex": "none",
+            flexDirection:"row",
+            alignItems:"center",
             borderColor: "rgb(48,48,48)",
             borderWidth:1, 
             borderRadius:5,
             backgroundColor:"rgb(255,255,255)",
-            width:'90%',
+            width:"90%",
             height:40,
             paddingHorizontal:5,
             color:"black",
@@ -142,17 +140,17 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
         },
         listFooter: {
             height:40,
-            width:'100%',
+            width:"100%",
             backgroundColor:"rgb(255,255,255)",
             borderTopWidth:1,
-            flexDirection:'row',
-            justifyContent:'space-between',
-            alignItems:'center'
+            flexDirection:"row",
+            justifyContent:"space-between",
+            alignItems:"center"
         },
         backdropPressable: {
-            position:'absolute',
-            width:'100%',
-            height:'100%',
+            position:"absolute",
+            width:"100%",
+            height:"100%",
             top:60,
         },
         footer: {
@@ -160,9 +158,7 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
             flexDirection:"row",
             width:"100%",
             justifyContent:"flex-end",
-            borderTopColor:"rgb(240,240,240)",
-            borderTopWidth:1,
-            backgroundColor:"rgb(250,250,250)",
+            backgroundColor:"rgb(255,255,255)",
         }
     })
  
@@ -177,8 +173,8 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
                             <View style={styles.textInputContainer}>
                                 <Icon 
                                     size={32} 
-                                    type='ionicon' 
-                                    name='close-outline' 
+                                    type="ionicon" 
+                                    name="close-outline" 
                                     style={{marginRight:10,}} 
                                     onPress={() =>addFormDismiss() }
                                 />
@@ -211,7 +207,7 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
                                 displayProjectProperty={displayProjectProperty} 
                             />
                     )}} 
-                />
+                /> 
                 <View style={[styles.footer,sharedStyles.padding10]}>
                     <Icon 
                         type="ionicon"
@@ -220,7 +216,8 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
                         size={28}
                         onPress={() => handleAddFormVisibile()}
                     />                   
-                </View>                  
+                </View> 
+
             </View>
             {addFormVisible
             ?    
@@ -235,4 +232,4 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
     );
 };
 
-export default React.memo(TasksList)
+export default React.memo(ProjectTasks)
