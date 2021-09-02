@@ -1,7 +1,7 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import {createDrawerNavigator ,  DrawerContentScrollView,DrawerItemList,DrawerItem} from "@react-navigation/drawer";
 import {createStackNavigator} from "@react-navigation/stack";
-import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+import { getFocusedRouteNameFromRoute, NavigationActions } from "@react-navigation/native";
 import PomodoroScreen from "../screens/Dasboard/Pomodoro/PomodoroScreen";
 import ScheduleScreen from "../screens/Dasboard/ScheduleScreen";
 import ProfileScreen from "../screens/Dasboard/ProfileScreen";
@@ -10,7 +10,7 @@ import ProjectTasks from "../screens/Dasboard/ToDo/ProjectTasks";
 import ProjectsListScreen from "../screens/Dasboard/ToDo/ProjectsListScreen";
 import {getAllTasks,getPriorityTasks, getProjectTasks} from "../Database/Database"
 import { strings } from "../translations/translations";
-import { TouchableOpacity,Text } from "react-native";
+import { TouchableOpacity,Text,StyleSheet,ScrollView,View } from "react-native";
 import realm from "../Database/Database";
 import {Icon,Button} from "react-native-elements";
 import { TextInput } from "react-native";
@@ -19,42 +19,13 @@ const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
 
 
+const CustomDrawerContent = (props) => {
 
-function CustomDrawerContent(props) {
-  let activeIndex = props.navigation.state.index;
-  let activeRouteName = props.navigation.state.routes[activeIndex].routeName;
-
-  const [activeRoute, setActiveRoute] = useState('');
-
-  useEffect(() => {
-      setActiveRoute(activeRouteName);
-  }, [activeRouteName, activeRoute]);
-
-
-  const navigateToScreen = (route) => () => {
-
-      if (activeRouteName === route){
-          return props.navigation.closeDrawer();
-      }
-
-      const navAction = NavigationActions.navigate({
-          routeName: route
-      });
-
-      props.navigation.dispatch(navAction);
-  };
 
    return (
       <DrawerContentScrollView {...props}>   
       
         <DrawerItem
-                focused={getActiveRouteState(
-                      props.state.routes,
-                      props.state.index,
-                      'Priority'
-                    )}
-                    activeBackgroundColor='red'
-                    inactiveBackgroundColor='green'
           label={strings("headerTitlePriorityTasks")}
           labelStyle={{fontFamily:"OpenSansSemiBold"}}
           icon={({ color, size }) => <Icon type="ionicon" color={color} size={20} name={"star-outline"} />}
@@ -105,6 +76,8 @@ function CustomDrawerContent(props) {
       </DrawerContentScrollView>
     );
   }
+
+  
  
 function StackNavigator({navigation}) {
     return (
@@ -187,11 +160,9 @@ function StackNavigator({navigation}) {
   function DrawerNavigator({navigation, route}) {
     return (
       <Drawer.Navigator
-        drawerContent={(props) => <CustomDrawerContent {...props} />}
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
         screenOptions={{
           headerShown: false,
-          activeBackgroundColor: "#7393DD",
-          inactiveBackgroundColor:'green'
         }}        
       >
         <Drawer.Screen name="Stack" component={StackNavigator} />

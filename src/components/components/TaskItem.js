@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
         fontFamily:"OpenSansSemiBold",
         color:"#282828",
         overflow:"hidden", 
+        textAlignVertical:"center"
     },
 
     modalStyle: {
