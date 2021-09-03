@@ -59,28 +59,6 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
         setAddFormVisible(false)
         Keyboard.dismiss()
     } 
-/*
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <TouchableOpacity 
-                    style={{marginRight:11}} 
-                    onPress={() => handleAddFormVisibile()}
-                >
-                    <Icon 
-                        type='ionicon'
-                        name='add-circle-outline' 
-                    />      
-                </TouchableOpacity>    
-            ),
-        });
-        return () => {
-            navigation.setOptions({
-                headerRight: () => {}
-            })
-        }
-    }, [navigation]);
-*/
     const submitTaskHandler = (value) => {
         if (value.nativeEvent.text !== "" & value.nativeEvent.text.trim().length > 0) {
             createTask(value.nativeEvent.text,priority)

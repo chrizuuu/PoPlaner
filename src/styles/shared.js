@@ -44,6 +44,14 @@ const sharedStyles = StyleSheet.create ({
         marginLeft:15,
     },
 
+    modalContainer: {
+        backgroundColor: "white",
+        height:'100%',
+        marginRight:0,
+        marginTop:0,
+        marginBottom:0,
+    }
+
 })
 
 export default sharedStyles;

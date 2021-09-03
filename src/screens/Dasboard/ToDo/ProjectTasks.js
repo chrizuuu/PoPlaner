@@ -26,6 +26,8 @@ import { strings } from "../../../translations/translations";
 import ErrorText from "../../../components/Text/ErrorText";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import sharedStyles from "../../../styles/shared";
+import Modal from "react-native-modal";
+import FlexLayout from "../../../components/Layouts/FlexLayout";
 import FooterList from "../../../components/components/FooterList";
 
 const windowHeight = Dimensions.get("window").height;
@@ -38,10 +40,9 @@ const ProjectTasks = ({navigation,route}) => {
     const [taskInput,setTaskInput] = useState("")
     const [addFormVisible,setAddFormVisible] = useState(false)
     const [errorStatus, setErrorStatus] = useState(false)
-    const [projectInfoVisible,setProjectInfoVisible] = useState(false)
     const inputTaskTitle = useRef(null)
 
-    useLayoutEffect(() => {
+    /*useLayoutEffect(() => {
         navigation.setOptions({
         headerRight: () => (
             <TouchableOpacity 
@@ -57,6 +58,8 @@ const ProjectTasks = ({navigation,route}) => {
             ),
         });
     }, [navigation]);
+
+    */
 
     function onRealmChange() {
         setTasks(getProjectTasks(project))

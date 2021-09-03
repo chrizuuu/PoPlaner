@@ -50,13 +50,6 @@ const styles = StyleSheet.create({
         textAlignVertical:"center"
     },
 
-    modalStyle: {
-        height:"100%",
-        marginRight:0,
-        marginTop:0,
-        marginBottom:0,
-        backgroundColor:"rgb(255,255,255)",
-    },
     modalFooter: {
         alignItems:"center",
         flexDirection:"row",
@@ -247,7 +240,7 @@ export default class TaskItem extends React.Component {
                             isVisible={this.state.taskPageIsOpen} 
                             onSwipeComplete={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}
                             onBackdropPress={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}
-                            style={styles.modalStyle} 
+                            style={sharedStyles.modalContainer} 
                         >
                             <FlexLayout>
                                 <CustomizingHeaderBar

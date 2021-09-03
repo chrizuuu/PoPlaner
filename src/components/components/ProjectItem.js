@@ -13,6 +13,7 @@ import {Icon} from 'react-native-elements';
 import Modal from 'react-native-modal';
 import sharedStyles from "../../styles/shared";
 import FlexLayout from "../Layouts/FlexLayout";
+import CounterTasks from "./CounterTasks";
 
 const styles = StyleSheet.create({
     container: {
@@ -31,15 +32,6 @@ const styles = StyleSheet.create({
         fontFamily:"OpenSansSemiBold",
         color:'#282828',
         overflow:'hidden', 
-    },
-
-    tasksCounter: {
-        fontFamily:'OpenSansBold',
-        textAlign:'center',
-        backgroundColor:"rgb(83,211,175)",
-        height:20,
-        width:20,
-        borderRadius:25,
     },
 
     modalStyle: {
@@ -111,9 +103,9 @@ export default class ProjectItem extends React.Component {
                     >
                         {this.project.title}
                     </Text> 
-                    <Text style={styles.tasksCounter}>
-                        {taskToDoInProject}
-                    </Text>
+                    <CounterTasks 
+                        project={this.project._id}
+                        backgroundColor="rgb(83,211,175)" />
                 </View>  
                 <Modal 
                     animationIn="slideInRight"
