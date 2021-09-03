@@ -37,29 +37,33 @@ const ProjectTasks = ({navigation,route}) => {
     const project = realm.objectForPrimaryKey("Project",projectId)
 
     const [tasks, setTasks] = useState(getProjectTasks(project));
+    const [projectTitle,setProjectTitleInput] = useState(project.title)
+    const [projectTitleErrorStatus,setProjectTitleErrorStatus] = useState(false)
     const [taskInput,setTaskInput] = useState("")
     const [addFormVisible,setAddFormVisible] = useState(false)
-    const [errorStatus, setErrorStatus] = useState(false)
+    const [taskInputErrorStatus, setTaskInputErrorStatus] = useState(false)
     const inputTaskTitle = useRef(null)
 
-    /*useLayoutEffect(() => {
+    useLayoutEffect(() => {
         navigation.setOptions({
-        headerRight: () => (
-            <TouchableOpacity 
-                style={{marginRight:11}} 
-                onPress={() => setProjectInfoVisible(true)}
-            >
-                <Icon 
-                    type="ionicon"
-                    name="information-circle-outline"
-                    
-                />      
-            </TouchableOpacity>    
-            ),
-        });
-    }, [navigation]);
-
-    */
+        headerTitle: () => (
+            <View style={{height:40}}>
+                <TextInput 
+                    name="input"
+                    style={styles.header}
+                    maxLength={100}
+                    defaultValue={project.title}
+                    onChangeText = {(input) => onChangeProjectTitle(input)}
+                    onSubmitEditing = {() => changeProjectTitleHandler()}
+                /> 
+                 
+                {projectTitleErrorStatus === true 
+                ? (<ErrorText errorValue={strings("inputEmptyError")} />)
+                : null 
+                }
+            </View>
+        ),
+    });}, [navigation]);
 
     function onRealmChange() {
         setTasks(getProjectTasks(project))
@@ -73,6 +77,24 @@ const ProjectTasks = ({navigation,route}) => {
                 realm.removeListener("change",onRealmChange);
         }, [navigation])
     );
+
+    const onChangeProjectTitle = (value) => {
+        setProjectTitleInput(value)
+    }
+
+    const changeProjectTitleHandler = () => {
+        if (projectTitle!== "" & projectTitle.trim().length > 0) {
+            console.log(projectTitle)
+            setProjectTitleErrorStatus(false)
+            realm.write(() => {
+                project.title = projectTitle
+            })
+            console.log(project.title)
+        }
+        else {
+            setProjectTitleErrorStatus(true)           
+        }
+    }
     
     const handleAddFormVisibile = () => {
         setAddFormVisible(true)
@@ -87,24 +109,24 @@ const ProjectTasks = ({navigation,route}) => {
     const submitTaskHandler = (value) => {
         if (value.nativeEvent.text !== "" & value.nativeEvent.text.trim().length > 0) {
             createTask(value.nativeEvent.text,priority,project)
-            setErrorStatus(false)
+            setTaskInputErrorStatus(false)
             setTasks(tasks)
             setTaskInput("")
             addFormDismiss()
         }
         else {
-            setErrorStatus(true)
+            setTaskInputErrorStatus(true)
             setTimeout(() => inputTaskTitle.current.focus(), 0)
         }
     }
 
     const taskCreateInputHandler = (value) => {
         if (value !== "" & value.trim().length > 0) {
-            setErrorStatus(false)
+            setTaskInputErrorStatus(false)
             setTaskInput(value)
         }
         else {
-            setErrorStatus(true)
+            setTaskInputErrorStatus(true)
             setTaskInput(value)
         }
     }
@@ -114,7 +136,7 @@ const ProjectTasks = ({navigation,route}) => {
             Keyboard.dismiss()
         }
         else {
-            setErrorStatus(false)
+            setTaskInputErrorStatus(false)
             setAddFormVisible(false)
         }
     }
@@ -125,6 +147,11 @@ const ProjectTasks = ({navigation,route}) => {
             width:"100%",
             height: windowHeight,
             backgroundColor:"rgb(244, 244, 244)",
+        },
+        header: {
+            textAlign:"center",
+            fontSize:16,
+            fontFamily:"OpenSansBold"
         },
 
         textInputContainer: {
@@ -194,7 +221,7 @@ const ProjectTasks = ({navigation,route}) => {
                                     ref={inputTaskTitle}
                                 />
                             </View>
-                            {errorStatus === true 
+                            {taskInputErrorStatus === true 
                                 ? (
                                     <ErrorText errorValue={strings("inputEmptyError")} />
                                 ) 

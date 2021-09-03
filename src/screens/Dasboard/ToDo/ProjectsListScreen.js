@@ -74,7 +74,6 @@ const ProjectsListScreen = ({navigation}) => {
                                         projectId:item._id,
                                         priority:false,
                                         displayProjectProperty:false,
-                                        title:item.title,
                                     },
                                 })
                               );
