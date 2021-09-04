@@ -2,14 +2,13 @@ import 'react-native-gesture-handler';
 import React, {useState} from 'react';
 import {StatusBar} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
 import DrawerNav from './src/navigations/drawerNav';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import {setI18Config} from './src/translations/translations'
 import TasksList from './src/screens/Dasboard/ToDo/TasksList';
 import DrawerNavigator from './src/navigations/newdrawer';
-const Stack = createStackNavigator();
+import { navigationRef } from './src/navigations/newdrawer';
 
 const customFonts = {
   OpenSansReg: require("./src/assets/fonts/OpenSans-Regular.ttf"),

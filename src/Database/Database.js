@@ -72,7 +72,7 @@ const createTask = (_title,_priority,_project) => {
 }
 
 const getAllTasks = () => {
-    return realm.objects("Task").filtered("isDone == false AND project == $0",initProject).sorted("deadlineDate")
+    return realm.objects("Task").filtered("isDone == false AND project == $0",initProject).sorted("createdDate",true)
 }
 
 const getPriorityTasks = () => {
@@ -80,7 +80,7 @@ const getPriorityTasks = () => {
 }
 
 const getProjectTasks = (project) => {
-    return realm.objects("Task").filtered("isDone == false AND project == $0",project).sorted("createdDate","Descendig")
+    return realm.objects("Task").filtered("isDone == false AND project == $0",project).sorted("deadlineDate")
 }
 
 const changePriority = (_task) => {

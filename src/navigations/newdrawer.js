@@ -1,7 +1,8 @@
 import React,{useState,useEffect} from "react";
 import {createDrawerNavigator ,  DrawerContentScrollView,DrawerItemList,DrawerItem} from "@react-navigation/drawer";
 import {createStackNavigator} from "@react-navigation/stack";
-import { getFocusedRouteNameFromRoute, NavigationActions } from "@react-navigation/native";
+import { useNavigationState,useRoute } from '@react-navigation/native'    
+
 import PomodoroScreen from "../screens/Dasboard/Pomodoro/PomodoroScreen";
 import ScheduleScreen from "../screens/Dasboard/ToDo/ScheduleScreen";
 import ProfileScreen from "../screens/Dasboard/ProfileScreen";
@@ -11,16 +12,21 @@ import ProjectsListScreen from "../screens/Dasboard/ToDo/ProjectsListScreen";
 import {getAllTasks,getPriorityTasks, getProjectTasks} from "../Database/Database"
 import { strings } from "../translations/translations";
 import { TouchableOpacity,Text,StyleSheet,ScrollView,View } from "react-native";
-import realm from "../Database/Database";
 import {Icon,Button} from "react-native-elements";
 
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
 
-
 const CustomDrawerContent = (props) => {
+/*  
+  const getCurrentRouteName = () => {
+    let _index = props.state.index;
+    let _routeName = props.state;
+    return  _routeName.routes[0].state
+}
 
-
+console.log(getCurrentRouteName())
+*/
    return (
       <DrawerContentScrollView {...props}>   
       
@@ -79,6 +85,7 @@ const CustomDrawerContent = (props) => {
   
  
 function StackNavigator({navigation}) {
+  
     return (
       <Stack.Navigator   
         screenOptions={({ route }) => ({
@@ -156,7 +163,8 @@ function StackNavigator({navigation}) {
     );
   }
   
-  function DrawerNavigator({navigation, route}) {
+  function DrawerNavigator({navigation}) {
+
     return (
       <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}

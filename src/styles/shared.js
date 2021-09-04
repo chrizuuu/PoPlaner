@@ -44,7 +44,7 @@ const sharedStyles = StyleSheet.create ({
         marginLeft:15,
     },
 
-    modalRightSwipeContainer: {
+    modalContainer: {
         backgroundColor: "white",
         height:'100%',
         marginRight:0,

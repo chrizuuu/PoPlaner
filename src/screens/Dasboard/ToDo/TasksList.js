@@ -59,7 +59,6 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
         setAddFormVisible(false)
         Keyboard.dismiss()
     } 
-
     const submitTaskHandler = (value) => {
         if (value.nativeEvent.text !== "" & value.nativeEvent.text.trim().length > 0) {
             createTask(value.nativeEvent.text,priority)

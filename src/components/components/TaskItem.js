@@ -240,8 +240,8 @@ export default class TaskItem extends React.Component {
                             isVisible={this.state.taskPageIsOpen} 
                             onSwipeComplete={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}
                             onBackdropPress={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}
-                            style={sharedStyles.modalRightSwipeContainer}
-                            >
+                            style={sharedStyles.modalContainer} 
+                        >
                             <FlexLayout>
                                 <CustomizingHeaderBar
                                     style={sharedStyles.paddingSide25}
