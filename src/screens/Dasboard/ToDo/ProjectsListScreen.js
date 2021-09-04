@@ -27,11 +27,11 @@ const ProjectsListScreen = ({navigation}) => {
     function onRealmChange() {
         setProjects(getAllProjects())
         setVisibleCreateProject(false)
-      }
+    }
 
     useFocusEffect(
         React.useCallback(() => {
-            getAllProjects()
+            setProjects(getAllProjects())
             realm.addListener("change", onRealmChange);
             return () =>  
                 realm.removeListener("change",onRealmChange);
@@ -74,7 +74,6 @@ const ProjectsListScreen = ({navigation}) => {
                                         projectId:item._id,
                                         priority:false,
                                         displayProjectProperty:false,
-                                        title:item.title,
                                     },
                                 })
                               );
