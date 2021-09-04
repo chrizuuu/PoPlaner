@@ -113,7 +113,7 @@ export default class TaskItem extends React.Component {
     }
 
     submitCommentHandler = () => {
-        if (this.state.inputComment !== "" & this.state.inputComment.trim().length > 0) {
+        if (this.state.inputComment !== "" && this.state.inputComment.trim().length > 0) {
             realm.write(() => {
                 this.task.comment = this.state.inputComment
             })
@@ -130,7 +130,7 @@ export default class TaskItem extends React.Component {
     }
 
     submitTitleHandler = () => {
-        if (this.state.inputTitle !== "" & this.state.inputTitle.trim().length > 0) {
+        if (this.state.inputTitle !== "" && this.state.inputTitle.trim().length > 0) {
             realm.write(() => {
                 this.task.title = this.state.inputTitle;
             })       

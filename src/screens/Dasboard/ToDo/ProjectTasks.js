@@ -37,6 +37,7 @@ const ProjectTasks = ({navigation,route}) => {
     const project = realm.objectForPrimaryKey("Project",projectId)
 
     const [tasks, setTasks] = useState(getProjectTasks(project));
+    const [projectPageIsOpen,setProjectPageIsOpen] = useState(false)
     const [projectTitle,setProjectTitleInput] = useState(project.title)
     const [projectTitleErrorStatus,setProjectTitleErrorStatus] = useState(false)
     const [taskInput,setTaskInput] = useState("")
@@ -46,23 +47,23 @@ const ProjectTasks = ({navigation,route}) => {
 
     useLayoutEffect(() => {
         navigation.setOptions({
-        headerTitle: () => (
-            <View style={{height:40}}>
-                <TextInput 
-                    name="input"
-                    style={styles.header}
-                    maxLength={100}
-                    defaultValue={project.title}
-                    onChangeText = {(input) => onChangeProjectTitle(input)}
-                    onSubmitEditing = {() => changeProjectTitleHandler()}
-                /> 
-                 
-                {projectTitleErrorStatus === true 
-                ? (<ErrorText errorValue={strings("inputEmptyError")} />)
-                : null 
-                }
-            </View>
-        ),
+            headerTitle: () => (
+                    <Text style={styles.header}> 
+                        {project.title}  
+                    </Text>
+            ),
+            headerRight: () => (
+                <Pressable 
+                    onPress={() => setProjectPageIsOpen(true)}
+                    style={{marginRight:11}
+                }>
+                    <Icon
+                        type="ionicon"
+                        name="help-circle-outline"
+                        size={28}
+                    />
+                </Pressable>
+            )
     });}, [navigation]);
 
     function onRealmChange() {
@@ -70,7 +71,7 @@ const ProjectTasks = ({navigation,route}) => {
       }
     
     useFocusEffect(
-        React.useCallback(() => {
+        React.useCallback(() => {project
             getProjectTasks(project)
             realm.addListener("change", onRealmChange);
             return () => 
@@ -78,16 +79,11 @@ const ProjectTasks = ({navigation,route}) => {
         }, [navigation])
     );
 
-    const onChangeProjectTitle = (value) => {
-        setProjectTitleInput(value)
-    }
-
     const changeProjectTitleHandler = () => {
-        if (projectTitle!== "" & projectTitle.trim().length > 0) {
-            console.log(projectTitle)
+        if (projectTitle !== "" && projectTitle.trim().length > 0) {
             setProjectTitleErrorStatus(false)
             realm.write(() => {
-                project.title = projectTitle
+                project.title = projectTitle.toString()
             })
             console.log(project.title)
         }
@@ -107,7 +103,7 @@ const ProjectTasks = ({navigation,route}) => {
     } 
 
     const submitTaskHandler = (value) => {
-        if (value.nativeEvent.text !== "" & value.nativeEvent.text.trim().length > 0) {
+        if (value.nativeEvent.text !== "" && value.nativeEvent.text.trim().length > 0) {
             createTask(value.nativeEvent.text,priority,project)
             setTaskInputErrorStatus(false)
             setTasks(tasks)
@@ -121,7 +117,7 @@ const ProjectTasks = ({navigation,route}) => {
     }
 
     const taskCreateInputHandler = (value) => {
-        if (value !== "" & value.trim().length > 0) {
+        if (value !== "" && value.trim().length > 0) {
             setTaskInputErrorStatus(false)
             setTaskInput(value)
         }
@@ -132,7 +128,7 @@ const ProjectTasks = ({navigation,route}) => {
     }
 
     const backdropHandler = () => {
-        if (taskInput !== "" & taskInput.trim().length > 0) {
+        if (taskInput !== "" && taskInput.trim().length > 0) {
             Keyboard.dismiss()
         }
         else {
@@ -191,7 +187,18 @@ const ProjectTasks = ({navigation,route}) => {
             width:"100%",
             justifyContent:"flex-end",
             backgroundColor:"rgb(255,255,255)",
-        }
+        },
+        modalContainer: {
+            flex: 1,
+            flexDirection: "column",
+            justifyContent: "flex-end",
+            alignContent: "flex-end",
+        },
+        modalWrapper: {
+            width: "100%",
+            backgroundColor:"#fff",
+            padding:10,
+        },
     })
  
     return (
@@ -246,6 +253,30 @@ const ProjectTasks = ({navigation,route}) => {
                 />
                 
             </View>
+            <Modal 
+                animationIn="slideInUp"
+                animationOut="slideOutDown"
+                swipeDirection="down"
+                isVisible={projectPageIsOpen} 
+                onSwipeComplete={() => setProjectPageIsOpen(!projectPageIsOpen)}
+                onBackdropPress={() => setProjectPageIsOpen(!projectPageIsOpen)}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalWrapper}>
+                        <View style={sharedStyles.wrapperInLine}>
+                        <Text> </Text>
+                        <TextInput 
+                            style={styles.header}
+                            name="input"
+                            maxLength={100}
+                            defaultValue={projectTitle}
+                            onChangeText={(input) => setProjectTitleInput(input)}
+                            onSubmitEditing={() => changeProjectTitleHandler() }
+                        />
+                        </View>
+                    </View>
+                </View>
+            </Modal>
             {addFormVisible
             ?    
                 <Pressable 

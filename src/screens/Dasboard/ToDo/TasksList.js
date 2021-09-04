@@ -60,7 +60,7 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
         Keyboard.dismiss()
     } 
     const submitTaskHandler = (value) => {
-        if (value.nativeEvent.text !== "" & value.nativeEvent.text.trim().length > 0) {
+        if (value.nativeEvent.text !== "" && value.nativeEvent.text.trim().length > 0) {
             createTask(value.nativeEvent.text,priority)
             setErrorStatus(false)
             setTasks(tasks)
@@ -74,7 +74,7 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
     }
 
     const taskCreateInputHandler = (value) => {
-        if (value !== "" & value.trim().length > 0) {
+        if (value !== "" && value.trim().length > 0) {
             setErrorStatus(false)
             setTaskInput(value)
         }
@@ -85,7 +85,7 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
     }
 
     const backdropHandler = () => {
-        if (taskInput !== "" & taskInput.trim().length > 0) {
+        if (taskInput !== "" && taskInput.trim().length > 0) {
             Keyboard.dismiss()
         }
         else {
