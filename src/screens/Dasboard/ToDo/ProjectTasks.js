@@ -41,7 +41,7 @@ const ProjectTasks = ({navigation,route}) => {
     const [projectInfoVisible,setProjectInfoVisible] = useState(false)
     const inputTaskTitle = useRef(null)
 
-    useLayoutEffect(() => {
+   /* useLayoutEffect(() => {
         navigation.setOptions({
         headerRight: () => (
             <TouchableOpacity 
@@ -57,6 +57,7 @@ const ProjectTasks = ({navigation,route}) => {
             ),
         });
     }, [navigation]);
+    */
 
     function onRealmChange() {
         setTasks(getProjectTasks(project))

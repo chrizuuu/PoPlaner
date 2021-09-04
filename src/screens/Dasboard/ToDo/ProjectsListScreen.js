@@ -15,10 +15,11 @@ import realm,{
     getAllProjects, 
 } from "../../../Database/Database"
 import Modal from "react-native-modal";
-import { CommonActions,useNavigationState ,useFocusEffect} from '@react-navigation/native';
+import { CommonActions,useFocusEffect} from '@react-navigation/native';
 import ProjectItem from "../../../components/components/ProjectItem";
 import ModalCreateProject from "../../../components/ModalComponents/ModalCreateProject";
 import FooterList from "../../../components/components/FooterList";
+import { StackActions } from "@react-navigation/routers";
 
 const ProjectsListScreen = ({navigation}) => {
     const [projects,setProjects] = useState(getAllProjects())
@@ -53,7 +54,7 @@ const ProjectsListScreen = ({navigation}) => {
             paddingHorizontal:25
         },
     })
- 
+
     return (
         <>
             <View style={styles.container} >     
@@ -65,23 +66,23 @@ const ProjectsListScreen = ({navigation}) => {
                     keyExtractor={(item) => item._id.toString()}
                     renderItem={({item}) => {
                         return (
-                        <Pressable onPress={() => {
-                            navigation.dispatch(
-                                CommonActions.navigate({
-                                    name: "ProjectTasks",
-                                    key: item._id.toString(),
-                                    params: {
-                                        projectId:item._id,
-                                        priority:false,
-                                        displayProjectProperty:false,
-                                        title:item.title,
-                                    },
-                                })
-                              );
-                            }} 
-                        >
-                            <ProjectItem item_id={item._id} />
-                        </Pressable>
+                            <Pressable onPress={() => {
+                                navigation.dispatch(
+                                    CommonActions.navigate({
+                                        name:"ProjectTasks",
+                                        key: item._id.toString(),
+                                        params: {
+                                            projectId:item._id,
+                                            priority:false,
+                                            displayProjectProperty:false,
+                                            title:item.title,
+                                        },
+                                    })
+                                  );
+                                }} 
+                            >
+                                <ProjectItem item_id={item._id} />
+                            </Pressable>
                     )}} 
                 />
                 <FooterList 

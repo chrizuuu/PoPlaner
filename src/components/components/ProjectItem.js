@@ -69,6 +69,7 @@ export default class ProjectItem extends React.Component {
             inputTitle: this.project.title,
             errorInputTitle:false,
             projectPageIsOpen: false,
+            taskToDoInProject:realm.objects("Task").filtered("project._id == $0 AND isDone = false", this.project._id).length
         }
     }
     project = realm.objectForPrimaryKey("Project",this.props.item_id)
@@ -101,7 +102,6 @@ export default class ProjectItem extends React.Component {
     }
 
     render() {
-        let taskToDoInProject= realm.objects("Task").filtered("project._id == $0 AND isDone = false", this.project._id).length
         return (
             <>
                 <View style={[styles.container]}>
@@ -112,7 +112,7 @@ export default class ProjectItem extends React.Component {
                         {this.project.title}
                     </Text> 
                     <Text style={styles.tasksCounter}>
-                        {taskToDoInProject}
+                        {this.state.taskToDoInProject}
                     </Text>
                 </View>  
                 <Modal 

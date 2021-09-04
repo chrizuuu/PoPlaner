@@ -54,13 +54,7 @@ const styles = StyleSheet.create ( {
         fontFamily:'OpenSansBold',
         color:'#282828'
     },
-    settingsModal: {
-        backgroundColor: "white",
-        height:'100%',
-        marginRight:0,
-        marginTop:0,
-        marginBottom:0,
-    },
+
     box: {
         width:'100%',
     },
@@ -299,7 +293,7 @@ export default class PomodoroScreen extends React.Component {
                 swipeDirection='right'
                 onSwipeComplete={() => this.setIsOpen(!this.state.settingsIsOpen)}
                 onBackdropPress={() => this.setIsOpen(!this.state.settingsIsOpen)} 
-                style={styles.settingsModal}
+                style={sharedStyles.modalRightSwipeContainer}
             >
                 <FlexLayout>
                     <HeaderBar 
