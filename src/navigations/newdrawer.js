@@ -26,6 +26,28 @@ const CustomDrawerContent = (props) => {
 
 console.log(getCurrentRouteName())
 */
+
+const { state } = props
+const { routes, index } = state; 
+const focusedRoute = routes[index]
+
+const focusedCheck = value => {
+  let actualRoute = state.routes[state.index];
+
+  while (actualRoute.state) {
+      actualRoute = actualRoute.state.routes[actualRoute.state.index];
+      console.log(actualRoute.name)
+  }
+  if (value === actualRoute.name){
+    return true
+  }
+  else { 
+    return false
+  }
+}
+
+
+const focusChecker = (value) => focusedRoute === value? true : false
    return (
       <DrawerContentScrollView {...props}>   
       
@@ -36,6 +58,7 @@ console.log(getCurrentRouteName())
           onPress={() => {
             props.navigation.navigate("Priority");
           }}
+          focused={focusedCheck("Priority")}
         />
         <DrawerItem
           label={strings("headerTitleAllTasks")}
@@ -44,6 +67,7 @@ console.log(getCurrentRouteName())
           onPress={() => {
             props.navigation.navigate("Inbox");
           }}
+          focused={focusedCheck("Inbox")}
         />  
         <DrawerItem
           label={strings("headerTitleProjects")}
@@ -52,6 +76,7 @@ console.log(getCurrentRouteName())
           onPress={() => {
             props.navigation.navigate("Projects");
           }}
+          focused={focusedCheck("Projects")}
         />
         <DrawerItem
           label={strings("headerTitleCalendar")}
@@ -60,6 +85,7 @@ console.log(getCurrentRouteName())
           onPress={() => {
             props.navigation.navigate("Calendar");
           }}
+          focused={focusedCheck("Calendar")}
         />  
         <DrawerItem
           label="Pomodoro"
@@ -68,6 +94,7 @@ console.log(getCurrentRouteName())
           onPress={() => {
             props.navigation.navigate("Pomodoro");
           }}
+          focused={focusedCheck("Pomodoro")}
         />     
       </DrawerContentScrollView>
     );
