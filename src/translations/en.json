@@ -51,6 +51,9 @@
     "createProjectPropertiesHeader": "Optional",
     "createProjectDescription": "Type description...",
 
+    "projectPropertyTitle": "Project title",
+    "projectPropertyDescription": "Project description",
+
     "inputEmptyError": "* Please enter the text to proceed.",
 
 

@@ -50,6 +50,9 @@
     "createProjectPropertiesHeader": "Opcjonalnie",
     "createProjectDescription": "Dodaj opis...",
 
+    "projectPropertyTitle": "Tytul projektu",
+    "projectPropertyDescription": "Opis projektu",
+
     "inputEmptyError": "* Wprowadź tekst, aby kontynuować.",
 
 

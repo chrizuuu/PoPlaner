@@ -276,7 +276,7 @@ const ProjectTasks = ({navigation,route}) => {
             >
                 <FlexLayout>
                      <Text style={styles.modalHeader}> 
-                            Tytul projektu
+                            {strings("projectPropertyTitle")}
                     </Text>
                     <TextInput 
                         style={[styles.modalInput]}
@@ -292,7 +292,7 @@ const ProjectTasks = ({navigation,route}) => {
                     }
                     <View style={[sharedStyles.wrapperInLine,styles.modalHeader,{justifyContent:"space-between"}]}>
                         <Text style={styles.modalHeaderText}>
-                            Opis projektu
+                            {strings("projectPropertyDescription")}
                         </Text>
                         {saveDescBtnVisible === true
                         ?   <TouchableOpacity
