@@ -28,11 +28,11 @@ const ProjectsListScreen = ({navigation}) => {
     function onRealmChange() {
         setProjects(getAllProjects())
         setVisibleCreateProject(false)
-      }
+    }
 
     useFocusEffect(
         React.useCallback(() => {
-            getAllProjects()
+            setProjects(getAllProjects())
             realm.addListener("change", onRealmChange);
             return () =>  
                 realm.removeListener("change",onRealmChange);
@@ -66,23 +66,22 @@ const ProjectsListScreen = ({navigation}) => {
                     keyExtractor={(item) => item._id.toString()}
                     renderItem={({item}) => {
                         return (
-                            <Pressable onPress={() => {
-                                navigation.dispatch(
-                                    CommonActions.navigate({
-                                        name:"ProjectTasks",
-                                        key: item._id.toString(),
-                                        params: {
-                                            projectId:item._id,
-                                            priority:false,
-                                            displayProjectProperty:false,
-                                            title:item.title,
-                                        },
-                                    })
-                                  );
-                                }} 
-                            >
-                                <ProjectItem item_id={item._id} />
-                            </Pressable>
+                        <Pressable onPress={() => {
+                            navigation.dispatch(
+                                CommonActions.navigate({
+                                    name: "ProjectTasks",
+                                    key: item._id.toString(),
+                                    params: {
+                                        projectId:item._id,
+                                        priority:false,
+                                        displayProjectProperty:false,
+                                    },
+                                })
+                              );
+                            }} 
+                        >
+                            <ProjectItem item_id={item._id} />
+                        </Pressable>
                     )}} 
                 />
                 <FooterList 

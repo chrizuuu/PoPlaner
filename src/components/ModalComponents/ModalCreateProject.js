@@ -137,10 +137,6 @@ const ModalCreateProject = ({closeFunc}) => {
                     {strings("createProjectPropertiesHeader")}
                 </Text>
                 <View style={styles.propertiesWrapper}>
-                    <PropertyItem
-                                valueIcon = 'calendar-today'
-                                valueTitle = {strings('taskPropertyDate')}
-                    />
                     <TextInput 
                         style={[styles.commentInput]}
                         name="input"

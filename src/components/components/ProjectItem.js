@@ -77,7 +77,7 @@ export default class ProjectItem extends React.Component {
     }
 
     submitTitleHandler = () => {
-        if (this.state.inputTitle !== "" & this.state.inputTitle.trim().length > 0) {
+        if (this.state.inputTitle !== "" && this.state.inputTitle.trim().length > 0) {
             realm.write(() => {
                 this.project.title = this.state.inputTitle;
             })       
