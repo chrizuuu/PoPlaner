@@ -5,7 +5,6 @@ import { useNavigationState,useRoute } from '@react-navigation/native'
 
 import PomodoroScreen from "../screens/Dasboard/Pomodoro/PomodoroScreen";
 import ScheduleScreen from "../screens/Dasboard/ToDo/ScheduleScreen";
-import ProfileScreen from "../screens/Dasboard/ProfileScreen";
 import TasksList from "../screens/Dasboard/ToDo/TasksList";
 import ProjectTasks from "../screens/Dasboard/ToDo/ProjectTasks";
 import ProjectsListScreen from "../screens/Dasboard/ToDo/ProjectsListScreen";
@@ -69,15 +68,7 @@ console.log(getCurrentRouteName())
           onPress={() => {
             props.navigation.navigate("Pomodoro");
           }}
-        />   
-        <DrawerItem
-          label="Profile"
-          labelStyle={{fontFamily:"OpenSansSemiBold"}}
-          icon={({ focused, color, size }) => <Icon type="ionicon" color={color} size={20} name={"person-outline"} />}
-          onPress={() => {
-            props.navigation.navigate("Profile");
-          }}
-        />   
+        />     
       </DrawerContentScrollView>
     );
   }
@@ -145,11 +136,6 @@ function StackNavigator({navigation}) {
             name="Pomodoro" 
             component={PomodoroScreen} 
             options={{ title: "Pomodoro Timer" }}
-        />
-        <Stack.Screen 
-            name="Profile" 
-            component={ProfileScreen} 
-            options={{ title: strings("headerTitleProfile")}}
         />
         <Stack.Screen 
           name="ProjectTasks"

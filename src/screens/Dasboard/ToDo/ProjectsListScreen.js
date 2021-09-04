@@ -27,11 +27,11 @@ const ProjectsListScreen = ({navigation}) => {
     function onRealmChange() {
         setProjects(getAllProjects())
         setVisibleCreateProject(false)
-      }
+    }
 
     useFocusEffect(
         React.useCallback(() => {
-            getAllProjects()
+            setProjects(getAllProjects())
             realm.addListener("change", onRealmChange);
             return () =>  
                 realm.removeListener("change",onRealmChange);

@@ -10,7 +10,6 @@ import {
     TextInput,
     Keyboard,
     StyleSheet,
-    Dimensions,
     Pressable
 } from "react-native";
 import realm, { 
@@ -22,17 +21,14 @@ import {Icon} from 'react-native-elements';
 import TaskItem from "../../../components/components/TaskItem"
 import { strings } from "../../../translations/translations";
 import ErrorText from "../../../components/Text/ErrorText";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import sharedStyles from "../../../styles/shared";
+import ToDoSTyles from "./style";
 import FooterList from "../../../components/components/FooterList";
 
-const windowHeight = Dimensions.get('window').height;
 
 const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
     const [tasks, setTasks] = useState(tasksType);
     const [taskInput,setTaskInput] = useState("")
     const [addFormVisible,setAddFormVisible] = useState(false)
-    const [backdropActive,setBackdropActive] = useState(false)
     const [errorStatus, setErrorStatus] = useState(false)
     const inputTaskTitle = useRef(null)
 
@@ -51,7 +47,6 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
 
     const handleAddFormVisibile = () => {
         setAddFormVisible(true)
-        setBackdropActive(true)
         setTimeout(() => inputTaskTitle.current.focus(), 0)
     }
 
@@ -91,18 +86,10 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
         else {
             setErrorStatus(false)
             setAddFormVisible(false)
-            setBackdropActive(false)
         }
     }
 
     const styles = StyleSheet.create({
-        container: {
-            flex:1,
-            width:'100%',
-            height: windowHeight,
-            backgroundColor:"rgb(244, 244, 244)",
-        },
-
         textInputContainer: {
             transform: addFormVisible? [{translateY:0}] :[ {translateY:-60}],
             display:addFormVisible? 'flex': 'none',
@@ -119,35 +106,12 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
             marginHorizontal:15,
             marginVertical:10,
         },
-        listFooter: {
-            height:40,
-            width:'100%',
-            backgroundColor:"rgb(255,255,255)",
-            borderTopWidth:1,
-            flexDirection:'row',
-            justifyContent:'space-between',
-            alignItems:'center'
-        },
-        backdropPressable: {
-            position:'absolute',
-            width:'100%',
-            height:'100%',
-            top:60,
-        },
-        footer: {
-            alignItems:"center",
-            flexDirection:"row",
-            width:"100%",
-            justifyContent:"flex-end",
-            borderTopColor:"rgb(240,240,240)",
-            borderTopWidth:1,
-            backgroundColor:"rgb(250,250,250)",
-        }
+
     })
  
     return (
         <>
-            <View style={styles.container}>
+            <View style={ToDoSTyles.tasksListContainer}>
                 <FlatList
                     style={{flex:1}}
                     keyboardShouldPersistTaps="always"
@@ -200,7 +164,7 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
             ?    
                 <Pressable 
                     onPress={() => backdropHandler()} 
-                    style={styles.backdropPressable} 
+                    style={ToDoSTyles.backdropPressable} 
                 />
             : null
             }

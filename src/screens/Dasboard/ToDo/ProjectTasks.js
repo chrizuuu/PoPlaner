@@ -12,7 +12,8 @@ import {
     StyleSheet,
     Dimensions,
     Pressable,
-    Text
+    Text,
+    TouchableOpacity
 } from "react-native";
 import realm, { 
     createTask, 
@@ -24,11 +25,12 @@ import {Icon} from "react-native-elements";
 import TaskItem from "../../../components/components/TaskItem"
 import { strings } from "../../../translations/translations";
 import ErrorText from "../../../components/Text/ErrorText";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import sharedStyles from "../../../styles/shared";
 import Modal from "react-native-modal";
 import FlexLayout from "../../../components/Layouts/FlexLayout";
 import FooterList from "../../../components/components/FooterList";
+import ToDoSTyles from "./style";
+import { Button } from "react-native-elements/dist/buttons/Button";
 
 const windowHeight = Dimensions.get("window").height;
 
@@ -40,6 +42,9 @@ const ProjectTasks = ({navigation,route}) => {
     const [projectPageIsOpen,setProjectPageIsOpen] = useState(false)
     const [projectTitle,setProjectTitleInput] = useState(project.title)
     const [projectTitleErrorStatus,setProjectTitleErrorStatus] = useState(false)
+    const [projectDescription,setProjectDescriptionInput] = useState(project.description)
+    const [projectDescriptionErrorStatus,setProjectDescriptionErrorStatus] = useState(false)
+    const [saveDescBtnVisible,setSaveDescBtnVisible] = useState(false)
     const [taskInput,setTaskInput] = useState("")
     const [addFormVisible,setAddFormVisible] = useState(false)
     const [taskInputErrorStatus, setTaskInputErrorStatus] = useState(false)
@@ -54,12 +59,12 @@ const ProjectTasks = ({navigation,route}) => {
             ),
             headerRight: () => (
                 <Pressable 
-                    onPress={() => setProjectPageIsOpen(true)}
+                    onPress={() => setProjectPageIsOpen(!projectPageIsOpen)}
                     style={{marginRight:11}
                 }>
                     <Icon
                         type="ionicon"
-                        name="help-circle-outline"
+                        name="information-circle-outline"
                         size={28}
                     />
                 </Pressable>
@@ -83,12 +88,25 @@ const ProjectTasks = ({navigation,route}) => {
         if (projectTitle !== "" && projectTitle.trim().length > 0) {
             setProjectTitleErrorStatus(false)
             realm.write(() => {
-                project.title = projectTitle.toString()
+                project.title = projectTitle
             })
-            console.log(project.title)
         }
         else {
             setProjectTitleErrorStatus(true)           
+        }
+    }
+
+    const changeProjectDescriptionHandler = () => {
+        if (projectDescription !== "" && projectDescription.trim().length > 0) {
+            setProjectDescriptionErrorStatus(false)
+            realm.write(() => {
+                project.description = projectDescription
+            })
+            Keyboard.dismiss()
+            setSaveDescBtnVisible(false)
+        }
+        else {
+            setProjectDescriptionErrorStatus(true)           
         }
     }
     
@@ -138,12 +156,6 @@ const ProjectTasks = ({navigation,route}) => {
     }
 
     const styles = StyleSheet.create({
-        container: {
-            flex:1,
-            width:"100%",
-            height: windowHeight,
-            backgroundColor:"rgb(244, 244, 244)",
-        },
         header: {
             textAlign:"center",
             fontSize:16,
@@ -166,28 +178,6 @@ const ProjectTasks = ({navigation,route}) => {
             marginHorizontal:15,
             marginVertical:10,
         },
-        listFooter: {
-            height:40,
-            width:"100%",
-            backgroundColor:"rgb(255,255,255)",
-            borderTopWidth:1,
-            flexDirection:"row",
-            justifyContent:"space-between",
-            alignItems:"center"
-        },
-        backdropPressable: {
-            position:"absolute",
-            width:"100%",
-            height:"100%",
-            top:60,
-        },
-        footer: {
-            alignItems:"center",
-            flexDirection:"row",
-            width:"100%",
-            justifyContent:"flex-end",
-            backgroundColor:"rgb(255,255,255)",
-        },
         modalContainer: {
             flex: 1,
             flexDirection: "column",
@@ -197,13 +187,35 @@ const ProjectTasks = ({navigation,route}) => {
         modalWrapper: {
             width: "100%",
             backgroundColor:"#fff",
+        },
+        modalHeader:{
+            backgroundColor:'rgb(245,245,245)',
+            padding:15,
+            fontFamily:"OpenSansBold",
+        },
+        modalHeaderText:{
+            fontFamily:"OpenSansBold",
+        },
+        modalInput: {
+            marginHorizontal:25,
+            marginVertical:10,
+            borderWidth:1,
+            borderColor:'rgb(220,220,220)',
+            borderRadius:5,
             padding:10,
+            textAlign:'left',
+        },
+        saveCommentBtn:{
+            textAlign:"center",
+            padding:5,
+            backgroundColor:"rgb(230,230,230)",
+            borderRadius:5,
         },
     })
  
     return (
         <>
-            <View style={styles.container}>
+            <View style={ToDoSTyles.tasksListContainer}>
                 <FlatList
                     style={{flex:1}}
                     keyboardShouldPersistTaps="always"
@@ -254,34 +266,75 @@ const ProjectTasks = ({navigation,route}) => {
                 
             </View>
             <Modal 
-                animationIn="slideInUp"
-                animationOut="slideOutDown"
-                swipeDirection="down"
+                animationIn="slideInRight"
+                animationOut="slideOutRight"
+                swipeDirection="right"
                 isVisible={projectPageIsOpen} 
                 onSwipeComplete={() => setProjectPageIsOpen(!projectPageIsOpen)}
                 onBackdropPress={() => setProjectPageIsOpen(!projectPageIsOpen)}
+                style={sharedStyles.modalContainer}
             >
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalWrapper}>
-                        <View style={sharedStyles.wrapperInLine}>
-                        <Text> </Text>
-                        <TextInput 
-                            style={styles.header}
-                            name="input"
-                            maxLength={100}
-                            defaultValue={projectTitle}
-                            onChangeText={(input) => setProjectTitleInput(input)}
-                            onSubmitEditing={() => changeProjectTitleHandler() }
-                        />
-                        </View>
+                <FlexLayout>
+                     <Text style={styles.modalHeader}> 
+                            Tytul projektu
+                    </Text>
+                    <TextInput 
+                        style={[styles.modalInput]}
+                        name="input"
+                        maxLength={100}
+                        defaultValue={projectTitle}
+                        onChangeText={(input) => setProjectTitleInput(input)}
+                        onSubmitEditing={() => changeProjectTitleHandler() }
+                    />
+                    {   projectTitleErrorStatus === true
+                        ? <ErrorText errorValue={strings("inputEmptyError")} />
+                        : null
+                    }
+                    <View style={[sharedStyles.wrapperInLine,styles.modalHeader,{justifyContent:"space-between"}]}>
+                        <Text style={styles.modalHeaderText}>
+                            Opis projektu
+                        </Text>
+                        {saveDescBtnVisible === true
+                        ?   <TouchableOpacity
+                                style={styles.saveCommentBtn}
+                                onPress={() => {
+                                changeProjectDescriptionHandler()
+                                }}
+                            >
+                                <Text>
+                                {strings("saveComment")} 
+                                </Text>
+                            </TouchableOpacity>
+                        : <View />}
                     </View>
-                </View>
+                    <TextInput 
+                        style={[styles.modalInput,{minHeight:200,maxHeight:250,textAlignVertical:'top'}]}
+                        name="inputDescription"
+                        maxLength={500}
+                        multiline={true}
+                        defaultValue={project.description}
+                        placeholder={strings("createProjectDescription")}
+                        onChangeText={(input) => {
+                            setProjectDescriptionInput(input)
+                            setSaveDescBtnVisible(true)
+                        }}
+                        onSubmitEditing={() => changeProjectDescriptionHandler() }
+                    />
+                    {   projectDescriptionErrorStatus === true
+                        ? <ErrorText errorValue={strings("inputEmptyError")} />
+                        : null
+                    }
+
+                    <Text style={[sharedStyles.padding10]}>
+                        {strings("taskCreatedAt")}{project.createdDate.toLocaleDateString() + " " + project.createdDate.toLocaleTimeString()}
+                    </Text>
+                </FlexLayout>
             </Modal>
             {addFormVisible
             ?    
                 <Pressable 
                     onPress={() => backdropHandler()} 
-                    style={styles.backdropPressable} 
+                    style={ToDoSTyles.backdropPressable} 
                 />
             : null
             }
