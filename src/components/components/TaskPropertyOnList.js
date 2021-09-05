@@ -1,14 +1,14 @@
 import React from "react";
 import {Text,View,StyleSheet} from 'react-native'
 import {Icon} from "react-native-elements";
-
+import colors from "../../styles/colorsLightTheme"
 
 const TaskPropertyOnList = ({icon,propertyName}) => {
     const styles = StyleSheet.create({
         textProperty: {
             fontSize:11,
             fontFamily:"OpenSansReg",
-            color:"#484848",
+            color:colors.textColor,
             overflow:"hidden", 
             marginLeft:5
         },

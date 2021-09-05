@@ -3,6 +3,7 @@ import React from 'react';
 import { Pressable } from 'react-native';
 import {View,Button,StyleSheet,Text} from 'react-native';
 import { Icon } from 'react-native-elements';
+import colors from "../../styles/colorsLightTheme"
 
 export default CheckBox = ({status,onChange,style}) => {
 
@@ -11,7 +12,7 @@ export default CheckBox = ({status,onChange,style}) => {
         container : {
             borderWidth:2,
             borderRadius:25,
-            borderColor:'rgba(48,48,48,0.2)',
+            borderColor:colors.thirdColor,
             height:28,
             width:28,
         },

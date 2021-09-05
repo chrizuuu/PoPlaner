@@ -13,6 +13,8 @@ import sharedStyles from "../../styles/shared";
 import { strings } from "../../translations/translations";
 import { createProject } from "../../Database/Database";
 import ErrorText from "../../components/Text/ErrorText";
+import colors from "../../styles/colorsLightTheme"
+import { color } from "react-native-reanimated";
 
 
 const ModalCreateProject = ({closeFunc}) => {
@@ -50,27 +52,28 @@ const ModalCreateProject = ({closeFunc}) => {
         },
         wrapper: {
             width: "100%",
-            backgroundColor:"#fff",
+            backgroundColor:colors.primeColor,
         },
         headerWrapper: {
             fontFamily: "OpenSansSemiBold",
             textAlign:"center",
-            backgroundColor:"rgb(245,245,245)",
+            color:colors.textColor,
+            backgroundColor:colors.secondColor
         },
         headerProperties:{
             fontFamily: "OpenSansReg",
-            color:'rgba(48,48,48,0.5)',
+            color:colors.textColor,
             textAlign:"left",
-            backgroundColor:"rgb(245,245,245)",
+            backgroundColor:colors.secondColor,
             paddingHorizontal:15,
             paddingVertical:10,
         },
 
         titleInput: {
-            borderColor: "rgb(200,200,200)", 
+            borderColor: colors.thirdColor,
             borderWidth:1,
             height:40,
-            color:"black",
+            color:colors.textColor,
             paddingVertical:8,
             paddingHorizontal:15,
             marginVertical:10,
@@ -80,12 +83,12 @@ const ModalCreateProject = ({closeFunc}) => {
             textAlignVertical:'top',
             minHeight:100,
             maxHeight:300,
-            borderColor: 'rgb(240,240,240)', 
+            borderColor: colors.thirdColor,
             padding:10,
             marginVertical:15,
             borderWidth: 1, 
             borderRadius:25,
-            backgroundColor:'rgb(255,255,255)'
+            backgroundColor:colors.primeColor,
         },
 
         propertiesWrapper: {
@@ -94,7 +97,7 @@ const ModalCreateProject = ({closeFunc}) => {
 
         footerWrapper: {
             borderTopWidth:1,
-            borderTopColor:'rgb(240,240,240)',
+            borderTopColor:colors.secondColor,
             justifyContent:'space-evenly',
         },
         footerItems: {
@@ -106,11 +109,11 @@ const ModalCreateProject = ({closeFunc}) => {
         },
         footerLeftItem: {
             borderRightWidth:0.5,
-            borderRightColor:'rgb(240,240,240)',
+            borderRightColor:colors.secondColor,
         },
         footerRighItem: {
             borderLeftWidth:0.5,
-            borderLeftColor:'rgb(240,240,240)',
+            borderLeftColor:colors.secondColor,
         }
     })
 

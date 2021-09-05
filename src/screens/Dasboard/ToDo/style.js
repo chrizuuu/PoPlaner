@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet,Dimensions } from "react-native";
+import colors from "../../../styles/colorsLightTheme"
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -8,7 +9,7 @@ const ToDoSTyles = StyleSheet.create({
         flex:1,
         width:'100%',
         height: windowHeight,
-        backgroundColor:"rgb(244, 244, 244)",
+        backgroundColor:colors.secondColor,
     },
     backdropPressable: {
         position:'absolute',

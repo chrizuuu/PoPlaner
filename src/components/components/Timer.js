@@ -1,6 +1,7 @@
 import React from 'react';
 import { View,StyleSheet} from 'react-native';
 import Svg, { Circle, Rect } from 'react-native-svg';
+import colors from "../../styles/colorsLightTheme"
 
 const styles = StyleSheet.create ( {
     container: {
@@ -23,7 +24,7 @@ export const Timer = ({size,strokeWidth,strokeColor,progress,children}) => {
         <View style={styles.container}>
                     <Svg width={size} height={size}>
                         <Circle 
-                            stroke="#E6E7E8" 
+                            stroke={colors.thirdColor}
                             cx={center} 
                             cy={center} 
                             r={radius} 

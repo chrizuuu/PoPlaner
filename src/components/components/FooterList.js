@@ -2,6 +2,7 @@ import React from "react"
 import {View,StyleSheet} from "react-native"
 import sharedStyles from "../../styles/shared"
 import { Icon } from "react-native-elements"
+import colors from "../../styles/colorsLightTheme"
 const FooterList = ({leftIcon,leftIconOnPress,rightIcon,rightIconOnPress}) => {
 
     const styles = StyleSheet.create({
@@ -10,9 +11,9 @@ const FooterList = ({leftIcon,leftIconOnPress,rightIcon,rightIconOnPress}) => {
             flexDirection:"row",
             width:"100%",
             justifyContent:"flex-end",
-            borderTopColor:"rgb(240,240,240)",
+            borderTopColor:colors.secondColor,
             borderTopWidth:1,
-            backgroundColor:"rgb(250,250,250)",
+            backgroundColor:colors.primeColor
         }
     })
 

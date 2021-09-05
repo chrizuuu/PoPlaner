@@ -31,6 +31,7 @@ import FlexLayout from "../../../components/Layouts/FlexLayout";
 import FooterList from "../../../components/components/FooterList";
 import ToDoSTyles from "./style";
 import { Button } from "react-native-elements/dist/buttons/Button";
+import colors from "../../../styles/colorsLightTheme"
 
 const windowHeight = Dimensions.get("window").height;
 
@@ -167,14 +168,14 @@ const ProjectTasks = ({navigation,route}) => {
             display:addFormVisible? "flex": "none",
             flexDirection:"row",
             alignItems:"center",
-            borderColor: "rgb(48,48,48)",
+            borderColor: colors.thirdColor,
             borderWidth:1, 
             borderRadius:5,
-            backgroundColor:"rgb(255,255,255)",
+            backgroundColor:colors.primeColor,
             width:"90%",
             height:40,
             paddingHorizontal:5,
-            color:"black",
+            color:colors.textColor,
             marginHorizontal:15,
             marginVertical:10,
         },
@@ -186,10 +187,10 @@ const ProjectTasks = ({navigation,route}) => {
         },
         modalWrapper: {
             width: "100%",
-            backgroundColor:"#fff",
+            backgroundColor:colors.primeColor,
         },
         modalHeader:{
-            backgroundColor:'rgb(245,245,245)',
+            backgroundColor:colors.primeColor,
             padding:15,
             fontFamily:"OpenSansBold",
         },
@@ -200,7 +201,8 @@ const ProjectTasks = ({navigation,route}) => {
             marginHorizontal:25,
             marginVertical:10,
             borderWidth:1,
-            borderColor:'rgb(220,220,220)',
+            borderColor:colors.thirdColor,
+            backgroundColor:colors.primeColor,
             borderRadius:5,
             padding:10,
             textAlign:'left',
@@ -208,7 +210,7 @@ const ProjectTasks = ({navigation,route}) => {
         saveCommentBtn:{
             textAlign:"center",
             padding:5,
-            backgroundColor:"rgb(230,230,230)",
+            backgroundColor:colors.thirdColor,
             borderRadius:5,
         },
     })
@@ -274,7 +276,7 @@ const ProjectTasks = ({navigation,route}) => {
                 onBackdropPress={() => setProjectPageIsOpen(!projectPageIsOpen)}
                 style={sharedStyles.modalContainer}
             >
-                <FlexLayout>
+                <FlexLayout style={{backgroundColor:colors.secondColor}}>
                      <Text style={styles.modalHeader}> 
                             {strings("projectPropertyTitle")}
                     </Text>

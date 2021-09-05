@@ -3,6 +3,7 @@ import {TouchableOpacity, View,StyleSheet} from 'react-native';
 import {Icon} from 'react-native-elements';
 import styleButton from './style';
 import InLineLayout from '../Layouts/InLineLayout'
+import colors from "../../styles/colorsLightTheme"
 
 export default ControlsButton = ({start,pause,reset,skip,status,style}) => {
 
@@ -38,7 +39,7 @@ export default ControlsButton = ({start,pause,reset,skip,status,style}) => {
                 <Icon 
                     type='material' 
                     name='play-arrow' 
-                    iconStyle = {{color:"white"}} 
+                    iconStyle = {{color:colors.primeColor}} 
                     size={48} 
                 />
 
@@ -69,7 +70,7 @@ export default ControlsButton = ({start,pause,reset,skip,status,style}) => {
                                 <Icon
                                     type='material' 
                                     name={status === 'Playing'? 'pause' : 'play-arrow'} 
-                                    iconStyle = {{color:"white"}}
+                                    iconStyle = {{color:colors.primeColor}}
                                     size={48} 
                                 /> 
                             </TouchableOpacity >

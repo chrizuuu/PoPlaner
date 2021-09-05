@@ -14,6 +14,7 @@ import Modal from 'react-native-modal';
 import sharedStyles from "../../styles/shared";
 import FlexLayout from "../Layouts/FlexLayout";
 import CounterTasks from "./CounterTasks";
+import colors from "../../styles/colorsLightTheme"
 
 const styles = StyleSheet.create({
     container: {
@@ -21,8 +22,8 @@ const styles = StyleSheet.create({
         paddingVertical:12,
         flexDirection:'row',
         borderTopWidth:1,
-        backgroundColor:'rgb(255,255,255)',
-        borderColor:'rgba(28,28,28,0.1)',
+        backgroundColor:colors.primeColor,
+        borderColor:colors.secondColor,
         justifyContent:'space-between',
         alignItems:'center',
     },
@@ -30,28 +31,10 @@ const styles = StyleSheet.create({
         flex:2,
         fontSize:16,
         fontFamily:"OpenSansSemiBold",
-        color:'#282828',
+        color:colors.textColor,
         overflow:'hidden', 
     },
 
-    modalStyle: {
-        height:'100%',
-        marginRight:0,
-        marginTop:0,
-        marginBottom:0,
-        backgroundColor:'rgb(255,255,255)',
-    },
-
-    commentInput:{
-        textAlignVertical:'top',
-        minHeight:100,
-        maxHeight:300,
-        borderColor: 'rgb(240,240,240)', 
-        padding:10,
-        borderWidth: 1, 
-        borderRadius:25,
-        backgroundColor:'rgb(255,255,255)'
-    },
 })
 
 export default class ProjectItem extends React.Component {
@@ -60,17 +43,10 @@ export default class ProjectItem extends React.Component {
         this.state = {
             inputTitle: this.project.title,
             errorInputTitle:false,
-            projectPageIsOpen: false,
             taskToDoInProject:realm.objects("Task").filtered("project._id == $0 AND isDone = false", this.project._id).length
         }
     }
     project = realm.objectForPrimaryKey("Project",this.props.item_id)
-
-    setProjectPageIsOpen = (visible) => {
-        this.setState({
-            projectPageIsOpen: visible,
-        })
-    }
 
     changeTitleHandler = (value) => {
         this.setState({inputTitle:value})
@@ -107,30 +83,6 @@ export default class ProjectItem extends React.Component {
                         project={this.project._id}
                         backgroundColor="rgb(83,211,175)" />
                 </View>  
-                <Modal 
-                    animationIn="slideInRight"
-                    animationOut="slideOutRight"
-                    isVisible={this.state.projectPageIsOpen} 
-                    swipeDirection='right'
-                    onSwipeComplete={() => this.setProjectPageIsOpen(!this.state.projectPageIsOpen)}
-                    onBackdropPress={() => this.setProjectPageIsOpen(!this.state.projectPageIsOpen)}
-                    style={styles.modalStyle} 
-                > 
-                    <FlexLayout>
-                        <View style={sharedStyles.wrapperInLine}>
-                            <TextInput 
-                                style={[styles.titleTask,{marginLeft:25}]}
-                                name="input"
-                                maxLength={100}
-                                defaultValue={this.project.title}
-                                onChangeText = {(input) => this.changeTitleHandler(input)}
-                                onSubmitEditing={() => {
-                                    this.submitTitleHandler()
-                                }}
-                            />    
-                        </View>
-                    </FlexLayout>
-                </Modal>
             </>
         );
     }

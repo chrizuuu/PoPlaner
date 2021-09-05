@@ -1,6 +1,7 @@
 import React from 'react';
 import { View,Text,TouchableOpacity,StyleSheet,FlatList} from 'react-native';
 import {setI18Config} from '../translations/translations'
+import colors from "../styles/colorsLightTheme"
 
 const styles = StyleSheet.create ({
     button: {
@@ -19,7 +20,7 @@ const styles = StyleSheet.create ({
         color:'white',
     },
     text: {
-        color:'#434343',  
+        color:colors.textColor, 
         fontFamily:'OpenSansSemiBold'
     },
     currentValueText : {
@@ -30,14 +31,13 @@ const styles = StyleSheet.create ({
         width:'100%',
         height:60,
         borderRadius:15,
-        borderColor:'black',
+        borderColor:colors.thirdColor,
         borderWidth:1,
         paddingLeft:10,
         paddingRight:10,
     },
 
 })
-//need to improve performance
 const FlatListSliderFunc = ({data,showIndicator,onPress,currentValue,style}) => {
     return (
         <View style={[{...style}]} >

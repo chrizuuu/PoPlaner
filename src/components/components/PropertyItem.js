@@ -3,6 +3,7 @@ import {TouchableOpacity, Image, StyleSheet,View,Text, Pressable} from 'react-na
 import InLineLayout from '../Layouts/InLineLayout';
 import sharedStyles from '../../styles/shared';
 import {Icon} from 'react-native-elements';
+import colors from "../../styles/colorsLightTheme"
 
 export default PropertyItem = ({valueIcon,valueTitle,valueContainer,onPress }) => {
 
@@ -12,10 +13,10 @@ export default PropertyItem = ({valueIcon,valueTitle,valueContainer,onPress }) =
             borderWidth:1,
             borderRadius:5,
             height:50,
-            borderColor:'rgb(234, 234, 234)',
+            borderColor:colors.thirdColor,
             paddingVertical:5,
             paddingHorizontal:15,
-            backgroundColor:"rgb(255,255,255)",
+            backgroundColor:colors.primeColor,
         },
         valueTextStyle: {
             fontSize:14,

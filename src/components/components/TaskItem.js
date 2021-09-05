@@ -27,13 +27,14 @@ import {strings} from "../../translations/translations"
 import CustomizingHeaderBar from "../Header/CustomizingHeaderBar";
 import ErrorText from "../Text/ErrorText";
 import TaskPropertyOnList from "./TaskPropertyOnList";
+import colors from "../../styles/colorsLightTheme"
 
 const styles = StyleSheet.create({
     container: {
         flex:1,
         borderTopWidth:1.5,
-        borderColor:"rgba(28,28,28,0.1)",
-        backgroundColor:"rgb(255,255,255)"
+        borderColor:colors.secondColor,
+        backgroundColor:colors.primeColor,
     },
     wrapperInRow: {
         flex:1,
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
         flex:1,
         fontSize:14,
         fontFamily:"OpenSansSemiBold",
-        color:"#282828",
+        color:colors.textColor,
         overflow:"hidden", 
         textAlignVertical:"center"
     },
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
         marginTop:20, 
         paddingLeft:12, 
         paddingRight:12,
-        backgroundColor:"rgb(245,245,245)",
+        backgroundColor:colors.secondColor,
     },
     saveCommentBtn:{
         marginTop:20,
@@ -77,11 +78,11 @@ const styles = StyleSheet.create({
         textAlignVertical:"top",
         minHeight:100,
         maxHeight:300,
-        borderColor: "rgb(240,240,240)", 
+        borderColor: colors.secondColor,
         padding:10,
         borderWidth: 1, 
         borderRadius:25,
-        backgroundColor:"rgb(255,255,255)"
+        backgroundColor:colors.primeColor
     },
     text: {
         fontSize:12,
@@ -242,7 +243,7 @@ export default class TaskItem extends React.Component {
                             onBackdropPress={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}
                             style={sharedStyles.modalContainer} 
                         >
-                            <FlexLayout>
+                            <FlexLayout style={{backgroundColor:colors.primeColor}}>
                                 <CustomizingHeaderBar
                                     style={sharedStyles.paddingSide25}
                                     leftSide={

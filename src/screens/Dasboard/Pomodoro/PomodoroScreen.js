@@ -7,11 +7,12 @@ import FlexLayout from '../../../components/Layouts/FlexLayout';
 import ControlsPomodoroButton from '../../../components/Buttons/ControlsPomodoroButton';
 import sharedStyles from '../../../styles/shared';
 import HeaderBar from '../../../components/Header/HeaderBar';
-import { Timer } from '../../../components/Timer';
-import SettingsBarHeader from '../../../components/settingsBarHeader';
-import SettingsSwitchBar from '../../../components/settingsSwitchBar';
-import FlatListSlider from '../../../components/FlatListSlider';
+import { Timer } from '../../../components/components/Timer';
+import SettingsBarHeader from '../../../components/components/settingsBarHeader';
+import SettingsSwitchBar from '../../../components/components/settingsSwitchBar';
+import FlatListSlider from '../../../components/components/FlatListSlider';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
+import colors from "../../../styles/colorsLightTheme"
 
 const pomodoroTimeValue = [15,20,25,30,35,40,45,50,55,60,70,80,90];
 const breaksTimeValue = [2,5,10,15,20,25,30];
@@ -31,28 +32,24 @@ const defaultProps = {
 }
 
 const styles = StyleSheet.create ( {
-    container: {
-        flex:1,
-        justifyContent:'center',
-        alignItems:'center',
-    },
     wrapper:{
         alignItems:'center',
         justifyContent:'space-evenly',
         paddingTop:50,
         height:'100%',
         paddingBottom:80,
+        backgroundColor:colors.primeColor
     },
 
     boldText:{
         fontFamily:'OpenSansBold',
-        color:'#434343'
+        color:colors.textColor,
     },
 
     timerValue: {
         fontSize:60,   
         fontFamily:'OpenSansBold',
-        color:'#282828'
+        color:colors.textColor,
     },
 
     box: {
@@ -266,7 +263,7 @@ export default class PomodoroScreen extends React.Component {
                 <View style={{alignItems:'center'}}>
                     <View style={{marginBottom:20}}>
                             <Text style={{
-                                color:'#434343',
+                                color:colors.textColor,
                                 fontFamily:'OpenSansReg',
                                 fontSize:16,
                             }}> 

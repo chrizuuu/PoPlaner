@@ -23,6 +23,7 @@ import { strings } from "../../../translations/translations";
 import ErrorText from "../../../components/Text/ErrorText";
 import ToDoSTyles from "./style";
 import FooterList from "../../../components/components/FooterList";
+import colors from "../../../styles/colorsLightTheme"
 
 
 const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
@@ -95,14 +96,14 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
             display:addFormVisible? 'flex': 'none',
             flexDirection:'row',
             alignItems:'center',
-            borderColor: "rgb(48,48,48)",
+            borderColor: colors.thirdColor,
             borderWidth:1, 
             borderRadius:5,
-            backgroundColor:"rgb(255,255,255)",
+            backgroundColor:colors.primeColor,
             width:'90%',
             height:40,
             paddingHorizontal:5,
-            color:"black",
+            color:colors.textColor,
             marginHorizontal:15,
             marginVertical:10,
         },

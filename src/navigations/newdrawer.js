@@ -8,89 +8,136 @@ import ScheduleScreen from "../screens/Dasboard/ToDo/ScheduleScreen";
 import TasksList from "../screens/Dasboard/ToDo/TasksList";
 import ProjectTasks from "../screens/Dasboard/ToDo/ProjectTasks";
 import ProjectsListScreen from "../screens/Dasboard/ToDo/ProjectsListScreen";
-import {getAllTasks,getPriorityTasks, getProjectTasks} from "../Database/Database"
+import {getAllTasks,getPriorityTasks} from "../Database/Database"
 import { strings } from "../translations/translations";
 import { TouchableOpacity,Text,StyleSheet,ScrollView,View } from "react-native";
 import {Icon,Button} from "react-native-elements";
+import colors from "../styles/colorsLightTheme"
 
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
 
+const styles = StyleSheet.create({
+  drawerItem:{
+    marginLeft:0,
+    marginRight:0,
+    marginTop:-3,
+    padding:5,
+    borderRadius:0
+  },
+  drawerItemLabel: {
+    fontFamily:"OpenSansSemiBold",
+    color:colors.primeColor,
+  }
+})
+
 const CustomDrawerContent = (props) => {
-/*  
-  const getCurrentRouteName = () => {
-    let _index = props.state.index;
-    let _routeName = props.state;
-    return  _routeName.routes[0].state
-}
+  const activeBackgroundColor = colors.sidebarSeconColor
+  const { state } = props
+  const { routes, index } = state; 
+  const focusedRoute = routes[index]
 
-console.log(getCurrentRouteName())
-*/
+  const focusedCheck = value => {
+    let actualRoute = state.routes[state.index];
 
-const { state } = props
-const { routes, index } = state; 
-const focusedRoute = routes[index]
-
-const focusedCheck = value => {
-  let actualRoute = state.routes[state.index];
-
-  while (actualRoute.state) {
-      actualRoute = actualRoute.state.routes[actualRoute.state.index];
-      console.log(actualRoute.name)
+    while (actualRoute.state) {
+        actualRoute = actualRoute.state.routes[actualRoute.state.index];
+    }
+    if (value === actualRoute.name){
+      return true
+    }
+    else { 
+      return false
+    }
   }
-  if (value === actualRoute.name){
-    return true
-  }
-  else { 
-    return false
-  }
-}
 
-
-const focusChecker = (value) => focusedRoute === value? true : false
    return (
-      <DrawerContentScrollView {...props}>   
-      
+      <DrawerContentScrollView {...props} style={{backgroundColor:colors.sidebarPrimeColor}}> 
         <DrawerItem
+          style={styles.drawerItem}
+          activeBackgroundColor={activeBackgroundColor}
           label={strings("headerTitlePriorityTasks")}
-          labelStyle={{fontFamily:"OpenSansSemiBold"}}
-          icon={({ color, size }) => <Icon type="ionicon" color={color} size={20} name={"star-outline"} />}
+          labelStyle={styles.drawerItemLabel}
+          icon={({focused}) => 
+            <Icon 
+              type="ionicon" 
+              color={focused? "#53D3AF" : colors.primeColor} 
+              size={26} 
+              name={focused? "star" : "star-outline"} 
+              />
+          }
           onPress={() => {
             props.navigation.navigate("Priority");
           }}
           focused={focusedCheck("Priority")}
         />
         <DrawerItem
+          style={styles.drawerItem}
           label={strings("headerTitleAllTasks")}
-          labelStyle={{fontFamily:"OpenSansSemiBold"}}
-          icon={({ focused, color, size }) => <Icon type="ionicon" color={color} size={20} name={"list-outline"} />}
+          activeBackgroundColor={activeBackgroundColor}
+          labelStyle={styles.drawerItemLabel}
+          icon={({focused}) => 
+            <Icon 
+              type="ionicon" 
+              color={focused? "#53D3AF" : colors.primeColor} 
+              size={26} 
+              name={focused? "list" : "list-outline"} 
+              />
+          }          
           onPress={() => {
             props.navigation.navigate("Inbox");
           }}
           focused={focusedCheck("Inbox")}
         />  
         <DrawerItem
+          style={styles.drawerItem}
           label={strings("headerTitleProjects")}
-          labelStyle={{fontFamily:"OpenSansSemiBold"}}
-          icon={({ focused, color, size }) => <Icon type="ionicon" color={color} size={20} name={"flag-outline"} />}
+          activeBackgroundColor={activeBackgroundColor}
+          labelStyle={styles.drawerItemLabel}
+          icon={({focused}) => 
+            <Icon 
+              type="ionicon" 
+              color={focused? "#53D3AF" : colors.primeColor} 
+              size={26} 
+              name={focused? "flag" : "flag-outline"} 
+              />
+          }          
           onPress={() => {
             props.navigation.navigate("Projects");
           }}
           focused={focusedCheck("Projects")}
         />
         <DrawerItem
+          style={styles.drawerItem}
           label={strings("headerTitleCalendar")}
-          labelStyle={{fontFamily:"OpenSansSemiBold"}}
-          icon={({ focused, color, size }) => <Icon type="ionicon" color={color} size={20} name={"calendar-outline"} />}
+          activeBackgroundColor={activeBackgroundColor}
+          labelStyle={styles.drawerItemLabel}
+          icon={({focused}) => 
+            <Icon 
+              type="ionicon" 
+              color={focused? "#53D3AF" : colors.primeColor} 
+              size={26} 
+              name={focused? "calendar" : "calendar-outline"} 
+              />
+          }          
           onPress={() => {
             props.navigation.navigate("Calendar");
           }}
           focused={focusedCheck("Calendar")}
         />  
         <DrawerItem
+          style={styles.drawerItem}
           label="Pomodoro"
-          labelStyle={{fontFamily:"OpenSansSemiBold"}}
-          icon={({ focused, color, size }) => <Icon type="ionicon" color={color} size={20} name={"timer-outline"} />}
+          activeBackgroundColor={activeBackgroundColor}
+          labelStyle={styles.drawerItemLabel}
+          icon={({focused}) => 
+            <Icon 
+              type="ionicon" 
+              color={focused? "#53D3AF" : colors.primeColor} 
+              size={26} 
+              name={focused? "timer" : "timer-outline"} 
+              />
+          }          
           onPress={() => {
             props.navigation.navigate("Pomodoro");
           }}
@@ -113,7 +160,6 @@ function StackNavigator({navigation}) {
             </TouchableOpacity>
           ),
           animationEnabled: false,
-          drawerActiveTintColor: "#7393DD",
           drawerItemStyle:{
               width:"100%",
               marginLeft:0,
@@ -124,13 +170,13 @@ function StackNavigator({navigation}) {
           headerTitleAlign: "center",
           headerStyle: {
               height:50,
+              backgroundColor:"#F8F9FA"
           },
           headerTitleStyle: {
               fontFamily:"OpenSansBold",
               fontSize:16,
           },
         })} >
-
         <Stack.Screen
             name="Priority"
             options={({ navigation, route }) => ({ 

@@ -20,6 +20,8 @@ import ProjectItem from "../../../components/components/ProjectItem";
 import ModalCreateProject from "../../../components/ModalComponents/ModalCreateProject";
 import FooterList from "../../../components/components/FooterList";
 import { StackActions } from "@react-navigation/routers";
+import colors from "../../../styles/colorsLightTheme"
+import { color } from "react-native-reanimated";
 
 const ProjectsListScreen = ({navigation}) => {
     const [projects,setProjects] = useState(getAllProjects())
@@ -42,17 +44,9 @@ const ProjectsListScreen = ({navigation}) => {
     const styles = StyleSheet.create({
         container: {
             flex:1,
-            backgroundColor:"rgb(244, 244, 244)"
+            backgroundColor:colors.secondColor,
         },
         
-        textInput: {
-            borderColor: "rgb(200,200,200)", 
-            backgroundColor:"rgb(245,245,245)",
-            height:40,
-            color:"black",
-            paddingVertical:8,
-            paddingHorizontal:25
-        },
     })
 
     return (

@@ -1,4 +1,5 @@
 import { StyleSheet} from 'react-native';
+import colors from "./colorsLightTheme"
 
 const sharedStyles = StyleSheet.create ({
     //MARGIN TOP
@@ -24,7 +25,7 @@ const sharedStyles = StyleSheet.create ({
     container: {
         height:'100%',
         width:'100%',
-        backgroundColor:'#fff',
+        backgroundColor:colors.secondColor,
     },
 
     wrapperFlex: {
@@ -45,7 +46,7 @@ const sharedStyles = StyleSheet.create ({
     },
 
     modalContainer: {
-        backgroundColor: "white",
+        backgroundColor: colors.secondColor,
         height:'100%',
         marginRight:0,
         marginTop:0,
