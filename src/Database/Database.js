@@ -121,6 +121,15 @@ const getAllProjects = () => {
     return realm.objects("Project").filtered("visible == true").sorted("createdDate","Descendig")
 }
 
+const deleteProject = (project) => {
+    realm.write(() => {
+        for (let i=0;i < project.tasks.length;i++ ) {
+            project.tasks[0].project = initProject
+        }
+        realm.delete(project)
+    })
+}
+
 // init objects on first run
 
 const initDB = () => {
@@ -151,6 +160,7 @@ export {
     updateIsDone,
     deleteTask,
     createProject,
+    deleteProject,
     getAllProjects,
 }
 

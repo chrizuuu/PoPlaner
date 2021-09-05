@@ -1,7 +1,6 @@
 import React from 'react';
 import { View,Text,TouchableOpacity,StyleSheet,FlatList} from 'react-native';
-import {setI18Config} from '../translations/translations'
-import colors from "../styles/colorsLightTheme"
+import colors from "../../styles/colorsLightTheme"
 
 const styles = StyleSheet.create ({
     button: {

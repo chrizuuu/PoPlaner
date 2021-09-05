@@ -18,7 +18,8 @@ import {
 import realm, { 
     createTask, 
     getTasks,
-    getProjectTasks
+    getProjectTasks,
+    deleteProject
 } from "../../../Database/Database"
 import { useFocusEffect } from '@react-navigation/native';
 import {Icon} from "react-native-elements";
@@ -207,6 +208,13 @@ const ProjectTasks = ({navigation,route}) => {
             padding:10,
             textAlign:'left',
         },
+        modalFooter: {
+            alignItems:"center",
+            flexDirection:"row",
+            width:"100%",
+            justifyContent:"space-between",
+            backgroundColor:colors.primeColor,
+        },
         saveCommentBtn:{
             textAlign:"center",
             padding:5,
@@ -330,7 +338,25 @@ const ProjectTasks = ({navigation,route}) => {
                     <Text style={[sharedStyles.padding10]}>
                         {strings("taskCreatedAt")}{project.createdDate.toLocaleDateString() + " " + project.createdDate.toLocaleTimeString()}
                     </Text>
+
                 </FlexLayout>
+                <View style={[styles.modalFooter,sharedStyles.padding10]}>
+                    <Icon 
+                        name="arrow-forward" 
+                        color="#484848"
+                        size={28} 
+                        onPress={() => setProjectPageIsOpen(!projectPageIsOpen)} 
+                    />
+                    <Icon 
+                        name="delete-outline" 
+                        color="#EE5436"
+                        size={28} 
+                        onPress={() =>{ 
+                            navigation.goBack()
+                            deleteProject(project)
+                        }}
+                     />
+                </View>
             </Modal>
             {addFormVisible
             ?    

@@ -28,6 +28,7 @@ import CustomizingHeaderBar from "../Header/CustomizingHeaderBar";
 import ErrorText from "../Text/ErrorText";
 import TaskPropertyOnList from "./TaskPropertyOnList";
 import colors from "../../styles/colorsLightTheme"
+import FooterList from "./FooterList";
 
 const styles = StyleSheet.create({
     container: {
@@ -363,6 +364,7 @@ export default class TaskItem extends React.Component {
                                         {strings("taskCreatedAt")}{this.task.createdDate.toLocaleDateString() + " " + this.task.createdDate.toLocaleTimeString()}
                                     </Text>
                                 </FlexLayout>
+
 
                                 <View style={[styles.modalFooter,sharedStyles.padding10]}>
                                     <Icon 

@@ -10,7 +10,7 @@ const FooterList = ({leftIcon,leftIconOnPress,rightIcon,rightIconOnPress}) => {
             alignItems:"center",
             flexDirection:"row",
             width:"100%",
-            justifyContent:"flex-end",
+            justifyContent: leftIcon && rightIcon? "space-between" : "flex-end",
             borderTopColor:colors.secondColor,
             borderTopWidth:1,
             backgroundColor:colors.primeColor

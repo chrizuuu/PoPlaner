@@ -3,7 +3,7 @@ const colors = {
     secondColor:"#E9ECEF",
     thirdColor: "#CED4DA",
     sidebarPrimeColor:"#495057",
-    sidebarSeconColor: "#343A40",
+    sidebarSecondColor: "#343A40",
     textColor: "#212529",
 }
 

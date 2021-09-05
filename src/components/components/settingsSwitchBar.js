@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet,View,Text,Switch  } from "react-native";
-import InLineLayout from "./Layouts/InLineLayout";
+import InLineLayout from "../Layouts/InLineLayout";
 
 const styles = StyleSheet.create ( {
     box: {

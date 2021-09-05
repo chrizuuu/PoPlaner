@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet,View,Text  } from "react-native";
 import InLineLayout from "../Layouts/InLineLayout";
-import sharedStyles from "../styles/shared";
+import sharedStyles from "../../styles/shared";
 
 const styles = StyleSheet.create ( {
     box: {

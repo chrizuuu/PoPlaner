@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 })
 
 const CustomDrawerContent = (props) => {
-  const activeBackgroundColor = colors.sidebarSeconColor
+  const activeBackgroundColor = colors.sidebarSecondColor
   const { state } = props
   const { routes, index } = state; 
   const focusedRoute = routes[index]
