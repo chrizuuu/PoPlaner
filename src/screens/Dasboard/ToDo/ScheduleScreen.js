@@ -2,7 +2,9 @@ import React, {useState,useEffect,useLayoutEffect} from 'react';
 import { View,Text,FlatList,StyleSheet,TouchableOpacity} from 'react-native';
 import FlexLayout from '../../../components/Layouts/FlexLayout';
 import {startOfDay,endOfDay,format,eachDayOfInterval,startOfWeek,endOfWeek, addWeeks } from 'date-fns';
-
+import sharedStyles from '../../../styles/shared';
+import colors from "../../../styles/colorsLightTheme"
+import { strings } from '../../../translations/translations';
 import { useFocusEffect } from '@react-navigation/core';
 
 
@@ -14,26 +16,25 @@ import { Icon } from 'react-native-elements';
 
 
 const ScheduleScreen = ({navigation}) => {
-    const [tasks,setTasks] = useState(
-        realm.objects("Task").filtered('deadlineDate >= $0 && deadlineDate <= $1', startOfDay(new Date()), endOfDay(new Date()))
-    )
-    const [startWeek,setStartWeek] = useState(startOfWeek(currentDay))
-    const [endWeek,setEndWeek] = useState(endOfWeek(currentDay))
+    const [tasks,setTasks] = useState()
+    const [startWeek,setStartWeek] = useState(startOfWeek(currentDay,{ weekStartsOn: 1 }))
+    const [endWeek,setEndWeek] = useState(endOfWeek(currentDay,{ weekStartsOn: 1 }))
     const [currentDay,setCurrentDay] = useState(new Date())
     const [days,setDays] = useState("")
 
     useLayoutEffect(() => {
-        navigation.setOptions({
+        navigation.setOptions({ 
             headerTitle: () => (
                 <Text style={styles.header}> 
                     {format(currentDay,"eeee, d LLLL yyyy")}  
                 </Text>
-    ),})
+        ),})
+        setTasksHandler(currentDay)
     ;}, [currentDay]);
-    
+
     useEffect(() => {
-        const start = startOfWeek(currentDay)
-        const end = endOfWeek(currentDay)
+        const start = startOfWeek(currentDay,{ weekStartsOn: 1 })
+        const end = endOfWeek(currentDay,{ weekStartsOn: 1 })
         setStartWeek(start)
         setEndWeek(end)
         setDays(
@@ -42,7 +43,19 @@ const ScheduleScreen = ({navigation}) => {
                 end: end
             })
         )
-    }, [navigation])
+        setTasksHandler(currentDay)
+    }, [navigation,currentDay])
+
+    const setTasksHandler = (date) => {
+        setTasks(
+            realm.objects("Task").filtered('deadlineDate >= $0 && deadlineDate <= $1', startOfDay(date), endOfDay(date))
+        )
+    }
+
+    const changeCurrentDay = (selectedDay) => {
+        setCurrentDay(selectedDay)
+        setTasksHandler(selectedDay)
+    }
 
     const changeWeek = (amount) => {
         const start = addWeeks(startWeek,amount)
@@ -55,13 +68,22 @@ const ScheduleScreen = ({navigation}) => {
                 end: end
             })
         )
+        amount === 1? setCurrentDay(start) : setCurrentDay(end)
     }
+
 
     const styles = StyleSheet.create({
         header: {
             textAlign:"center",
             fontSize:16,
             fontFamily:"OpenSansBold"
+        },
+        footer: {
+            alignItems:"center",
+            flexDirection:"row",
+            width:"100%",
+            justifyContent:"space-between",
+            backgroundColor:colors.primeColor,
         }
     })
 
@@ -143,10 +165,19 @@ const ScheduleScreen = ({navigation}) => {
                     onPress={() => changeWeek(1)}
                 />
             </View>
-            <FooterList 
-                leftIcon="add-outline"
-                leftIconOnPress={() => console.log('add task')}
-            />
+            <View style={[styles.footer,sharedStyles.padding10]}>
+                <TouchableOpacity onPress={() => changeCurrentDay(new Date())}>
+                    <Text style={{fontFamily:"OpenSansBold",fontSize:13,backgroundColor:colors.secondColor,padding:5,borderRadius:5,borderColor:colors.thirdColor,borderWidth:1}}>
+                        {strings("calendarToday")}
+                    </Text>
+                </TouchableOpacity>
+                <Icon 
+                    type="ionicon"
+                    name="add-outline" 
+                    size={28} 
+                    onPress={() => console.log("add task")}
+                />
+            </View>
         </FlexLayout>
     )
     
