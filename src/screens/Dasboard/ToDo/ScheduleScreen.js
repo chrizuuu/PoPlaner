@@ -1,11 +1,9 @@
-import React, {useState,useLayoutEffect} from 'react';
+import React, {useState,useEffect,useLayoutEffect} from 'react';
 import { View,Text,FlatList,StyleSheet,TouchableOpacity} from 'react-native';
 import FlexLayout from '../../../components/Layouts/FlexLayout';
-import {startOfDay,endOfDay,format } from 'date-fns';
-import eachDayOfInterval from "date-fns/eachDayOfInterval"
+import {startOfDay,endOfDay,format,eachDayOfInterval,startOfWeek,endOfWeek, addWeeks } from 'date-fns';
 
 import { useFocusEffect } from '@react-navigation/core';
-import startOfWeek from 'date-fns/startOfWeek'
 
 
 import realm from '../../../Database/Database';
@@ -19,17 +17,45 @@ const ScheduleScreen = ({navigation}) => {
     const [tasks,setTasks] = useState(
         realm.objects("Task").filtered('deadlineDate >= $0 && deadlineDate <= $1', startOfDay(new Date()), endOfDay(new Date()))
     )
-    const [startOfWeek,setStartOfWeek] = useState(startOfWeek(currentDay))
-    const [endOfWeek,setEndOfWeek] = useState(endOfWeek(currentDay))
+    const [startWeek,setStartWeek] = useState(startOfWeek(currentDay))
+    const [endWeek,setEndWeek] = useState(endOfWeek(currentDay))
     const [currentDay,setCurrentDay] = useState(new Date())
+    const [days,setDays] = useState("")
 
     useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
                 <Text style={styles.header}> 
-                    {format(currentDay,"eeee, d LLLL")}  
+                    {format(currentDay,"eeee, d LLLL yyyy")}  
                 </Text>
-    ),});}, [currentDay]);
+    ),})
+    ;}, [currentDay]);
+    
+    useEffect(() => {
+        const start = startOfWeek(currentDay)
+        const end = endOfWeek(currentDay)
+        setStartWeek(start)
+        setEndWeek(end)
+        setDays(
+            eachDayOfInterval({
+                start:start,
+                end: end
+            })
+        )
+    }, [navigation])
+
+    const changeWeek = (amount) => {
+        const start = addWeeks(startWeek,amount)
+        const end = addWeeks(endWeek,amount)
+        setStartWeek(start)
+        setEndWeek(end)
+        setDays(
+            eachDayOfInterval({
+                start:start,
+                end: end
+            })
+        )
+    }
 
     const styles = StyleSheet.create({
         header: {
@@ -86,30 +112,36 @@ const ScheduleScreen = ({navigation}) => {
                         />
                 )}} 
             />
-            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-                <Icon />
+            <View style={{flexDirection:'row',justifyContent:'space-between',width:"100%"}}>
+                <Icon 
+                    type="ionico" 
+                    name="arrow-back" 
+                    style={{flex:1}}
+                    onPress={() => changeWeek(-1)}
+                />
                 <FlatList
                     horizontal
-                    style={{flex:1}}
                     keyboardShouldPersistTaps="always"
-                    data={eachDayOfInterval({
-                        start: new Date(2021, 8, 1),
-                        end: new Date(2021, 8, 7)
-                    })}
+                    data={days}
                     showsHorizontalScrollIndicator ={false}
                     keyExtractor={(item,index) => index.toString()}
                     renderItem={({item,index}) => {
                         return (
                             <TouchableOpacity onPress={() => setCurrentDay(item)} >
-                                <View style={{height:50,width:50,borderWidth:1,alignItems:"center",justifyContent:"center",borderColor: item.toLocaleDateString() === currentDay.toLocaleDateString()? "red": "black"}}>
+                                <View style={{width:50,height:50,borderWidth:1,alignItems:"center",justifyContent:"center",borderColor: item.toLocaleDateString() === currentDay.toLocaleDateString()? "red": "black"}}>
                                     <Text style={{fontFamily:"OpenSansBold",fontSize:16}}> 
-                                        {format(item, 'd')} 
+                                        {format(item, 'd MM')} 
                                     </Text>
                                 </View>
                             </TouchableOpacity>
                     )}} 
                 />
-                <Icon />
+                <Icon 
+                    type="ionico" 
+                    name="arrow-forward" 
+                    style={{flex:1}} 
+                    onPress={() => changeWeek(1)}
+                />
             </View>
             <FooterList 
                 leftIcon="add-outline"
