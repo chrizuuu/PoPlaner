@@ -1,7 +1,7 @@
 import React, {useState,useEffect,useLayoutEffect} from 'react';
 import { View,Text,FlatList,StyleSheet,TouchableOpacity} from 'react-native';
 import FlexLayout from '../../../components/Layouts/FlexLayout';
-import {startOfDay,endOfDay,format,eachDayOfInterval,startOfWeek,endOfWeek, addWeeks } from 'date-fns';
+import {startOfDay,endOfDay,format,eachDayOfInterval,startOfWeek,endOfWeek, addWeeks, isThisWeek } from 'date-fns';
 import sharedStyles from '../../../styles/shared';
 import colors from "../../../styles/colorsLightTheme"
 import { strings } from '../../../translations/translations';
@@ -17,10 +17,27 @@ import { Icon } from 'react-native-elements';
 
 const ScheduleScreen = ({navigation}) => {
     const [tasks,setTasks] = useState()
+    const [days,setDays] = useState()
     const [startWeek,setStartWeek] = useState(startOfWeek(currentDay,{ weekStartsOn: 1 }))
     const [endWeek,setEndWeek] = useState(endOfWeek(currentDay,{ weekStartsOn: 1 }))
     const [currentDay,setCurrentDay] = useState(new Date())
-    const [days,setDays] = useState("")
+
+    function onRealmChange() {
+        setTasksHandler(currentDay)
+    }
+
+    useFocusEffect(
+        React.useCallback(() => {
+            realm.addListener("change", onRealmChange);
+            return () => 
+                realm.removeListener("change",onRealmChange);
+        }, [navigation])
+    );
+
+    useEffect(() => {
+        setDaysHandler()
+        setTasksHandler(currentDay)
+    }, [navigation])
 
     useLayoutEffect(() => {
         navigation.setOptions({ 
@@ -29,22 +46,17 @@ const ScheduleScreen = ({navigation}) => {
                     {format(currentDay,"eeee, d LLLL yyyy")}  
                 </Text>
         ),})
-        setTasksHandler(currentDay)
     ;}, [currentDay]);
 
     useEffect(() => {
-        const start = startOfWeek(currentDay,{ weekStartsOn: 1 })
-        const end = endOfWeek(currentDay,{ weekStartsOn: 1 })
-        setStartWeek(start)
-        setEndWeek(end)
-        setDays(
-            eachDayOfInterval({
-                start:start,
-                end: end
-            })
-        )
+        if (currentDay <= startWeek || currentDay >= endWeek) {
+            setDaysHandler()
+        }
         setTasksHandler(currentDay)
-    }, [navigation,currentDay])
+
+    }, [currentDay])
+
+
 
     const setTasksHandler = (date) => {
         setTasks(
@@ -52,14 +64,16 @@ const ScheduleScreen = ({navigation}) => {
         )
     }
 
-    const changeCurrentDay = (selectedDay) => {
-        setCurrentDay(selectedDay)
-        setTasksHandler(selectedDay)
-    }
-
     const changeWeek = (amount) => {
         const start = addWeeks(startWeek,amount)
         const end = addWeeks(endWeek,amount)
+        amount === 1? setCurrentDay(start) : setCurrentDay(end)
+    }
+
+    const setDaysHandler = () => {
+        const start = startOfWeek(currentDay,{ weekStartsOn: 1 })
+        const end = endOfWeek(currentDay,{ weekStartsOn: 1 })
+
         setStartWeek(start)
         setEndWeek(end)
         setDays(
@@ -68,9 +82,7 @@ const ScheduleScreen = ({navigation}) => {
                 end: end
             })
         )
-        amount === 1? setCurrentDay(start) : setCurrentDay(end)
     }
-
 
     const styles = StyleSheet.create({
         header: {
@@ -166,7 +178,7 @@ const ScheduleScreen = ({navigation}) => {
                 />
             </View>
             <View style={[styles.footer,sharedStyles.padding10]}>
-                <TouchableOpacity onPress={() => changeCurrentDay(new Date())}>
+                <TouchableOpacity onPress={() => setCurrentDay(new Date())}>
                     <Text style={{fontFamily:"OpenSansBold",fontSize:13,backgroundColor:colors.secondColor,padding:5,borderRadius:5,borderColor:colors.thirdColor,borderWidth:1}}>
                         {strings("calendarToday")}
                     </Text>
