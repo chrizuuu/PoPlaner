@@ -29,6 +29,7 @@ import ErrorText from "../Text/ErrorText";
 import TaskPropertyOnList from "./TaskPropertyOnList";
 import colors from "../../styles/colorsLightTheme"
 import FooterList from "./FooterList";
+import { Button } from "react-native-elements/dist/buttons/Button";
 
 const styles = StyleSheet.create({
     container: {
@@ -57,6 +58,18 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         width:"100%",
         justifyContent:"space-between"
+    },
+
+    saveDateBtn: {
+        marginTop:10,
+        textAlign:"center",
+        paddingVertical:8,
+        paddingHorizontal:15,
+        marginBottom:5,
+        backgroundColor:"rgb(83,211,175)",
+        borderRadius:10,
+        right:0,   
+        fontFamily:"OpenSansSemiBold"
     },
 
     wrapperSettingsItem: {
@@ -102,6 +115,7 @@ export default class TaskItem extends React.Component {
             errorCommentStatus: false,
             taskPageIsOpen: false,
             taskDeadlineDatePicker:false,
+            dateInput:this.task.deadlineDate
         }
     }
 
@@ -169,7 +183,11 @@ export default class TaskItem extends React.Component {
         realm.write(() => {
             this.task.deadlineDate = value
         })
+        this.setState({
+            taskDeadlineDatePicker:false
+        })
     }
+
     render() {
         let priorityTaskStatus = this.task.priority === true
             ? 
@@ -322,23 +340,30 @@ export default class TaskItem extends React.Component {
                                             taskDeadlineDatePicker:!this.state.taskDeadlineDatePicker
                                         })}
                                         valueContainer = {
-                                            <Text>
-                                                { this.task.deadlineDate? this.task.deadlineDate.toLocaleDateString() + ' ' + this.task.deadlineDate.toLocaleTimeString() : ''}    
+                                            <Text style={{textAlign:'right'}}>
+                                                { this.task.deadlineDate? this.task.deadlineDate.toLocaleDateString() : ''}    
                                             </Text>
                                         }
                                     />
-                                    <DatePicker
-                                        style={{
-                                            alignSelf:'flex-end',
-                                            display: displayDatePicker,
-                                            backgroundColor:'rgb(255,255,255)',
-                                        }}
-                                        mode="date"
-                                        minimumDate={new Date()}
-                                        date={this.task.deadlineDate? this.task.deadlineDate : new Date()}
-                                        onDateChange={(value) => this.setDeadlineDate(value)}
-                                    />
-                                    
+                                    <View style={{display:displayDatePicker,alignItems:"flex-end"}}>
+                                        <DatePicker
+                                            style={{
+                                                backgroundColor:'rgb(255,255,255)',
+                                            }}
+                                            mode="date"
+                                            minimumDate={new Date()}
+                                            date={this.state.dateInput? this.state.dateInput: new Date()}
+                                            onDateChange={(value) => this.setState({
+                                                dateInput:value
+                                            })}
+                                        />
+                                        <Text 
+                                            style={styles.saveDateBtn}
+                                            onPress={() => this.setDeadlineDate(this.state.dateInput)} 
+                                        >
+                                            {strings("save")}
+                                        </Text>
+                                    </View>
 
                                     <Text 
                                         style={styles.saveCommentBtn}
