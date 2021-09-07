@@ -6,8 +6,6 @@ import sharedStyles from '../../../styles/shared';
 import colors from "../../../styles/colorsLightTheme"
 import { strings } from '../../../translations/translations';
 import { useFocusEffect } from '@react-navigation/core';
-
-
 import realm from '../../../Database/Database';
 import FooterList from '../../../components/components/FooterList';
 import TaskItem from '../../../components/components/TaskItem';
@@ -100,6 +98,26 @@ const ScheduleScreen = ({navigation}) => {
             width:"100%",
             justifyContent:"space-between",
             backgroundColor:colors.primeColor,
+        },
+        calendarMenu: {
+            flexDirection:'row',
+            justifyContent:'space-between',
+            alignItems:"center",
+            backgroundColor:colors.primeColor,
+            borderBottomColor:colors.secondColor,
+            borderBottomWidth:1,
+            borderTopColor:colors.secondColor,
+            borderTopWidth:1,
+        },
+        calendarListItem: {
+            padding:10,
+        },
+        todayBtn: {
+            fontFamily:"OpenSansBold",
+            fontSize:15,
+            padding:5,
+            marginLeft:5,
+            borderRadius:5,
         }
     })
 
@@ -107,7 +125,6 @@ const ScheduleScreen = ({navigation}) => {
     return (
         <FlexLayout>
             <FlatList
-                style={{flex:1}}
                 keyboardShouldPersistTaps="always"
                 /*ListHeaderComponent={
                     <>
@@ -151,11 +168,11 @@ const ScheduleScreen = ({navigation}) => {
                         />
                 )}} 
             />
-            <View style={{flexDirection:'row',justifyContent:'space-between',width:"100%"}}>
+            <View style={styles.calendarMenu}>
                 <Icon 
                     type="ionico" 
                     name="arrow-back" 
-                    style={{flex:1}}
+                    containerStyle={{padding:10}}
                     onPress={() => changeWeek(-1)}
                 />
                 <FlatList
@@ -167,9 +184,9 @@ const ScheduleScreen = ({navigation}) => {
                     renderItem={({item,index}) => {
                         return (
                             <TouchableOpacity onPress={() => setCurrentDay(item)} >
-                                <View style={{width:50,height:50,borderWidth:1,alignItems:"center",justifyContent:"center",borderColor: item.toLocaleDateString() === currentDay.toLocaleDateString()? "red": "black"}}>
-                                    <Text style={{fontFamily:"OpenSansBold",fontSize:16}}> 
-                                        {format(item, 'd MM')} 
+                                <View style={[styles.calendarListItem,{backgroundColor: item.toLocaleDateString() === currentDay.toLocaleDateString()? "#53D3AF" : colors.primeColor}]}>
+                                    <Text style={{fontFamily:"OpenSansReg",fontSize:15}}> 
+                                        {format(item, 'd/MM')} 
                                     </Text>
                                 </View>
                             </TouchableOpacity>
@@ -178,17 +195,20 @@ const ScheduleScreen = ({navigation}) => {
                 <Icon 
                     type="ionico" 
                     name="arrow-forward" 
-                    style={{flex:1}} 
+                    containerStyle={{padding:10}}
                     onPress={() => changeWeek(1)}
                 />
             </View>
             <View style={[styles.footer,sharedStyles.padding10]}>
-                <TouchableOpacity onPress={() => setCurrentDay(new Date())}>
-                    <Text style={{fontFamily:"OpenSansBold",fontSize:13,backgroundColor:colors.secondColor,padding:5,borderRadius:5,borderColor:colors.thirdColor,borderWidth:1}}>
+                <TouchableOpacity style={{flexDirection:"row",alignItems:"center"}} onPress={() => setCurrentDay(new Date())}>
+                    <Icon 
+                        type="ionicon"
+                        name="today-outline" 
+                    />
+                    <Text style={styles.todayBtn}>
                         {strings("calendarToday")}
                     </Text>
                 </TouchableOpacity>
-                <Text>{modalVisible.toString()} </Text>
                 <Icon 
                     type="ionicon"
                     name="add-outline" 

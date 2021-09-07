@@ -104,7 +104,6 @@ export default class TaskItem extends React.Component {
             taskDeadlineDatePicker:false,
         }
     }
-
     task = realm.objectForPrimaryKey("Task",this.props.item_id)
 
     changeCommentHandler = (value) => {
@@ -153,7 +152,6 @@ export default class TaskItem extends React.Component {
         this.setState({
             taskPageIsOpen: visible
         })
-        this.props.provideModalVisibleStatus(visible)
     }
 
     saveProject = (value) => {
