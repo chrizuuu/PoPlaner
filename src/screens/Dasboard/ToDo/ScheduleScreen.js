@@ -20,10 +20,15 @@ const ScheduleScreen = ({navigation}) => {
     const [days,setDays] = useState()
     const [startWeek,setStartWeek] = useState(startOfWeek(currentDay,{ weekStartsOn: 1 }))
     const [endWeek,setEndWeek] = useState(endOfWeek(currentDay,{ weekStartsOn: 1 }))
+    const [modalVisible,setModalVisible] = useState(false)
     const [currentDay,setCurrentDay] = useState(new Date())
 
     function onRealmChange() {
         setTasksHandler(currentDay)
+    }
+
+    const provideModalVisibleStatus = (taskModalVisibile) =>{
+        setModalVisible(taskModalVisibile)
     }
 
     useFocusEffect(
@@ -55,7 +60,6 @@ const ScheduleScreen = ({navigation}) => {
         setTasksHandler(currentDay)
 
     }, [currentDay])
-
 
 
     const setTasksHandler = (date) => {
@@ -140,7 +144,8 @@ const ScheduleScreen = ({navigation}) => {
                 keyExtractor={(item) => item._id.toString()}
                 renderItem={({item}) => {
                     return (
-                        <TaskItem 
+                        <TaskItem
+                            provideModalVisibleStatus={provideModalVisibleStatus} 
                             item_id={item._id} 
                             displayProjectProperty={true} 
                         />
@@ -183,6 +188,7 @@ const ScheduleScreen = ({navigation}) => {
                         {strings("calendarToday")}
                     </Text>
                 </TouchableOpacity>
+                <Text>{modalVisible.toString()} </Text>
                 <Icon 
                     type="ionicon"
                     name="add-outline" 

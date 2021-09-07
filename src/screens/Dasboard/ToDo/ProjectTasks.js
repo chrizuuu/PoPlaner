@@ -50,6 +50,7 @@ const ProjectTasks = ({navigation,route}) => {
     const [taskInput,setTaskInput] = useState("")
     const [addFormVisible,setAddFormVisible] = useState(false)
     const [taskInputErrorStatus, setTaskInputErrorStatus] = useState(false)
+    const [modalVisible,setModalVisible] = useState(false)
     const inputTaskTitle = useRef(null)
 
     useLayoutEffect(() => {
@@ -75,7 +76,11 @@ const ProjectTasks = ({navigation,route}) => {
 
     function onRealmChange() {
         setTasks(getProjectTasks(project))
-      }
+    }
+
+    const provideModalVisibleStatus = (taskModalVisibile) =>{
+        setModalVisible(taskModalVisibile)
+    }
     
     useFocusEffect(
         React.useCallback(() => {project
@@ -263,7 +268,8 @@ const ProjectTasks = ({navigation,route}) => {
                     keyExtractor={(item) => item._id.toString()}
                     renderItem={({item}) => {
                         return (
-                            <TaskItem 
+                            <TaskItem
+                                provideModalVisibleStatus={provideModalVisibleStatus} 
                                 item_id={item._id} 
                                 displayProjectProperty={displayProjectProperty} 
                             />
