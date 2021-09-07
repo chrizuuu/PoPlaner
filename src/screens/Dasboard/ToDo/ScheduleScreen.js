@@ -22,7 +22,9 @@ const ScheduleScreen = ({navigation}) => {
     const [currentDay,setCurrentDay] = useState(new Date())
 
     function onRealmChange() {
+        console.log(currentDay)
         setTasksHandler(currentDay)
+        console.log("change")
     }
 
     const provideModalVisibleStatus = (taskModalVisibile) =>{

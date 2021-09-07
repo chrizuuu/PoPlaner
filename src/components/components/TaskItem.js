@@ -333,6 +333,8 @@ export default class TaskItem extends React.Component {
                                             display: displayDatePicker,
                                             backgroundColor:'rgb(255,255,255)',
                                         }}
+                                        mode="date"
+                                        minimumDate={new Date()}
                                         date={this.task.deadlineDate? this.task.deadlineDate : new Date()}
                                         onDateChange={(value) => this.setDeadlineDate(value)}
                                     />
