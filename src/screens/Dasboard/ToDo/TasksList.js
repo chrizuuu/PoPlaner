@@ -34,6 +34,9 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
     const [modalVisible,setModalVisible] = useState(false)
     const inputTaskTitle = useRef(null)
 
+    function onRealmChange() {
+        setTasks(tasksType)
+    }
 
     useFocusEffect(
         React.useCallback(() => {
