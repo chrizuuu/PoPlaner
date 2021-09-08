@@ -12,19 +12,18 @@ const styles = StyleSheet.create ({
     buttonCurrent: {
         alignItems:'center',
         justifyContent:'center',
-        width:60,
-        height:35,
-        backgroundColor:'#1976D2',
-        borderRadius:20,
-        color:'white',
+        paddingVertical:10,
+        paddingHorizontal:20,
+        backgroundColor:'#53D3AF',
+        borderRadius:5,
     },
     text: {
         color:colors.textColor, 
         fontFamily:'OpenSansSemiBold'
     },
     currentValueText : {
-        color:'white',
-        fontFamily:'OpenSansSemiBold'
+        color:colors.primeColor,
+        fontFamily:'OpenSansBold'
     },
     box: {
         width:'100%',

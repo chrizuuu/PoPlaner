@@ -191,16 +191,16 @@ export default class PomodoroScreen extends React.Component {
         this.resetTimer()
     }
 
-    changeAutoPomodoroStart = value => {
+    changeAutoPomodoroStart = () => {
         this.setState({
-            autoPomodoroStart:value
+            autoPomodoroStart:!this.state.autoPomodoroStart
         })
         this.resetTimer()
     }
 
-    changeAutoBreakStart = value => {
+    changeAutoBreakStart = () => {
         this.setState({
-            autoBreakStart:value
+            autoBreakStart:!this.state.autoBreakStart
         })
         this.resetTimer()
     }
@@ -295,7 +295,7 @@ export default class PomodoroScreen extends React.Component {
                 <FlexLayout>
                     <HeaderBar 
                         screenName='Pomodoro Settings'
-                        headerTextSize={20}
+                        headerTextSize={18}
                         style={sharedStyles.marginSide25}
                         rightIcon = {
                             <>
@@ -362,13 +362,13 @@ export default class PomodoroScreen extends React.Component {
                                 style={{paddingTop:30}}
                                 settingsName='Auto start pomodoro?'
                                 switchValue={this.state.autoPomodoroStart}
-                                onValueChange={(value)=> this.changeAutoPomodoroStart(value)}
+                                onValueChange={()=> this.changeAutoPomodoroStart()}
                             />
                             <SettingsSwitchBar
                                 style={{paddingTop:30}}                     
                                 settingsName='Auto start breaks?'
                                 switchValue={this.state.autoBreakStart}
-                                onValueChange={(value)=> this.changeAutoBreakStart(value)}
+                                onValueChange={()=> this.changeAutoBreakStart()}
                             />
                         </View>
                     </FlexLayout>

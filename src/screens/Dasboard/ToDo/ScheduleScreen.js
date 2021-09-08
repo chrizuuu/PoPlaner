@@ -71,12 +71,16 @@ const ScheduleScreen = ({navigation}) => {
     const changeWeek = (amount) => {
         const start = addWeeks(startWeek,amount)
         const end = addWeeks(endWeek,amount)
+        console.log(start,end)
+
         amount === 1? setCurrentDay(start) : setCurrentDay(end)
     }
 
     const setDaysHandler = () => {
-        const start = startOfWeek(currentDay,{ weekStartsOn: 1 })
-        const end = endOfWeek(currentDay,{ weekStartsOn: 1 })
+        const start = startOfWeek(currentDay,{ weekStartsOn: 2 })
+        const end = endOfWeek(currentDay,{ weekStartsOn: 2 })
+
+        console.log(start,end)
 
         setStartWeek(start)
         setEndWeek(end)
@@ -86,6 +90,8 @@ const ScheduleScreen = ({navigation}) => {
                 end: end
             })
         )
+
+        console.log(days)
     }
 
     const styles = StyleSheet.create({
