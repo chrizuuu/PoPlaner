@@ -1,7 +1,7 @@
 import React, {useState,useEffect,useLayoutEffect} from 'react';
 import { View,Text,FlatList,StyleSheet,TouchableOpacity} from 'react-native';
 import FlexLayout from '../../../components/Layouts/FlexLayout';
-import {startOfDay,endOfDay,format,eachDayOfInterval,startOfWeek,endOfWeek, addWeeks, isThisWeek } from 'date-fns';
+import {startOfDay,endOfDay,format,eachDayOfInterval,startOfWeek,endOfWeek, addWeeks, isThisWeek,isSameDay } from 'date-fns';
 import sharedStyles from '../../../styles/shared';
 import colors from "../../../styles/colorsLightTheme"
 import { strings } from '../../../translations/translations';
@@ -11,20 +11,18 @@ import FooterList from '../../../components/components/FooterList';
 import TaskItem from '../../../components/components/TaskItem';
 import { Icon } from 'react-native-elements';
 
-
+const pl = require("date-fns/locale/pl")
 
 const ScheduleScreen = ({navigation}) => {
     const [tasks,setTasks] = useState()
     const [days,setDays] = useState()
-    const [startWeek,setStartWeek] = useState(startOfWeek(currentDay,{ weekStartsOn: 1 }))
-    const [endWeek,setEndWeek] = useState(endOfWeek(currentDay,{ weekStartsOn: 1 }))
+    const [startWeek,setStartWeek] = useState()
+    const [endWeek,setEndWeek] = useState()
     const [modalVisible,setModalVisible] = useState(false)
     const [currentDay,setCurrentDay] = useState(new Date())
 
     function onRealmChange() {
-        console.log(currentDay)
         setTasksHandler(currentDay)
-        console.log("change")
     }
 
     const provideModalVisibleStatus = (taskModalVisibile) =>{
@@ -48,17 +46,17 @@ const ScheduleScreen = ({navigation}) => {
         navigation.setOptions({ 
             headerTitle: () => (
                 <Text style={styles.header}> 
-                    {format(currentDay,"eeee, d LLLL yyyy")}  
+                    {format(currentDay,"EEEE, d LLLL yyyy", {locale: pl})}  
                 </Text>
         ),})
     ;}, [currentDay]);
 
     useEffect(() => {
+        console.log("CURRENTDAY:",currentDay)
         if (currentDay <= startWeek || currentDay >= endWeek) {
             setDaysHandler()
         }
         setTasksHandler(currentDay)
-
     }, [currentDay])
 
 
@@ -70,13 +68,17 @@ const ScheduleScreen = ({navigation}) => {
 
     const changeWeek = (amount) => {
         const start = addWeeks(startWeek,amount)
+        console.log("START",start)
         const end = addWeeks(endWeek,amount)
+        console.log("END",end)
         amount === 1? setCurrentDay(start) : setCurrentDay(end)
     }
 
     const setDaysHandler = () => {
-        const start = startOfWeek(currentDay,{ weekStartsOn: 1 })
-        const end = endOfWeek(currentDay,{ weekStartsOn: 1 })
+        const start = startOfWeek(currentDay,{ locale:pl })
+        const end = endOfWeek(currentDay,{ locale:pl })
+        console.log("START",start)
+        console.log("END",end)
 
         setStartWeek(start)
         setEndWeek(end)
@@ -86,6 +88,7 @@ const ScheduleScreen = ({navigation}) => {
                 end: end
             })
         )
+        console.log(days)
     }
 
     const styles = StyleSheet.create({
@@ -185,15 +188,15 @@ const ScheduleScreen = ({navigation}) => {
                     keyExtractor={(item,index) => index.toString()}
                     renderItem={({item,index}) => {
                         return (
-                            <TouchableOpacity onPress={() => setCurrentDay(item)} >
-                                <View style={[styles.calendarListItem,{backgroundColor: item.toLocaleDateString() === currentDay.toLocaleDateString()? "#53D3AF" : colors.primeColor}]}>
+                            <TouchableOpacity onPress={() => {setCurrentDay(item)}} >
+                                <View style={[styles.calendarListItem,{backgroundColor: isSameDay(item,currentDay)? "#53D3AF" : colors.primeColor}]}>
                                     <Text style={{fontFamily:"OpenSansReg",fontSize:15}}> 
-                                        {format(item, 'd/MM')} 
+                                        {format(item, 'd/MM',{locale: pl})} 
                                     </Text>
                                 </View>
                             </TouchableOpacity>
                     )}} 
-                />
+                /> 
                 <Icon 
                     type="ionico" 
                     name="arrow-forward" 
