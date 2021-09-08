@@ -305,7 +305,7 @@ export default class PomodoroScreen extends React.Component {
                             </>
                         }
                     />
-                    <View style={sharedStyles.marginSide25}>   
+                    <View style={[sharedStyles.marginSide25,{marginTop:30}]}>   
                         <View>
                             <SettingsBarHeader 
                                 settingsName="Focus"
@@ -320,7 +320,7 @@ export default class PomodoroScreen extends React.Component {
                         </View>
                         <View>
                             <SettingsBarHeader 
-                                style={{paddingTop:30}}                        
+                                style={{marginTop:30}}                        
                                 settingsName="Short Break"
                                 settingsValue={(defaultProps.types[1].time)/60} 
                             />
@@ -334,7 +334,7 @@ export default class PomodoroScreen extends React.Component {
                         </View>
                         <View>
                             <SettingsBarHeader 
-                                style={{paddingTop:30}}
+                                style={{marginTop:30}}
                                 settingsName="Long Break"
                                 settingsValue={(defaultProps.types[2].time)/60} 
                             />
@@ -347,7 +347,7 @@ export default class PomodoroScreen extends React.Component {
                         </View>
                         <View>
                             <SettingsBarHeader 
-                                style={{paddingTop:30}}
+                                style={{marginTop:30}}
                                 settingsName='Long Break Intervals'
                                 settingsValue={this.state.autoLongBreakInterval}
                             />
@@ -359,13 +359,14 @@ export default class PomodoroScreen extends React.Component {
                             />
                         </View>
                             <SettingsSwitchBar
-                                style={{paddingTop:30}}
+                                style={{marginTop:30}}
                                 settingsName='Auto start pomodoro?'
                                 switchValue={this.state.autoPomodoroStart}
                                 onValueChange={()=> this.changeAutoPomodoroStart()}
                             />
                             <SettingsSwitchBar
-                                style={{paddingTop:30}}                     
+                            
+                                style={{marginTop:30}}                     
                                 settingsName='Auto start breaks?'
                                 switchValue={this.state.autoBreakStart}
                                 onValueChange={()=> this.changeAutoBreakStart()}

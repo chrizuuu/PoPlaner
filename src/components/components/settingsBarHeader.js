@@ -8,7 +8,7 @@ const styles = StyleSheet.create ( {
         width:'100%',
     },
     settingsName: {
-        fontSize:16,
+        fontSize:15,
         fontFamily:"OpenSansSemiBold",
     },
     settingsInfo: {
