@@ -21,7 +21,8 @@ const ScheduleScreen = ({navigation}) => {
     const [modalVisible,setModalVisible] = useState(false)
     const [currentDay,setCurrentDay] = useState(new Date())
 
-    function onRealmChange() {
+    const onRealmChange =() => {
+        console.log(currentDay)
         setTasksHandler(currentDay)
     }
 
@@ -42,6 +43,8 @@ const ScheduleScreen = ({navigation}) => {
         setTasksHandler(currentDay)
     }, [navigation])
 
+    useEffect
+
     useLayoutEffect(() => {
         navigation.setOptions({ 
             headerTitle: () => (
@@ -52,10 +55,9 @@ const ScheduleScreen = ({navigation}) => {
     ;}, [currentDay]);
 
     useEffect(() => {
-        console.log("CURRENTDAY:",currentDay)
-        if (currentDay <= startWeek || currentDay >= endWeek) {
-            setDaysHandler()
-        }
+        //if (currentDay <= startWeek || currentDay >= endWeek) {
+        setDaysHandler()
+        //}
         setTasksHandler(currentDay)
     }, [currentDay])
 
@@ -68,17 +70,13 @@ const ScheduleScreen = ({navigation}) => {
 
     const changeWeek = (amount) => {
         const start = addWeeks(startWeek,amount)
-        console.log("START",start)
         const end = addWeeks(endWeek,amount)
-        console.log("END",end)
         amount === 1? setCurrentDay(start) : setCurrentDay(end)
     }
 
     const setDaysHandler = () => {
         const start = startOfWeek(currentDay,{ locale:pl })
         const end = endOfWeek(currentDay,{ locale:pl })
-        console.log("START",start)
-        console.log("END",end)
 
         setStartWeek(start)
         setEndWeek(end)
@@ -88,7 +86,6 @@ const ScheduleScreen = ({navigation}) => {
                 end: end
             })
         )
-        console.log(days)
     }
 
     const styles = StyleSheet.create({
@@ -188,10 +185,10 @@ const ScheduleScreen = ({navigation}) => {
                     keyExtractor={(item,index) => index.toString()}
                     renderItem={({item,index}) => {
                         return (
-                            <TouchableOpacity onPress={() => {setCurrentDay(item)}} >
+                            <TouchableOpacity onPress={() => setCurrentDay(item)} >
                                 <View style={[styles.calendarListItem,{backgroundColor: isSameDay(item,currentDay)? "#53D3AF" : colors.primeColor}]}>
                                     <Text style={{fontFamily:"OpenSansReg",fontSize:15}}> 
-                                        {format(item, 'd/MM',{locale: pl})} 
+                                        {format(item, 'd/MM')} 
                                     </Text>
                                 </View>
                             </TouchableOpacity>

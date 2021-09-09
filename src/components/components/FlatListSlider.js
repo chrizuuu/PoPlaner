@@ -12,58 +12,48 @@ const styles = StyleSheet.create ({
     buttonCurrent: {
         alignItems:'center',
         justifyContent:'center',
-        width:60,
-        height:35,
-        backgroundColor:'#1976D2',
-        borderRadius:20,
-        color:'white',
+        paddingVertical:10,
+        paddingHorizontal:20,
+        backgroundColor:'#53D3AF',
+        borderRadius:5,
     },
     text: {
         color:colors.textColor, 
         fontFamily:'OpenSansSemiBold'
     },
     currentValueText : {
-        color:'white',
-        fontFamily:'OpenSansSemiBold'
-    },
-    box: {
-        width:'100%',
-        height:60,
-        borderRadius:15,
-        borderColor:colors.thirdColor,
-        borderWidth:1,
-        paddingLeft:10,
-        paddingRight:10,
+        color:colors.primeColor,
+        fontFamily:'OpenSansBold'
     },
 
 })
 const FlatListSliderFunc = ({data,showIndicator,onPress,currentValue,style}) => {
     return (
-        <View style={[{...style}]} >
+        <View style={{...style}} >
             <FlatList 
-            horizontal
-            showsHorizontalScrollIndicator={showIndicator} 
-            data={data}
-            keyExtractor={(item,index) => index.toString()} 
-            renderItem={({ item }) => 
-                <TouchableOpacity
-                    onPress={() => onPress(item)}>
-                    {
-                        item === currentValue
-                        ? 
-                            <View style={styles.buttonCurrent}>
-                                <Text style={styles.currentValueText}>
-                                    {item.toString()}
-                                </Text>
-                            </View>
-                        :     
-                            <View style={styles.button}>
-                                <Text style={styles.text}>
-                                    {item.toString()}
-                                </Text>
-                            </View>
-                    }
-                </TouchableOpacity>} 
+                horizontal
+                showsHorizontalScrollIndicator={showIndicator} 
+                data={data}
+                keyExtractor={(item,index) => index.toString()} 
+                renderItem={({ item }) => 
+                    <TouchableOpacity
+                        onPress={() => onPress(item)}>
+                        {
+                            item === currentValue
+                            ? 
+                                <View style={styles.buttonCurrent}>
+                                    <Text style={styles.currentValueText}>
+                                        {item.toString()}
+                                    </Text>
+                                </View>
+                            :     
+                                <View style={styles.button}>
+                                    <Text style={styles.text}>
+                                        {item.toString()}
+                                    </Text>
+                                </View>
+                        }
+                    </TouchableOpacity>} 
             ItemSeparatorComponent = {()=> <View style={{width: 20}} />}
             />
         </View>
