@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
         justifyContent:"space-between"
     },
 
-    saveDateBtn: {
+    saveBtn: {
         marginTop:10,
         textAlign:"center",
         paddingVertical:8,
@@ -74,29 +74,35 @@ const styles = StyleSheet.create({
 
     wrapperSettingsItem: {
         marginTop:20, 
-        paddingLeft:12, 
-        paddingRight:12,
         backgroundColor:colors.secondColor,
-    },
-    saveCommentBtn:{
-        marginTop:20,
-        textAlign:"center",
-        padding:5,
-        marginBottom:5,
-        backgroundColor:"rgb(83,211,175)",
-        borderRadius:25,
-        right:0,    
     },
     
     commentInput:{
         textAlignVertical:"top",
-        minHeight:100,
+        minHeight:200,
         maxHeight:300,
+        width:"100%",
         borderColor: colors.secondColor,
         padding:10,
         borderWidth: 1, 
-        borderRadius:25,
-        backgroundColor:colors.primeColor
+        borderRadius:5,
+        backgroundColor:colors.primeColor,
+    },
+
+    commentInputWrapper: {
+        position:"relative"
+    },
+
+    commentInputFocusWrapper: {
+        width:"100%",
+        height:"100%",
+        margin:0,
+        padding:0,
+        backgroundColor:colors.secondColor,
+        position:"absolute",
+        top:0,
+        left:0,
+        right:0,
     },
     text: {
         fontSize:12,
@@ -112,6 +118,7 @@ export default class TaskItem extends React.Component {
             inputTitle: this.task.title,
             errorTitleStatus: false,
             inputComment: this.task.comment,
+            inputCommentFocus:false,
             errorCommentStatus: false,
             taskPageIsOpen: false,
             taskDeadlineDatePicker:false,
@@ -204,7 +211,7 @@ export default class TaskItem extends React.Component {
         let projects = realm.objects("Project")
         return (
             <>
-                <ScrollView keyboardShouldPersistTaps="always">
+                <ScrollView keyboardShouldPersistTaps="never">
                     <Pressable  onPress={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}>          
                         <View style={[styles.container,{opacity: isDoneTaskOpacity,}]}>
                             <View style={[sharedStyles.padding10, styles.wrapperInRow]}> 
@@ -305,7 +312,8 @@ export default class TaskItem extends React.Component {
                                 />
 
                                 <FlexLayout style={styles.wrapperSettingsItem}>               
-                                    <PropertyItem                         
+                                    <PropertyItem
+                                        style={sharedStyles.paddingSide10}                         
                                         valueIcon = "outlined-flag"
                                         valueTitle = {strings("taskPropertyProject")}
                                         valueContainer = {
@@ -333,7 +341,8 @@ export default class TaskItem extends React.Component {
                                             </>
                                         }
                                     /> 
-                                    <PropertyItem 
+                                    <PropertyItem
+                                        style={sharedStyles.paddingSide10} 
                                         valueIcon="today"
                                         valueTitle={strings("taskPropertyDate")}
                                         onPress={() => this.setState({
@@ -345,7 +354,7 @@ export default class TaskItem extends React.Component {
                                             </Text>
                                         }
                                     />
-                                    <View style={{display:displayDatePicker,alignItems:"flex-end"}}>
+                                    <View style={[sharedStyles.paddingSide10,{display:displayDatePicker,alignItems:"flex-end"}]}>
                                         <DatePicker
                                             style={{
                                                 backgroundColor:'rgb(255,255,255)',
@@ -358,40 +367,44 @@ export default class TaskItem extends React.Component {
                                             })}
                                         />
                                         <Text 
-                                            style={styles.saveDateBtn}
+                                            style={styles.saveBtn}
                                             onPress={() => this.setDeadlineDate(this.state.dateInput)} 
                                         >
                                             {strings("save")}
                                         </Text>
                                     </View>
 
-                                    <Text 
-                                        style={styles.saveCommentBtn}
-                                        onPress={() => {
-                                            this.submitCommentHandler()
-                                        }}
-                                    >
-                                        {strings("saveComment")} 
-                                    </Text>
+                                    <View style={[this.state.inputCommentFocus === true ? styles.commentInputFocusWrapper : styles.commentInputWrapper,sharedStyles.paddingSide10]} >
+                                        <Text 
+                                            style={styles.saveBtn}
+                                            onPress={() => {
+                                                this.submitCommentHandler()
+                                            }}
+                                        >
+                                            {strings("saveComment")} 
+                                        </Text>
 
-                                    <TextInput 
-                                        style={styles.commentInput}
-                                        name="input"
-                                        multiline={true}
-                                        maxLength={1000}
-                                        defaultValue={this.task.comment}
-                                        onChangeText = {(input) => this.changeCommentHandler(input)}
-                                        placeholder={strings("addComment")}
-                                    />                                             
-                                        {this.state.errorCommentStatus === true 
-                                        ? (
-                                            <ErrorText errorValue={strings("inputEmptyError")} />
-                                        ) 
-                                        : null  } 
+                                        <TextInput
+                                            onFocus={() => this.setState({inputCommentFocus:true})}
+                                            onBlur={() => this.setState({inputCommentFocus:false})}
+                                            style={styles.commentInput}
+                                            name="input"
+                                            multiline={true}
+                                            maxLength={1000}
+                                            defaultValue={this.task.comment}
+                                            onChangeText = {(input) => this.changeCommentHandler(input)}
+                                            placeholder={strings("addComment")}
+                                        />                                             
+                                            {this.state.errorCommentStatus === true 
+                                            ? (
+                                                <ErrorText errorValue={strings("inputEmptyError")} />
+                                            ) 
+                                            : null  } 
 
-                                    <Text style={[sharedStyles.padding10,styles.text]}>
-                                        {strings("taskCreatedAt")}{this.task.createdDate.toLocaleDateString() + " " + this.task.createdDate.toLocaleTimeString()}
-                                    </Text>
+                                        <Text style={[sharedStyles.padding10,styles.text]}>
+                                            {strings("taskCreatedAt")}{this.task.createdDate.toLocaleDateString() + " " + this.task.createdDate.toLocaleTimeString()}
+                                        </Text>
+                                    </View>
                                 </FlexLayout>
 
 
