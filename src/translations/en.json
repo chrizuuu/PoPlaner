@@ -43,6 +43,7 @@
     "taskPropertyProject": "Project? ",
     "taskPropertyProjectDefault": "Select project...",
     "taskPropertyCategory": "Category? ",
+    "taskPropertyComment": "Comment",
     "addComment": "Add comment...",
     "saveComment": "Save comment",
 

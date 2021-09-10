@@ -3,6 +3,13 @@ import { StyleSheet} from 'react-native';
 const styleHeader = StyleSheet.create ({
     wrapper: {
         justifyContent:'space-between',
+        height:60,
+    },
+
+    container: {
+        alignContent:"center",
+        alignItems:"center",
+        height:60,
     },
 
     textStyle : {

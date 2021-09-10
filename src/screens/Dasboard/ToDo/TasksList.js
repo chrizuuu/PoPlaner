@@ -120,7 +120,7 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
             <View style={ToDoSTyles.tasksListContainer}>
                 <FlatList
                     style={{flex:1}}
-                    keyboardShouldPersistTaps="always"
+                    keyboardShouldPersistTaps={'handled'}
                     ListHeaderComponent={
                         <>
                             <View style={styles.textInputContainer}>

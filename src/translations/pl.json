@@ -42,6 +42,7 @@
     "taskPropertyProject": "Projekt? ",
     "taskPropertyProjectDefault": "Wybierz projekt...",
     "taskPropertyCategory": "Kategoria? ",
+    "taskPropertyComment": "Komentarz",
     "addComment": "Dodaj komentarz...",
     "saveComment": "Zapisz komentarz",
 
