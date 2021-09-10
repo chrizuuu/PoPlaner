@@ -42,6 +42,7 @@
     "taskPropertyProject": "Projekt? ",
     "taskPropertyProjectDefault": "Wybierz projekt...",
     "taskPropertyCategory": "Kategoria? ",
+    "taskPropertyComment": "Komentarz",
     "addComment": "Dodaj komentarz...",
     "saveComment": "Zapisz komentarz",
 
@@ -53,7 +54,10 @@
     "projectPropertyTitle": "Tytul projektu",
     "projectPropertyDescription": "Opis projektu",
 
+    "calendarToday": "Dzisiaj",
+
     "inputEmptyError": "* Wprowadź tekst, aby kontynuować.",
+    "save": "Zapisz",
 
 
 }

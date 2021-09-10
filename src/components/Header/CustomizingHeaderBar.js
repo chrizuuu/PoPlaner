@@ -8,35 +8,30 @@ import { TouchableOpacity } from 'react-native';
 
 const CustomizingHeaderBar = ({style,leftSide,centerSide,rightSide}) => {
     return (
-        <View 
-            style = {[
-                sharedStyles.margintop20,
-                {...style}]} 
-        >
-        <InLineLayout style={styleHeader.wrapper}>
-            {(leftSide) ? 
+        <View style = {[styleHeader.container,{...style}]} >
+            <InLineLayout style={styleHeader.wrapper}>
+                {(leftSide) ? 
+                    <View
+                        style={styleHeader.iconWrapper} 
+                    >
+                        {leftSide}
+                    </View>
 
-                <View
-                    style={styleHeader.iconWrapper} 
-                >
-                    {leftSide}
-                </View>
+                : <View style={styleHeader.iconWrapper} />}
 
-            : <View style={styleHeader.iconWrapper} />}
+                        {centerSide}
 
-                    {centerSide}
+                {(rightSide)? 
 
-            {(rightSide)? 
+                    <View
+                        style={styleHeader.iconWrapper} 
+                    >
+                        {rightSide}
+                    </View>
 
-                <View
-                    style={styleHeader.iconWrapper} 
-                >
-                    {rightSide}
-                </View>
-
-            : <View style={styleHeader.iconWrapper} /> }
-        </InLineLayout>
-    </View>
+                : <View style={styleHeader.iconWrapper} /> }
+            </InLineLayout>
+        </View>
     )
 }
 

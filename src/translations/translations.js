@@ -21,7 +21,7 @@ const setI18Config = () => {
   
   strings.cache.clear();
   I18nManager.forceRTL(Localization.isRTL);
-  i18n.defaultLocale = 'en';
+  i18n.defaultLocale = 'pl';
   i18n.translations = { [languageTag]: translation[languageTag]()};
   i18n.locale = languageTag;
   i18n.fallbacks = true;

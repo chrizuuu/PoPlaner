@@ -43,6 +43,7 @@
     "taskPropertyProject": "Project? ",
     "taskPropertyProjectDefault": "Select project...",
     "taskPropertyCategory": "Category? ",
+    "taskPropertyComment": "Comment",
     "addComment": "Add comment...",
     "saveComment": "Save comment",
 
@@ -54,7 +55,11 @@
     "projectPropertyTitle": "Project title",
     "projectPropertyDescription": "Project description",
 
+    "calendarToday": "Today",
+
+
     "inputEmptyError": "* Please enter the text to proceed.",
+    "save": "Save",
 
 
     

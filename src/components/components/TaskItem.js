@@ -29,6 +29,10 @@ import ErrorText from "../Text/ErrorText";
 import TaskPropertyOnList from "./TaskPropertyOnList";
 import colors from "../../styles/colorsLightTheme"
 import FooterList from "./FooterList";
+import { Button } from "react-native-elements/dist/buttons/Button";
+import { fonts } from "react-native-elements/dist/config";
+import { TouchableWithoutFeedback } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const styles = StyleSheet.create({
     container: {
@@ -59,32 +63,50 @@ const styles = StyleSheet.create({
         justifyContent:"space-between"
     },
 
-    wrapperSettingsItem: {
-        marginTop:20, 
-        paddingLeft:12, 
-        paddingRight:12,
-        backgroundColor:colors.secondColor,
-    },
-    saveCommentBtn:{
-        marginTop:20,
+    saveBtn: {
         textAlign:"center",
-        padding:5,
-        marginBottom:5,
+        paddingVertical:4,
+        paddingHorizontal:10,
         backgroundColor:"rgb(83,211,175)",
-        borderRadius:25,
-        right:0,    
+        borderRadius:5,
+        fontFamily:"OpenSansSemiBold",
+        fontSize:13
+    },
+
+    wrapperSettingsItem: {
+        backgroundColor:colors.secondColor,
     },
     
     commentInput:{
         textAlignVertical:"top",
-        minHeight:100,
+        minHeight:200,
         maxHeight:300,
+        width:"100%",
         borderColor: colors.secondColor,
         padding:10,
         borderWidth: 1, 
-        borderRadius:25,
-        backgroundColor:colors.primeColor
+        borderRadius:5,
+        backgroundColor:colors.primeColor,
     },
+
+    commentInputWrapper: {
+        position:"relative",
+        width:"100%",
+        top:20,
+        margin:0,
+        padding:0,
+        backgroundColor:colors.secondColor,
+    },
+
+    commentInputFocusWrapper: {
+        position:"absolute",
+        backgroundColor:colors.secondColor,
+        width:"100%",
+        top:20,
+        left:0,
+        right:0,
+    },
+
     text: {
         fontSize:12,
         fontFamily:"OpenSansReg"
@@ -99,36 +121,19 @@ export default class TaskItem extends React.Component {
             inputTitle: this.task.title,
             errorTitleStatus: false,
             inputComment: this.task.comment,
+            inputCommentFocus:false,
+            inputCommentBtn:false,
             errorCommentStatus: false,
             taskPageIsOpen: false,
             taskDeadlineDatePicker:false,
+            dateInput:this.task.deadlineDate
         }
     }
-    task = realm.objectForPrimaryKey("Task",this.props.item_id)
 
-    changeCommentHandler = (value) => {
-        this.setState({inputComment:value})
-    }
+    task = realm.objectForPrimaryKey("Task",this.props.item_id)
 
     changeTitleHandler = (value) => {
         this.setState({inputTitle:value})
-    }
-
-    submitCommentHandler = () => {
-        if (this.state.inputComment !== "" && this.state.inputComment.trim().length > 0) {
-            realm.write(() => {
-                this.task.comment = this.state.inputComment
-            })
-            this.setState({
-                errorCommentStatus:false
-            })
-            Keyboard.dismiss()
-        }
-        else {
-            this.setState({
-                errorCommentStatus:true
-            })
-        }
     }
 
     submitTitleHandler = () => {
@@ -147,11 +152,45 @@ export default class TaskItem extends React.Component {
             })
         }
     }
+
+    changeCommentHandler = (value) => {
+        this.setState({
+            inputComment:value,
+            inputCommentBtn:true,
+        })
+    }
+
+    commentInputDismiss = () => {
+        this.setState({
+            inputCommentFocus:false,
+            inputCommentBtn:false,
+            errorCommentStatus:false,
+        })
+        Keyboard.dismiss()
+    }
+
+    submitCommentHandler = () => {
+        if (this.state.inputComment !== "" && this.state.inputComment.trim().length > 0) {
+            realm.write(() => {
+                this.task.comment = this.state.inputComment
+            })
+            console.log(this.state.inputComment)
+            this.commentInputDismiss()
+            Keyboard.dismiss()
+        }
+        else {
+            this.setState({
+                errorCommentStatus:true
+            })
+        }
+    }
     
     setTaskPageIsOpen = (visible) => {
         this.setState({
             taskPageIsOpen: visible
         })
+        this.commentInputDismiss()
+        this.props.provideModalVisibleStatus(visible)
     }
 
     saveProject = (value) => {
@@ -167,7 +206,11 @@ export default class TaskItem extends React.Component {
         realm.write(() => {
             this.task.deadlineDate = value
         })
+        this.setState({
+            taskDeadlineDatePicker:false
+        })
     }
+
     render() {
         let priorityTaskStatus = this.task.priority === true
             ? 
@@ -181,10 +224,10 @@ export default class TaskItem extends React.Component {
             ? 0.4
             : 1
         let displayDatePicker = this.state.taskDeadlineDatePicker ? 'flex' : 'none';
+        let focusCommentInput = this.state.inputCommentFocus ? styles.commentInputFocusWrapper : styles.commentInputWrapper
         let projects = realm.objects("Project")
         return (
-            <>
-                <ScrollView keyboardShouldPersistTaps="always">
+                <>
                     <Pressable  onPress={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}>          
                         <View style={[styles.container,{opacity: isDoneTaskOpacity,}]}>
                             <View style={[sharedStyles.padding10, styles.wrapperInRow]}> 
@@ -234,118 +277,149 @@ export default class TaskItem extends React.Component {
                                 />
                             </View>
                         </View>    
-
-                        <Modal 
-                            animationIn="slideInRight"
-                            animationOut="slideOutRight"
-                            swipeDirection="right"
-                            isVisible={this.state.taskPageIsOpen} 
-                            onSwipeComplete={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}
-                            onBackdropPress={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}
-                            style={sharedStyles.modalContainer} 
-                        >
-                            <FlexLayout style={{backgroundColor:colors.primeColor}}>
-                                <CustomizingHeaderBar
-                                    style={sharedStyles.paddingSide25}
-                                    leftSide={
-                                        <CheckBox 
-                                            status={this.task.isDone} 
-                                            onChange={() =>updateIsDone(this.task)}
-                                            style={{marginRight:20}} 
-                                        />  
-                                    }
-                                    centerSide={
+                    </Pressable>     
+                <Modal 
+                    animationIn="slideInRight"
+                    animationOut="slideOutRight"
+                    swipeDirection="right"
+                    isVisible={this.state.taskPageIsOpen} 
+                    onSwipeComplete={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}
+                    onBackdropPress={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)}
+                    style={sharedStyles.modalContainer} 
+                >
+                    <FlexLayout style={{backgroundColor:colors.primeColor}}>
+                        <CustomizingHeaderBar
+                            style={sharedStyles.paddingSide25}
+                            leftSide={
+                                <CheckBox 
+                                    status={this.task.isDone} 
+                                    onChange={() =>updateIsDone(this.task)}
+                                    style={{marginRight:20}} 
+                                />  
+                            }
+                            centerSide={
+                                <>
+                                    <TextInput 
+                                        style={[styles.titleTask,{marginLeft:25}]}
+                                        name="input"
+                                        maxLength={100}
+                                        defaultValue={this.task.title}
+                                        onChangeText = {(input) => this.changeTitleHandler(input)}
+                                        onSubmitEditing={() => {
+                                            this.submitTitleHandler()
+                                        }}
+                                    />    
+                                        {this.state.errorTitleStatus === true ? (
+                                            <ErrorText errorValue={strings("inputEmptyError")} />
+                                        ) : null  } 
+                                </>
+                            }
+                            rightSide={
+                                <Icon 
+                                    type="material" 
+                                    name={priorityTaskStatus.icon}
+                                    iconStyle = {{
+                                        color:priorityTaskStatus.color
+                                    }} 
+                                    size={28} 
+                                    onPress = {() => changePriority(this.task)}
+                                />
+                            }
+                        />
+                        <TouchableWithoutFeedback onPress={() => this.commentInputDismiss()}>
+                            <View style={[sharedStyles.wrapperFlex,styles.wrapperSettingsItem]}>
+                                <PropertyItem
+                                    style={sharedStyles.paddingSide10}                         
+                                    valueIcon = "outlined-flag"
+                                    valueTitle = {strings("taskPropertyProject")}
+                                    valueContainer = {
                                         <>
-                                            <TextInput 
-                                                style={[styles.titleTask,{marginLeft:25}]}
-                                                name="input"
-                                                maxLength={100}
-                                                defaultValue={this.task.title}
-                                                onChangeText = {(input) => this.changeTitleHandler(input)}
-                                                onSubmitEditing={() => {
-                                                    this.submitTitleHandler()
-                                                }}
-                                            />    
-                                            {this.state.errorTitleStatus === true ? (
-                                                <ErrorText errorValue={strings("inputEmptyError")} />
-                                            ) : null  } 
+                                            <Picker  
+                                                style={{textAlign:'right'}}
+                                                onValueChange={(itemValue) =>
+                                                    this.saveProject(itemValue)
+                                                }>
+                                                    <Picker.Item  
+                                                        style={{fontSize:15,color:'#242424'}} 
+                                                        label={this.task.project.title} v
+                                                        value={this.task.project}
+                                                        enabled={false}  
+                                                    />
+                                                    {projects.map((item) => 
+                                                        <Picker.Item 
+                                                            style={{fontSize:13}} 
+                                                            key={item._id} 
+                                                            label={item.title} 
+                                                            value={item}  
+                                                        />
+                                                    )}
+                                            </Picker>
                                         </>
                                     }
-                                    rightSide={
-                                        <Icon 
-                                            type="material" 
-                                            name={priorityTaskStatus.icon}
-                                            iconStyle = {{
-                                                color:priorityTaskStatus.color
-                                            }} 
-                                            size={28} 
-                                            onPress = {() => changePriority(this.task)}
-                                        />
-                                     }
+                                /> 
+                                <PropertyItem
+                                    style={sharedStyles.paddingSide10} 
+                                    valueIcon="today"
+                                    valueTitle={strings("taskPropertyDate")}
+                                    onPress={() => this.setState({
+                                        taskDeadlineDatePicker:!this.state.taskDeadlineDatePicker
+                                    })}
+                                    valueContainer = {
+                                        <Text style={{textAlign:'right'}}>
+                                            { this.task.deadlineDate? this.task.deadlineDate.toLocaleDateString() : ''}    
+                                        </Text>
+                                    }
                                 />
-
-                                <FlexLayout style={styles.wrapperSettingsItem}>               
-                                    <PropertyItem                         
-                                        valueIcon = "outlined-flag"
-                                        valueTitle = {strings("taskPropertyProject")}
-                                        valueContainer = {
-                                            <>
-                                                <Picker  
-                                                    style={{textAlign:'right'}}
-                                                    onValueChange={(itemValue) =>
-                                                        this.saveProject(itemValue)
-                                                    }>
-                                                        <Picker.Item  
-                                                            style={{fontSize:15,color:'#242424'}} 
-                                                            label={this.task.project.title} v
-                                                            value={this.task.project}
-                                                            enabled={false}  
-                                                        />
-                                                        {projects.map((item) => 
-                                                            <Picker.Item 
-                                                                style={{fontSize:13}} 
-                                                                key={item._id} 
-                                                                label={item.title} 
-                                                                value={item}  
-                                                            />
-                                                        )}
-                                                </Picker>
-                                            </>
-                                        }
-                                    /> 
-                                    <PropertyItem 
-                                        valueIcon="today"
-                                        valueTitle={strings("taskPropertyDate")}
-                                        onPress={() => this.setState({
-                                            taskDeadlineDatePicker:!this.state.taskDeadlineDatePicker
-                                        })}
-                                        valueContainer = {
-                                            <Text>
-                                                { this.task.deadlineDate? this.task.deadlineDate.toLocaleDateString() + ' ' + this.task.deadlineDate.toLocaleTimeString() : ''}    
-                                            </Text>
-                                        }
-                                    />
+                                <View style={[sharedStyles.paddingSide10,{display:displayDatePicker,alignItems:"flex-end"}]}>
                                     <DatePicker
                                         style={{
-                                            alignSelf:'flex-end',
-                                            display: displayDatePicker,
                                             backgroundColor:'rgb(255,255,255)',
                                         }}
-                                        date={this.task.deadlineDate? this.task.deadlineDate : new Date()}
-                                        onDateChange={(value) => this.setDeadlineDate(value)}
+                                        mode="date"
+                                        minimumDate={new Date()}
+                                        date={this.state.dateInput? this.state.dateInput: new Date()}
+                                        onDateChange={(value) => this.setState({
+                                            dateInput:value
+                                        })}
                                     />
-                                    
-
                                     <Text 
-                                        style={styles.saveCommentBtn}
-                                        onPress={() => {
-                                            this.submitCommentHandler()
-                                        }}
+                                        style={[styles.saveBtn, { marginTop:10}]}
+                                        onPress={() => this.setDeadlineDate(this.state.dateInput)} 
                                     >
-                                        {strings("saveComment")} 
+                                        {strings("save")}
                                     </Text>
-
-                                    <TextInput 
+                                </View>
+                                <View style={[focusCommentInput,sharedStyles.paddingSide10]} >
+                                    <View 
+                                        style={[
+                                            sharedStyles.wrapperInLine,
+                                            {justifyContent:"space-between",
+                                            backgroundColor:colors.primeColor,
+                                            height:50,
+                                            paddingHorizontal:15,}
+                                        ]}
+                                    >
+                                        <Text style={{
+                                            fontFamily:"OpenSansSemiBold",
+                                            fontSize:14}}
+                                        > 
+                                            {strings("taskPropertyComment")} 
+                                        </Text>
+                                        {this.state.inputCommentBtn === true ?
+                                            <Text 
+                                                style={styles.saveBtn}
+                                                onPress={() => {
+                                                    this.submitCommentHandler()
+                                                }}
+                                            >
+                                                {strings("saveComment")}                                         
+                                            </Text>
+                                            : null
+                                        }
+                                    </View>
+                                    <TextInput
+                                        onFocus={() => this.setState({inputCommentFocus:true})}
+                                        onBlur={() => this.commentInputDismiss()}
                                         style={styles.commentInput}
                                         name="input"
                                         multiline={true}
@@ -363,28 +437,25 @@ export default class TaskItem extends React.Component {
                                     <Text style={[sharedStyles.padding10,styles.text]}>
                                         {strings("taskCreatedAt")}{this.task.createdDate.toLocaleDateString() + " " + this.task.createdDate.toLocaleTimeString()}
                                     </Text>
-                                </FlexLayout>
-
-
-                                <View style={[styles.modalFooter,sharedStyles.padding10]}>
-                                    <Icon 
-                                        name="arrow-forward" 
-                                        color="#484848"
-                                        size={28} 
-                                        onPress={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)} 
-                                    />
-                                    <Icon 
-                                        name="delete-outline" 
-                                        color="#EE5436"
-                                        size={28} 
-                                        onPress={() => deleteTask(this.task)}
-                                    />
                                 </View>
-
-                            </FlexLayout>
-                        </Modal>
-                    </Pressable>     
-                </ScrollView>
+                            </View>
+                        </TouchableWithoutFeedback>
+                        <View style={[styles.modalFooter,sharedStyles.padding10]}>
+                            <Icon 
+                                name="arrow-forward" 
+                                color="#484848"
+                                size={28} 
+                                onPress={() => this.setTaskPageIsOpen(!this.state.taskPageIsOpen)} 
+                            />
+                            <Icon 
+                                name="delete-outline" 
+                                color="#EE5436"
+                                size={28} 
+                                onPress={() => deleteTask(this.task)}
+                            />
+                        </View>
+                    </FlexLayout>
+                </Modal>
             </>
         );
     }

@@ -31,12 +31,13 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
     const [taskInput,setTaskInput] = useState("")
     const [addFormVisible,setAddFormVisible] = useState(false)
     const [errorStatus, setErrorStatus] = useState(false)
+    const [modalVisible,setModalVisible] = useState(false)
     const inputTaskTitle = useRef(null)
 
     function onRealmChange() {
         setTasks(tasksType)
-      }
-    
+    }
+
     useFocusEffect(
         React.useCallback(() => {
             setTasks(tasksType)
@@ -45,6 +46,10 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
                 realm.removeListener("change",onRealmChange);
         }, [navigation])
     );
+
+    const provideModalVisibleStatus = (taskModalVisibile) =>{
+        setModalVisible(taskModalVisibile)
+    }
 
     const handleAddFormVisibile = () => {
         setAddFormVisible(true)
@@ -115,7 +120,7 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
             <View style={ToDoSTyles.tasksListContainer}>
                 <FlatList
                     style={{flex:1}}
-                    keyboardShouldPersistTaps="always"
+                    keyboardShouldPersistTaps={'handled'}
                     ListHeaderComponent={
                         <>
                             <View style={styles.textInputContainer}>
@@ -151,6 +156,7 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
                     renderItem={({item}) => {
                         return (
                             <TaskItem 
+                                provideModalVisibleStatus={provideModalVisibleStatus}
                                 item_id={item._id} 
                                 displayProjectProperty={displayProjectProperty} 
                             />

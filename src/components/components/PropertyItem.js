@@ -5,7 +5,7 @@ import sharedStyles from '../../styles/shared';
 import {Icon} from 'react-native-elements';
 import colors from "../../styles/colorsLightTheme"
 
-export default PropertyItem = ({valueIcon,valueTitle,valueContainer,onPress }) => {
+export default PropertyItem = ({valueIcon,valueTitle,valueContainer,onPress,style }) => {
 
     const styles = StyleSheet.create ({
         inlineContainer:{
@@ -32,7 +32,7 @@ export default PropertyItem = ({valueIcon,valueTitle,valueContainer,onPress }) =
 
 
   return (
-    <Pressable style={sharedStyles.margintop20} onPress={onPress}>
+    <Pressable style={[sharedStyles.margintop20,{...style}]} onPress={onPress}>
             <InLineLayout style={styles.inlineContainer}>
                 <InLineLayout style={styles.inlineStyle}>
                     <Icon size={20} name={valueIcon} />
