@@ -22,7 +22,6 @@ const ScheduleScreen = ({navigation}) => {
     const [currentDay,setCurrentDay] = useState(new Date())
 
     const onRealmChange =() => {
-        console.log(currentDay)
         setTasksHandler(currentDay)
     }
 
@@ -30,20 +29,10 @@ const ScheduleScreen = ({navigation}) => {
         setModalVisible(taskModalVisibile)
     }
 
-    useFocusEffect(
-        React.useCallback(() => {
-            realm.addListener("change", onRealmChange);
-            return () => 
-                realm.removeListener("change",onRealmChange);
-        }, [navigation])
-    );
-
     useEffect(() => {
         setDaysHandler()
         setTasksHandler(currentDay)
     }, [navigation])
-
-    useEffect
 
     useLayoutEffect(() => {
         navigation.setOptions({ 
@@ -55,10 +44,13 @@ const ScheduleScreen = ({navigation}) => {
     ;}, [currentDay]);
 
     useEffect(() => {
-        //if (currentDay <= startWeek || currentDay >= endWeek) {
-        setDaysHandler()
-        //}
         setTasksHandler(currentDay)
+        if (currentDay <= startWeek || currentDay >= endWeek) {
+            setDaysHandler()
+        }
+        realm.addListener("change", onRealmChange);
+        return () =>
+            realm.removeAllListeners()
     }, [currentDay])
 
 
