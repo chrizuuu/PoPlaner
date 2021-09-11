@@ -5,34 +5,29 @@ import {startOfDay,endOfDay,format,eachDayOfInterval,startOfWeek,endOfWeek, addW
 import sharedStyles from '../../../styles/shared';
 import colors from "../../../styles/colorsLightTheme"
 import { strings } from '../../../translations/translations';
-import { useFocusEffect } from '@react-navigation/core';
 import realm, {createTask} from '../../../Database/Database';
-import FooterList from '../../../components/components/FooterList';
 import TaskItem from '../../../components/components/TaskItem';
 import { Icon } from 'react-native-elements';
+import TaskInput from '../../../components/Inputs/TaskInput';
 
 const pl = require("date-fns/locale/pl")
 
 const ScheduleScreen = ({navigation}) => {
     const [tasks,setTasks] = useState()
-    const [taskInput,setTaskInput] = useState("")
-    const [addFormVisible,setAddFormVisible] = useState(false)
-    const [errorStatus, setErrorStatus] = useState(false)
-    const inputTaskTitle = useRef(null)
     const [days,setDays] = useState()
     const [startWeek,setStartWeek] = useState()
     const [endWeek,setEndWeek] = useState()
-    const [modalVisible,setModalVisible] = useState(false)
     const [currentDay,setCurrentDay] = useState(new Date())
-    
+    const inputTaskRef = useRef(null)
+
 
     const onRealmChange =() => {
         setTasksHandler(currentDay)
     }
 
-    const provideModalVisibleStatus = (taskModalVisibile) =>{
-        setModalVisible(taskModalVisibile)
-    }
+    // provideModalVisibleStatus = (taskModalVisibile) =>{
+       //setModalVisible(taskModalVisibile)
+    //}
 
     useEffect(() => {
         setDaysHandler()
@@ -85,48 +80,8 @@ const ScheduleScreen = ({navigation}) => {
         )
     }
 
-    const handleAddFormVisibile = () => {
-        setAddFormVisible(true)
-        setTimeout(() => inputTaskTitle.current.focus(), 0)
-    }
-
-    const addFormDismiss = () => {
-        setAddFormVisible(false)
-        Keyboard.dismiss()
-    } 
-    const submitTaskHandler = (value) => {
-        if (value.nativeEvent.text !== "" && value.nativeEvent.text.trim().length > 0) {
-            createTask(value.nativeEvent.text,false,null,currentDay)
-            setErrorStatus(false)
-            setTasks(tasks)
-            setTaskInput("")
-            addFormDismiss()
-        }
-        else {
-            setErrorStatus(true)
-            setTimeout(() => inputTaskTitle.current.focus(), 0)
-        }
-    }
-
-    const taskCreateInputHandler = (value) => {
-        if (value !== "" && value.trim().length > 0) {
-            setErrorStatus(false)
-            setTaskInput(value)
-        }
-        else {
-            setErrorStatus(true)
-            setTaskInput(value)
-        }
-    }
-
-    const backdropHandler = () => {
-        if (taskInput !== "" && taskInput.trim().length > 0) {
-            Keyboard.dismiss()
-        }
-        else {
-            setErrorStatus(false)
-            setAddFormVisible(false)
-        }
+    const showTaskInput = () => {
+        inputTaskRef.current.addFormSetVisible()
     }
 
     const styles = StyleSheet.create({
@@ -162,22 +117,6 @@ const ScheduleScreen = ({navigation}) => {
             marginLeft:5,
             borderRadius:5,
         },
-        textInputContainer: {
-            transform: addFormVisible? [{translateY:0}] :[ {translateY:-60}],
-            display:addFormVisible? 'flex': 'none',
-            flexDirection:'row',
-            alignItems:'center',
-            borderColor: colors.thirdColor,
-            borderWidth:1, 
-            borderRadius:5,
-            backgroundColor:colors.primeColor,
-            width:'90%',
-            height:40,
-            paddingHorizontal:5,
-            color:colors.textColor,
-            marginHorizontal:15,
-            marginVertical:10,
-        },
     })
 
 
@@ -186,33 +125,12 @@ const ScheduleScreen = ({navigation}) => {
             <FlatList
                 keyboardShouldPersistTaps="always"
                 ListHeaderComponent={
-                    <>
-                        <View style={styles.textInputContainer}>
-                            <Icon 
-                                size={32} 
-                                type="ionicon" 
-                                name="close-outline" 
-                                style={{marginRight:10,}} 
-                                onPress={() =>addFormDismiss() }
-                            />
-                            <TextInput 
-                                style={{flex:1}}
-                                placeholder={strings("taskAddForm")}
-                                onChangeText = {(taskInput) => taskCreateInputHandler(taskInput)}
-                                value={taskInput}
-                                onSubmitEditing={(event) => {
-                                    submitTaskHandler(event)
-                                }}
-                                ref={inputTaskTitle}
-                            />
-                        </View>
-                        {errorStatus === true 
-                            ? (
-                                <ErrorText errorValue={strings("inputEmptyError")} />
-                            ) 
-                            : null  
-                        }        
-                    </>
+                    <TaskInput 
+                        priority={false}
+                        project={null}
+                        date={currentDay}
+                        ref={inputTaskRef}
+                    />
                 }
                 data={tasks}
                 showsVerticalScrollIndicator ={false}
@@ -220,7 +138,7 @@ const ScheduleScreen = ({navigation}) => {
                 renderItem={({item}) => {
                     return (
                         <TaskItem
-                            provideModalVisibleStatus={provideModalVisibleStatus} 
+                            //provideModalVisibleStatus={provideModalVisibleStatus} 
                             item_id={item._id} 
                             displayProjectProperty={true} 
                         />
@@ -271,7 +189,7 @@ const ScheduleScreen = ({navigation}) => {
                     type="ionicon"
                     name="add-outline" 
                     size={28} 
-                    onPress={() =>  handleAddFormVisibile()}
+                    onPress={showTaskInput}
                 />
             </View>
         </FlexLayout>

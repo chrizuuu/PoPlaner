@@ -1,26 +1,16 @@
 import React, {
     useState, 
-    useLayoutEffect,
-    useEffect,
     useRef
 } from "react";
 import {
     FlatList,
     View, 
-    TextInput,
-    Keyboard,
     StyleSheet,
-    Pressable
 } from "react-native";
-import realm, { 
-    createTask, 
-    getTasks
-} from "../../../Database/Database"
+import realm from "../../../Database/Database"
 import { useFocusEffect } from '@react-navigation/native';
-import {Icon} from 'react-native-elements';
 import TaskItem from "../../../components/components/TaskItem"
-import { strings } from "../../../translations/translations";
-import ErrorText from "../../../components/Text/ErrorText";
+import TaskInput from "../../../components/Inputs/TaskInput";
 import ToDoSTyles from "./style";
 import FooterList from "../../../components/components/FooterList";
 import colors from "../../../styles/colorsLightTheme"
@@ -28,11 +18,7 @@ import colors from "../../../styles/colorsLightTheme"
 
 const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
     const [tasks, setTasks] = useState(tasksType);
-    const [taskInput,setTaskInput] = useState("")
-    const [addFormVisible,setAddFormVisible] = useState(false)
-    const [errorStatus, setErrorStatus] = useState(false)
-    const [modalVisible,setModalVisible] = useState(false)
-    const inputTaskTitle = useRef(null)
+    const inputTaskRef = useRef(null)
 
     function onRealmChange() {
         setTasks(tasksType)
@@ -47,74 +33,14 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
         }, [navigation])
     );
 
-    const provideModalVisibleStatus = (taskModalVisibile) =>{
-        setModalVisible(taskModalVisibile)
+    const showTaskInput = () => {
+        inputTaskRef.current.addFormSetVisible()
     }
 
-    const handleAddFormVisibile = () => {
-        setAddFormVisible(true)
-        setTimeout(() => inputTaskTitle.current.focus(), 0)
-    }
+    //const provideModalVisibleStatus = (taskModalVisibile) =>{
+       // setModalVisible(taskModalVisibile)
+    //}
 
-    const addFormDismiss = () => {
-        setAddFormVisible(false)
-        Keyboard.dismiss()
-    } 
-    const submitTaskHandler = (value) => {
-        if (value.nativeEvent.text !== "" && value.nativeEvent.text.trim().length > 0) {
-            createTask(value.nativeEvent.text,priority,null,null)
-            setErrorStatus(false)
-            setTasks(tasks)
-            setTaskInput("")
-            addFormDismiss()
-        }
-        else {
-            setErrorStatus(true)
-            setTimeout(() => inputTaskTitle.current.focus(), 0)
-        }
-    }
-
-    const taskCreateInputHandler = (value) => {
-        if (value !== "" && value.trim().length > 0) {
-            setErrorStatus(false)
-            setTaskInput(value)
-        }
-        else {
-            setErrorStatus(true)
-            setTaskInput(value)
-        }
-    }
-
-    const backdropHandler = () => {
-        if (taskInput !== "" && taskInput.trim().length > 0) {
-            Keyboard.dismiss()
-        }
-        else {
-            setErrorStatus(false)
-            setAddFormVisible(false)
-        }
-    }
-
-    const styles = StyleSheet.create({
-        textInputContainer: {
-            transform: addFormVisible? [{translateY:0}] :[ {translateY:-60}],
-            display:addFormVisible? 'flex': 'none',
-            flexDirection:'row',
-            alignItems:'center',
-            borderColor: colors.thirdColor,
-            borderWidth:1, 
-            borderRadius:5,
-            backgroundColor:colors.primeColor,
-            width:'90%',
-            height:40,
-            paddingHorizontal:5,
-            color:colors.textColor,
-            marginHorizontal:15,
-            marginVertical:10,
-        },
-
-    })
- 
     return (
         <>
             <View style={ToDoSTyles.tasksListContainer}>
@@ -122,33 +48,12 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
                     style={{flex:1}}
                     keyboardShouldPersistTaps={'handled'}
                     ListHeaderComponent={
-                        <>
-                            <View style={styles.textInputContainer}>
-                                <Icon 
-                                    size={32} 
-                                    type='ionicon' 
-                                    name='close-outline' 
-                                    style={{marginRight:10,}} 
-                                    onPress={() =>addFormDismiss() }
-                                />
-                                <TextInput 
-                                    style={{flex:1}}
-                                    placeholder={strings("taskAddForm")}
-                                    onChangeText = {(taskInput) => taskCreateInputHandler(taskInput)}
-                                    value={taskInput}
-                                    onSubmitEditing={(event) => {
-                                        submitTaskHandler(event)
-                                    }}
-                                    ref={inputTaskTitle}
-                                />
-                            </View>
-                            {errorStatus === true 
-                                ? (
-                                    <ErrorText errorValue={strings("inputEmptyError")} />
-                                ) 
-                                : null  
-                            }        
-                        </>
+                        <TaskInput 
+                            priority={priority}
+                            project={null}
+                            date={null}
+                            ref={inputTaskRef}
+                        />
                     }
                     data={tasks}
                     showsVerticalScrollIndicator ={false}
@@ -156,25 +61,17 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
                     renderItem={({item}) => {
                         return (
                             <TaskItem 
-                                provideModalVisibleStatus={provideModalVisibleStatus}
+                               // provideModalVisibleStatus={provideModalVisibleStatus}
                                 item_id={item._id} 
-                                displayProjectProperty={displayProjectProperty} 
+                                displayProjectProperty={displayProjectProperty}
                             />
                     )}} 
                 />
                 <FooterList 
                     leftIcon="add-outline"
-                    leftIconOnPress={() => handleAddFormVisibile()}
+                    leftIconOnPress={showTaskInput}
                 />                  
             </View>
-            {addFormVisible
-            ?    
-                <Pressable 
-                    onPress={() => backdropHandler()} 
-                    style={ToDoSTyles.backdropPressable} 
-                />
-            : null
-            }
         </>
 
     );

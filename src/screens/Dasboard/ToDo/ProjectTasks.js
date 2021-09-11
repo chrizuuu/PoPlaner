@@ -2,7 +2,6 @@ import React, {
     useState, 
     useLayoutEffect,
     useRef,
-    useEffect
 } from "react";
 import {
     FlatList,
@@ -16,8 +15,6 @@ import {
     TouchableOpacity
 } from "react-native";
 import realm, { 
-    createTask, 
-    getTasks,
     getProjectTasks,
     deleteProject
 } from "../../../Database/Database"
@@ -31,15 +28,13 @@ import Modal from "react-native-modal";
 import FlexLayout from "../../../components/Layouts/FlexLayout";
 import FooterList from "../../../components/components/FooterList";
 import ToDoSTyles from "./style";
-import { Button } from "react-native-elements/dist/buttons/Button";
 import colors from "../../../styles/colorsLightTheme"
-
+import TaskInput from "../../../components/Inputs/TaskInput";
 const windowHeight = Dimensions.get("window").height;
 
 const ProjectTasks = ({navigation,route}) => {
     const {projectId,priority,displayProjectProperty} = route.params
     const project = realm.objectForPrimaryKey("Project",projectId)
-
     const [tasks, setTasks] = useState(getProjectTasks(project));
     const [projectPageIsOpen,setProjectPageIsOpen] = useState(false)
     const [projectTitle,setProjectTitleInput] = useState(project.title)
@@ -47,11 +42,7 @@ const ProjectTasks = ({navigation,route}) => {
     const [projectDescription,setProjectDescriptionInput] = useState(project.description)
     const [projectDescriptionErrorStatus,setProjectDescriptionErrorStatus] = useState(false)
     const [saveDescBtnVisible,setSaveDescBtnVisible] = useState(false)
-    const [taskInput,setTaskInput] = useState("")
-    const [addFormVisible,setAddFormVisible] = useState(false)
-    const [taskInputErrorStatus, setTaskInputErrorStatus] = useState(false)
-    const [modalVisible,setModalVisible] = useState(false)
-    const inputTaskTitle = useRef(null)
+    const inputTaskRef = useRef(null)
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -78,9 +69,9 @@ const ProjectTasks = ({navigation,route}) => {
         setTasks(getProjectTasks(project))
     }
 
-    const provideModalVisibleStatus = (taskModalVisibile) =>{
-        setModalVisible(taskModalVisibile)
-    }
+   // const provideModalVisibleStatus = (taskModalVisibile) =>{
+       // setModalVisible(taskModalVisibile)
+   // }
     
     useFocusEffect(
         React.useCallback(() => {project
@@ -117,49 +108,8 @@ const ProjectTasks = ({navigation,route}) => {
         }
     }
     
-    const handleAddFormVisibile = () => {
-        setAddFormVisible(true)
-        setTimeout(() => inputTaskTitle.current.focus(), 0)
-    }
-
-    const addFormDismiss = () => {
-        setAddFormVisible(false)
-        Keyboard.dismiss()
-    } 
-
-    const submitTaskHandler = (value) => {
-        if (value.nativeEvent.text !== "" && value.nativeEvent.text.trim().length > 0) {
-            createTask(value.nativeEvent.text,priority,project,null)
-            setTaskInputErrorStatus(false)
-            setTasks(tasks)
-            setTaskInput("")
-            addFormDismiss()
-        }
-        else {
-            setTaskInputErrorStatus(true)
-            setTimeout(() => inputTaskTitle.current.focus(), 0)
-        }
-    }
-
-    const taskCreateInputHandler = (value) => {
-        if (value !== "" && value.trim().length > 0) {
-            setTaskInputErrorStatus(false)
-            setTaskInput(value)
-        }
-        else {
-            setTaskInputErrorStatus(true)
-            setTaskInput(value)
-        }
-    }
-
-    const backdropHandler = () => {
-        if (taskInput !== "" && taskInput.trim().length > 0) {
-            Keyboard.dismiss()
-        }
-        else {
-            setTaskInputErrorStatus(false)
-            setAddFormVisible(false)
-        }
+    const showTaskInput = () => {
+        inputTaskRef.current.addFormSetVisible()
     }
 
     const styles = StyleSheet.create({
@@ -167,23 +117,6 @@ const ProjectTasks = ({navigation,route}) => {
             textAlign:"center",
             fontSize:16,
             fontFamily:"OpenSansBold"
-        },
-
-        textInputContainer: {
-            transform: addFormVisible? [{translateY:0}] :[ {translateY:-60}],
-            display:addFormVisible? "flex": "none",
-            flexDirection:"row",
-            alignItems:"center",
-            borderColor: colors.thirdColor,
-            borderWidth:1, 
-            borderRadius:5,
-            backgroundColor:colors.primeColor,
-            width:"90%",
-            height:40,
-            paddingHorizontal:5,
-            color:colors.textColor,
-            marginHorizontal:15,
-            marginVertical:10,
         },
         modalContainer: {
             flex: 1,
@@ -235,33 +168,12 @@ const ProjectTasks = ({navigation,route}) => {
                     style={{flex:1}}
                     keyboardShouldPersistTaps={'handled'}
                     ListHeaderComponent={
-                        <>
-                            <View style={styles.textInputContainer}>
-                                <Icon 
-                                    size={32} 
-                                    type="ionicon" 
-                                    name="close-outline" 
-                                    style={{marginRight:10,}} 
-                                    onPress={() =>addFormDismiss() }
-                                />
-                                <TextInput 
-                                    style={{flex:1}}
-                                    placeholder={strings("taskAddForm")}
-                                    onChangeText = {(taskInput) => taskCreateInputHandler(taskInput)}
-                                    value={taskInput}
-                                    onSubmitEditing={(event) => {
-                                        submitTaskHandler(event)
-                                    }}
-                                    ref={inputTaskTitle}
-                                />
-                            </View>
-                            {taskInputErrorStatus === true 
-                                ? (
-                                    <ErrorText errorValue={strings("inputEmptyError")} />
-                                ) 
-                                : null  
-                            }        
-                        </>
+                        <TaskInput 
+                            priority={false}
+                            project={project}
+                            date={null}
+                            ref={inputTaskRef}
+                        />
                     }
                     data={tasks}
                     showsVerticalScrollIndicator ={false}
@@ -269,7 +181,7 @@ const ProjectTasks = ({navigation,route}) => {
                     renderItem={({item}) => {
                         return (
                             <TaskItem
-                                provideModalVisibleStatus={provideModalVisibleStatus} 
+                                //provideModalVisibleStatus={provideModalVisibleStatus} 
                                 item_id={item._id} 
                                 displayProjectProperty={displayProjectProperty} 
                             />
@@ -277,7 +189,7 @@ const ProjectTasks = ({navigation,route}) => {
                 /> 
                 <FooterList 
                     leftIcon="add-outline"
-                    leftIconOnPress={() => handleAddFormVisibile()}
+                    leftIconOnPress={showTaskInput}
                 />
                 
             </View>
@@ -364,14 +276,6 @@ const ProjectTasks = ({navigation,route}) => {
                      />
                 </View>
             </Modal>
-            {addFormVisible
-            ?    
-                <Pressable 
-                    onPress={() => backdropHandler()} 
-                    style={ToDoSTyles.backdropPressable} 
-                />
-            : null
-            }
         </>
 
     );
