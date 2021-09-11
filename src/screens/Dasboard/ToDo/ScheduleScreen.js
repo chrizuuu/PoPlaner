@@ -1,12 +1,12 @@
-import React, {useState,useEffect,useLayoutEffect} from 'react';
-import { View,Text,FlatList,StyleSheet,TouchableOpacity} from 'react-native';
+import React, {useState,useEffect,useLayoutEffect,useRef} from 'react';
+import { View,Text,FlatList,StyleSheet,TouchableOpacity,TextInput, Keyboard} from 'react-native';
 import FlexLayout from '../../../components/Layouts/FlexLayout';
 import {startOfDay,endOfDay,format,eachDayOfInterval,startOfWeek,endOfWeek, addWeeks, isThisWeek,isSameDay } from 'date-fns';
 import sharedStyles from '../../../styles/shared';
 import colors from "../../../styles/colorsLightTheme"
 import { strings } from '../../../translations/translations';
 import { useFocusEffect } from '@react-navigation/core';
-import realm from '../../../Database/Database';
+import realm, {createTask} from '../../../Database/Database';
 import FooterList from '../../../components/components/FooterList';
 import TaskItem from '../../../components/components/TaskItem';
 import { Icon } from 'react-native-elements';
@@ -15,11 +15,16 @@ const pl = require("date-fns/locale/pl")
 
 const ScheduleScreen = ({navigation}) => {
     const [tasks,setTasks] = useState()
+    const [taskInput,setTaskInput] = useState("")
+    const [addFormVisible,setAddFormVisible] = useState(false)
+    const [errorStatus, setErrorStatus] = useState(false)
+    const inputTaskTitle = useRef(null)
     const [days,setDays] = useState()
     const [startWeek,setStartWeek] = useState()
     const [endWeek,setEndWeek] = useState()
     const [modalVisible,setModalVisible] = useState(false)
     const [currentDay,setCurrentDay] = useState(new Date())
+    
 
     const onRealmChange =() => {
         setTasksHandler(currentDay)
@@ -80,6 +85,50 @@ const ScheduleScreen = ({navigation}) => {
         )
     }
 
+    const handleAddFormVisibile = () => {
+        setAddFormVisible(true)
+        setTimeout(() => inputTaskTitle.current.focus(), 0)
+    }
+
+    const addFormDismiss = () => {
+        setAddFormVisible(false)
+        Keyboard.dismiss()
+    } 
+    const submitTaskHandler = (value) => {
+        if (value.nativeEvent.text !== "" && value.nativeEvent.text.trim().length > 0) {
+            createTask(value.nativeEvent.text,false,null,currentDay)
+            setErrorStatus(false)
+            setTasks(tasks)
+            setTaskInput("")
+            addFormDismiss()
+        }
+        else {
+            setErrorStatus(true)
+            setTimeout(() => inputTaskTitle.current.focus(), 0)
+        }
+    }
+
+    const taskCreateInputHandler = (value) => {
+        if (value !== "" && value.trim().length > 0) {
+            setErrorStatus(false)
+            setTaskInput(value)
+        }
+        else {
+            setErrorStatus(true)
+            setTaskInput(value)
+        }
+    }
+
+    const backdropHandler = () => {
+        if (taskInput !== "" && taskInput.trim().length > 0) {
+            Keyboard.dismiss()
+        }
+        else {
+            setErrorStatus(false)
+            setAddFormVisible(false)
+        }
+    }
+
     const styles = StyleSheet.create({
         header: {
             textAlign:"center",
@@ -112,7 +161,23 @@ const ScheduleScreen = ({navigation}) => {
             padding:5,
             marginLeft:5,
             borderRadius:5,
-        }
+        },
+        textInputContainer: {
+            transform: addFormVisible? [{translateY:0}] :[ {translateY:-60}],
+            display:addFormVisible? 'flex': 'none',
+            flexDirection:'row',
+            alignItems:'center',
+            borderColor: colors.thirdColor,
+            borderWidth:1, 
+            borderRadius:5,
+            backgroundColor:colors.primeColor,
+            width:'90%',
+            height:40,
+            paddingHorizontal:5,
+            color:colors.textColor,
+            marginHorizontal:15,
+            marginVertical:10,
+        },
     })
 
 
@@ -120,7 +185,7 @@ const ScheduleScreen = ({navigation}) => {
         <FlexLayout>
             <FlatList
                 keyboardShouldPersistTaps="always"
-                /*ListHeaderComponent={
+                ListHeaderComponent={
                     <>
                         <View style={styles.textInputContainer}>
                             <Icon 
@@ -141,7 +206,7 @@ const ScheduleScreen = ({navigation}) => {
                                 ref={inputTaskTitle}
                             />
                         </View>
-                        {taskInputErrorStatus === true 
+                        {errorStatus === true 
                             ? (
                                 <ErrorText errorValue={strings("inputEmptyError")} />
                             ) 
@@ -149,7 +214,6 @@ const ScheduleScreen = ({navigation}) => {
                         }        
                     </>
                 }
-                */
                 data={tasks}
                 showsVerticalScrollIndicator ={false}
                 keyExtractor={(item) => item._id.toString()}
@@ -207,7 +271,7 @@ const ScheduleScreen = ({navigation}) => {
                     type="ionicon"
                     name="add-outline" 
                     size={28} 
-                    onPress={() => console.log("add task")}
+                    onPress={() =>  handleAddFormVisibile()}
                 />
             </View>
         </FlexLayout>

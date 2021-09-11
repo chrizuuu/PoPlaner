@@ -129,7 +129,7 @@ const ProjectTasks = ({navigation,route}) => {
 
     const submitTaskHandler = (value) => {
         if (value.nativeEvent.text !== "" && value.nativeEvent.text.trim().length > 0) {
-            createTask(value.nativeEvent.text,priority,project)
+            createTask(value.nativeEvent.text,priority,project,null)
             setTaskInputErrorStatus(false)
             setTasks(tasks)
             setTaskInput("")

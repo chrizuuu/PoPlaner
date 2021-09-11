@@ -62,7 +62,7 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
     } 
     const submitTaskHandler = (value) => {
         if (value.nativeEvent.text !== "" && value.nativeEvent.text.trim().length > 0) {
-            createTask(value.nativeEvent.text,priority)
+            createTask(value.nativeEvent.text,priority,null,null)
             setErrorStatus(false)
             setTasks(tasks)
             setTaskInput("")
