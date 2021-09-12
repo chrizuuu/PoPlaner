@@ -77,7 +77,7 @@ const getAllTasks = () => {
 }
 
 const getPriorityTasks = () => {
-    return realm.objects("Task").filtered("isDone == false AND priority == true").sorted("deadlineDate")
+    return realm.objects("Task").filtered("isDone == false AND priority == true").sorted("createdDate",true)
 }
 
 

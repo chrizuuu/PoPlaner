@@ -6,6 +6,7 @@ import {
     FlatList,
     View, 
     StyleSheet,
+    Pressable
 } from "react-native";
 import realm from "../../../Database/Database"
 import { useFocusEffect } from '@react-navigation/native';
@@ -13,11 +14,10 @@ import TaskItem from "../../../components/components/TaskItem"
 import TaskInput from "../../../components/Inputs/TaskInput";
 import ToDoSTyles from "./style";
 import FooterList from "../../../components/components/FooterList";
-import colors from "../../../styles/colorsLightTheme"
-
 
 const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
     const [tasks, setTasks] = useState(tasksType);
+    const [taskInputBackdrop,setTaskinputBackdrop] = useState(false)
     const inputTaskRef = useRef(null)
 
     function onRealmChange() {
@@ -37,9 +37,16 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
         inputTaskRef.current.addFormSetVisible()
     }
 
-    //const provideModalVisibleStatus = (taskModalVisibile) =>{
-       // setModalVisible(taskModalVisibile)
-    //}
+    const styles = StyleSheet.create({
+        backdropPressable: {
+            position:'absolute',
+            width:900,
+            height:900,
+            top:60,
+            backgroundColor:"red",
+            opacity:0.5
+        },
+    })
 
     return (
         <>
@@ -52,6 +59,7 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
                             priority={priority}
                             project={null}
                             date={null}
+                            addFormSetVisible={(value) => setTaskinputBackdrop(value)}
                             ref={inputTaskRef}
                         />
                     }
@@ -72,6 +80,15 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
                     leftIconOnPress={showTaskInput}
                 />                  
             </View>
+            {taskInputBackdrop
+                ?    
+                <Pressable 
+                    onPress={() => inputTaskRef.current.backdropHandler()} 
+                    style={styles.backdropPressable} 
+                />
+                
+                : null
+            }   
         </>
 
     );

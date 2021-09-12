@@ -16,7 +16,8 @@ const TaskInput = forwardRef((props,ref) => {
     useImperativeHandle(ref, () => {
         return {
             addFormDismiss: addFormDismiss,
-            addFormSetVisible: addFormSetVisible
+            addFormSetVisible: addFormSetVisible,
+            backdropHandler: backdropHandler
         };
       });
 
@@ -45,11 +46,13 @@ const TaskInput = forwardRef((props,ref) => {
 
     const addFormSetVisible = () => {
         setAddFormVisible(true)
+        props.addFormSetVisible(true)
         setTimeout(() => inputTask.current.focus(), 0)
     }
 
     const addFormDismiss = () => {
         setAddFormVisible(false)
+        props.addFormSetVisible(false)
         Keyboard.dismiss()
     } 
 
@@ -61,6 +64,7 @@ const TaskInput = forwardRef((props,ref) => {
             setErrorStatus(false)                  
             setAddFormVisible(false)
         }
+        props.addFormSetVisible(false)
     }
 
     const styles = StyleSheet.create({
@@ -83,10 +87,10 @@ const TaskInput = forwardRef((props,ref) => {
 
         backdropPressable: {
             position:'absolute',
-            width:'100%',
-            height:'100%',
+            width:900,
+            height:900,
             top:60,
-            backgroundColor:"red"
+            backgroundColor:"red",
         },
     })
 
@@ -116,17 +120,7 @@ const TaskInput = forwardRef((props,ref) => {
                     <ErrorText errorValue={strings("inputEmptyError")} />
                 ) 
                 : null  
-            }
-            {addFormVisible
-            ?    
-            <>
-                <Pressable 
-                    onPress={() => backdropHandler()} 
-                    style={styles.backdropPressable} 
-                />
-            </>
-            : null
-            }        
+            }     
         </>
     )
 })

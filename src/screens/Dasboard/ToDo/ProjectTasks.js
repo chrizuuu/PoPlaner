@@ -30,10 +30,9 @@ import FooterList from "../../../components/components/FooterList";
 import ToDoSTyles from "./style";
 import colors from "../../../styles/colorsLightTheme"
 import TaskInput from "../../../components/Inputs/TaskInput";
-const windowHeight = Dimensions.get("window").height;
 
 const ProjectTasks = ({navigation,route}) => {
-    const {projectId,priority,displayProjectProperty} = route.params
+    const {projectId,displayProjectProperty} = route.params
     const project = realm.objectForPrimaryKey("Project",projectId)
     const [tasks, setTasks] = useState(getProjectTasks(project));
     const [projectPageIsOpen,setProjectPageIsOpen] = useState(false)
@@ -68,10 +67,6 @@ const ProjectTasks = ({navigation,route}) => {
     function onRealmChange() {
         setTasks(getProjectTasks(project))
     }
-
-   // const provideModalVisibleStatus = (taskModalVisibile) =>{
-       // setModalVisible(taskModalVisibile)
-   // }
     
     useFocusEffect(
         React.useCallback(() => {project
