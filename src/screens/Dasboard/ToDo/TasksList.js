@@ -17,7 +17,7 @@ import FooterList from "../../../components/components/FooterList";
 
 const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
     const [tasks, setTasks] = useState(tasksType);
-    const [taskInputBackdrop,setTaskinputBackdrop] = useState(false)
+    const [taskInputBackdrop,setTaskInputBackdrop] = useState(false)
     const inputTaskRef = useRef(null)
 
     function onRealmChange() {
@@ -43,7 +43,6 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
             width:900,
             height:900,
             top:60,
-            backgroundColor:"red",
             opacity:0.5
         },
     })
@@ -59,7 +58,7 @@ const TasksList = ({navigation,tasksType,priority,displayProjectProperty}) => {
                             priority={priority}
                             project={null}
                             date={null}
-                            addFormSetVisible={(value) => setTaskinputBackdrop(value)}
+                            addFormSetVisible={(value) => setTaskInputBackdrop(value)}
                             ref={inputTaskRef}
                         />
                     }

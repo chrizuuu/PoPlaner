@@ -15,7 +15,6 @@ const TaskInput = forwardRef((props,ref) => {
 
     useImperativeHandle(ref, () => {
         return {
-            addFormDismiss: addFormDismiss,
             addFormSetVisible: addFormSetVisible,
             backdropHandler: backdropHandler
         };
@@ -52,6 +51,7 @@ const TaskInput = forwardRef((props,ref) => {
 
     const addFormDismiss = () => {
         setAddFormVisible(false)
+        setErrorStatus(false)                  
         props.addFormSetVisible(false)
         Keyboard.dismiss()
     } 
@@ -85,13 +85,6 @@ const TaskInput = forwardRef((props,ref) => {
             marginVertical:10,
         },
 
-        backdropPressable: {
-            position:'absolute',
-            width:900,
-            height:900,
-            top:60,
-            backgroundColor:"red",
-        },
     })
 
     return (

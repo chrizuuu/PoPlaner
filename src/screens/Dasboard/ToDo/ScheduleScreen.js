@@ -1,5 +1,5 @@
 import React, {useState,useEffect,useLayoutEffect,useRef} from 'react';
-import { View,Text,FlatList,StyleSheet,TouchableOpacity,TextInput, Keyboard} from 'react-native';
+import { View,Text,FlatList,StyleSheet,TouchableOpacity,TextInput, Keyboard,Pressable} from 'react-native';
 import FlexLayout from '../../../components/Layouts/FlexLayout';
 import {startOfDay,endOfDay,format,eachDayOfInterval,startOfWeek,endOfWeek, addWeeks, isThisWeek,isSameDay } from 'date-fns';
 import sharedStyles from '../../../styles/shared';
@@ -18,17 +18,14 @@ const ScheduleScreen = ({navigation}) => {
     const [startWeek,setStartWeek] = useState()
     const [endWeek,setEndWeek] = useState()
     const [currentDay,setCurrentDay] = useState(new Date())
+    const [taskInputBackdrop,setTaskInputBackdrop] = useState(false)
     const inputTaskRef = useRef(null)
 
 
     const onRealmChange =() => {
         setTasksHandler(currentDay)
     }
-
-    // provideModalVisibleStatus = (taskModalVisibile) =>{
-       //setModalVisible(taskModalVisibile)
-    //}
-
+    
     useEffect(() => {
         setDaysHandler()
         setTasksHandler(currentDay)
@@ -117,6 +114,13 @@ const ScheduleScreen = ({navigation}) => {
             marginLeft:5,
             borderRadius:5,
         },
+        backdropPressable: {
+            position:'absolute',
+            width:900,
+            height:900,
+            top:60,
+            opacity:0.5
+        },
     })
 
 
@@ -129,6 +133,7 @@ const ScheduleScreen = ({navigation}) => {
                         priority={false}
                         project={null}
                         date={currentDay}
+                        addFormSetVisible={(value) => setTaskInputBackdrop(value)}
                         ref={inputTaskRef}
                     />
                 }
@@ -144,6 +149,15 @@ const ScheduleScreen = ({navigation}) => {
                         />
                 )}} 
             />
+            {taskInputBackdrop
+                ?    
+                <Pressable 
+                    onPress={() => inputTaskRef.current.backdropHandler()} 
+                    style={styles.backdropPressable} 
+                />
+                
+                : null
+            }   
             <View style={styles.calendarMenu}>
                 <Icon 
                     type="ionico" 

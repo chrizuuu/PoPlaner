@@ -41,6 +41,7 @@ const ProjectTasks = ({navigation,route}) => {
     const [projectDescription,setProjectDescriptionInput] = useState(project.description)
     const [projectDescriptionErrorStatus,setProjectDescriptionErrorStatus] = useState(false)
     const [saveDescBtnVisible,setSaveDescBtnVisible] = useState(false)
+    const [taskInputBackdrop,setTaskInputBackdrop] = useState(false)
     const inputTaskRef = useRef(null)
 
     useLayoutEffect(() => {
@@ -154,6 +155,13 @@ const ProjectTasks = ({navigation,route}) => {
             backgroundColor:colors.thirdColor,
             borderRadius:5,
         },
+        backdropPressable: {
+            position:'absolute',
+            width:900,
+            height:900,
+            top:60,
+            opacity:0.5
+        },
     })
  
     return (
@@ -167,6 +175,7 @@ const ProjectTasks = ({navigation,route}) => {
                             priority={false}
                             project={project}
                             date={null}
+                            addFormSetVisible={(value) => setTaskInputBackdrop(value)}
                             ref={inputTaskRef}
                         />
                     }
@@ -188,6 +197,15 @@ const ProjectTasks = ({navigation,route}) => {
                 />
                 
             </View>
+            {taskInputBackdrop
+                ?    
+                <Pressable 
+                    onPress={() => inputTaskRef.current.backdropHandler()} 
+                    style={styles.backdropPressable} 
+                />
+                
+                : null
+            }   
             <Modal 
                 animationIn="slideInRight"
                 animationOut="slideOutRight"
@@ -271,6 +289,7 @@ const ProjectTasks = ({navigation,route}) => {
                      />
                 </View>
             </Modal>
+            
         </>
 
     );
