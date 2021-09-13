@@ -1,15 +1,14 @@
-import React, {useState,useEffect,useLayoutEffect} from 'react';
-import { View,Text,FlatList,StyleSheet,TouchableOpacity} from 'react-native';
+import React, {useState,useEffect,useLayoutEffect,useRef} from 'react';
+import { View,Text,FlatList,StyleSheet,TouchableOpacity,TextInput, Keyboard,Pressable} from 'react-native';
 import FlexLayout from '../../../components/Layouts/FlexLayout';
 import {startOfDay,endOfDay,format,eachDayOfInterval,startOfWeek,endOfWeek, addWeeks, isThisWeek,isSameDay } from 'date-fns';
 import sharedStyles from '../../../styles/shared';
 import colors from "../../../styles/colorsLightTheme"
 import { strings } from '../../../translations/translations';
-import { useFocusEffect } from '@react-navigation/core';
-import realm from '../../../Database/Database';
-import FooterList from '../../../components/components/FooterList';
+import realm, {createTask} from '../../../Database/Database';
 import TaskItem from '../../../components/components/TaskItem';
 import { Icon } from 'react-native-elements';
+import TaskInput from '../../../components/Inputs/TaskInput';
 
 const pl = require("date-fns/locale/pl")
 
@@ -18,33 +17,19 @@ const ScheduleScreen = ({navigation}) => {
     const [days,setDays] = useState()
     const [startWeek,setStartWeek] = useState()
     const [endWeek,setEndWeek] = useState()
-    const [modalVisible,setModalVisible] = useState(false)
     const [currentDay,setCurrentDay] = useState(new Date())
+    const [taskInputBackdrop,setTaskInputBackdrop] = useState(false)
+    const inputTaskRef = useRef(null)
+
 
     const onRealmChange =() => {
-        let date = currentDay
-        console.log(date.toLocaleDateString())
-        setTasksHandler(date)
+        setTasksHandler(currentDay)
     }
-
-    const provideModalVisibleStatus = (taskModalVisibile) =>{
-        setModalVisible(taskModalVisibile)
-    }
-
-    useFocusEffect(
-        React.useCallback(() => {
-            realm.addListener("change", onRealmChange);
-            return () => 
-                realm.removeListener("change",onRealmChange);
-        }, [navigation])
-    );
-
+    
     useEffect(() => {
         setDaysHandler()
         setTasksHandler(currentDay)
     }, [navigation])
-
-    useEffect
 
     useLayoutEffect(() => {
         navigation.setOptions({ 
@@ -56,10 +41,13 @@ const ScheduleScreen = ({navigation}) => {
     ;}, [currentDay]);
 
     useEffect(() => {
-        //if (currentDay <= startWeek || currentDay >= endWeek) {
-        setDaysHandler()
-        //}
         setTasksHandler(currentDay)
+        if (currentDay <= startWeek || currentDay >= endWeek) {
+            setDaysHandler()
+        }
+        realm.addListener("change", onRealmChange);
+        return () =>
+            realm.removeAllListeners()
     }, [currentDay])
 
 
@@ -88,6 +76,10 @@ const ScheduleScreen = ({navigation}) => {
                 end: end
             })
         )
+    }
+
+    const showTaskInput = () => {
+        inputTaskRef.current.addFormSetVisible()
     }
 
     const styles = StyleSheet.create({
@@ -122,7 +114,14 @@ const ScheduleScreen = ({navigation}) => {
             padding:5,
             marginLeft:5,
             borderRadius:5,
-        }
+        },
+        backdropPressable: {
+            position:'absolute',
+            width:900,
+            height:900,
+            top:60,
+            opacity:0.5
+        },
     })
 
 
@@ -130,48 +129,36 @@ const ScheduleScreen = ({navigation}) => {
         <FlexLayout>
             <FlatList
                 keyboardShouldPersistTaps="always"
-                /*ListHeaderComponent={
-                    <>
-                        <View style={styles.textInputContainer}>
-                            <Icon 
-                                size={32} 
-                                type="ionicon" 
-                                name="close-outline" 
-                                style={{marginRight:10,}} 
-                                onPress={() =>addFormDismiss() }
-                            />
-                            <TextInput 
-                                style={{flex:1}}
-                                placeholder={strings("taskAddForm")}
-                                onChangeText = {(taskInput) => taskCreateInputHandler(taskInput)}
-                                value={taskInput}
-                                onSubmitEditing={(event) => {
-                                    submitTaskHandler(event)
-                                }}
-                                ref={inputTaskTitle}
-                            />
-                        </View>
-                        {taskInputErrorStatus === true 
-                            ? (
-                                <ErrorText errorValue={strings("inputEmptyError")} />
-                            ) 
-                            : null  
-                        }        
-                    </>
+                ListHeaderComponent={
+                    <TaskInput 
+                        priority={false}
+                        project={null}
+                        date={currentDay}
+                        addFormSetVisible={(value) => setTaskInputBackdrop(value)}
+                        ref={inputTaskRef}
+                    />
                 }
-                */
                 data={tasks}
                 showsVerticalScrollIndicator ={false}
                 keyExtractor={(item) => item._id.toString()}
                 renderItem={({item}) => {
                     return (
                         <TaskItem
-                            provideModalVisibleStatus={provideModalVisibleStatus} 
+                            //provideModalVisibleStatus={provideModalVisibleStatus} 
                             item_id={item._id} 
                             displayProjectProperty={true} 
                         />
                 )}} 
             />
+            {taskInputBackdrop
+                ?    
+                <Pressable 
+                    onPress={() => inputTaskRef.current.backdropHandler()} 
+                    style={styles.backdropPressable} 
+                />
+                
+                : null
+            }   
             <View style={styles.calendarMenu}>
                 <Icon 
                     type="ionico" 
@@ -218,7 +205,7 @@ const ScheduleScreen = ({navigation}) => {
                     type="ionicon"
                     name="add-outline" 
                     size={28} 
-                    onPress={() => console.log("add task")}
+                    onPress={showTaskInput}
                 />
             </View>
         </FlexLayout>

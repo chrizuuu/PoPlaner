@@ -160,6 +160,13 @@ export default class TaskItem extends React.Component {
         })
     }
 
+    commentInputTurnOn = () => {
+        this.setState({
+            inputCommentFocus:true,
+            taskDeadlineDatePicker:false,
+        })
+    }
+
     commentInputDismiss = () => {
         this.setState({
             inputCommentFocus:false,
@@ -174,7 +181,6 @@ export default class TaskItem extends React.Component {
             realm.write(() => {
                 this.task.comment = this.state.inputComment
             })
-            console.log(this.state.inputComment)
             this.commentInputDismiss()
             Keyboard.dismiss()
         }
@@ -190,7 +196,8 @@ export default class TaskItem extends React.Component {
             taskPageIsOpen: visible
         })
         this.commentInputDismiss()
-        this.props.provideModalVisibleStatus(visible)
+        // provide information about taskPageIsOpen
+        //this.props.provideModalVisibleStatus(visible)
     }
 
     saveProject = (value) => {
@@ -418,7 +425,7 @@ export default class TaskItem extends React.Component {
                                         }
                                     </View>
                                     <TextInput
-                                        onFocus={() => this.setState({inputCommentFocus:true})}
+                                        onFocus={() => this.commentInputTurnOn()}
                                         onBlur={() => this.commentInputDismiss()}
                                         style={styles.commentInput}
                                         name="input"
