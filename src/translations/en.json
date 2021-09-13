@@ -26,6 +26,9 @@
     "longBreakIntervals": "Long break intervals",
     "autoStartPomodoro": "Auto start pomodoro?",
     "autoStartBreak": "Auto start break?",
+    "takeAShortBreak": "Take a short break.",
+    "takeALongBreak": "You deserve a long break.",
+    "timeUp": "Time's up!",
 
     "settingsPomodoro": "Pomodor Settings",
     "minutes": "Minutes",

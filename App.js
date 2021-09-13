@@ -27,7 +27,6 @@ const App = () => {
   if (!isLoaded){
     return <AppLoading />
   };
-
   return (
     <>
     <StatusBar/>

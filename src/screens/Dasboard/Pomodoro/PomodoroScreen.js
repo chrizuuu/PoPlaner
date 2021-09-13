@@ -1,5 +1,5 @@
 import React from 'react';
-import { View,Text, Vibration,Pressable,TouchableOpacity,Dimensions,FlatList,StyleSheet,Switch} from 'react-native';
+import { View,Text, Vibration,Pressable,TouchableOpacity,Dimensions,FlatList,StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
 import {strings} from '../../../translations/translations'
 import {formatTime} from '../../../components/Helpers/helpers';
@@ -14,7 +14,7 @@ import FlatListSlider from '../../../components/components/FlatListSlider';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import colors from "../../../styles/colorsLightTheme"
 
-const pomodoroTimeValue = [15,20,25,30,35,40,45,50,55,60,70,80,90];
+const pomodoroTimeValue = [1,15,20,25,30,35,40,45,50,55,60,70,80,90];
 const breaksTimeValue = [2,5,10,15,20,25,30];
 var screen = Dimensions.get('window');
 
@@ -96,8 +96,9 @@ export default class PomodoroScreen extends React.Component {
                     />      
                 </TouchableOpacity>    
                 ),
-            });
-        }
+         });
+    }
+
     
 
     //
@@ -106,13 +107,16 @@ export default class PomodoroScreen extends React.Component {
         Vibration.vibrate(100,100,100)
         if(this.state.type === defaultProps.types[0]) {
             this.handleCountInterval()
-            if((this.state.countInterval % this.state.autoLongBreakInterval) === 0) this.handleType(defaultProps.types[2]);
-            else this.handleType(defaultProps.types[1]);
+            if((this.state.countInterval % this.state.autoLongBreakInterval) === 0) {
+                this.handleType(defaultProps.types[2]);
+            }
+            else{
+                this.handleType(defaultProps.types[1]);
+            }
             this.state.autoBreakStart ? this.startTimer() : this.setState({status:defaultProps.statuses[2].name})
         } else {
             this.handleType(defaultProps.types[0])
             this.state.autoPomodoroStart ? this.startTimer() : this.setState({status:null})
-
         }
     }
 
@@ -216,7 +220,6 @@ export default class PomodoroScreen extends React.Component {
         });
     }
 
-
     render() {
         let timePercent = ((this.state.type.time - this.state.time)/this.state.type.time) * 100
 
@@ -233,7 +236,7 @@ export default class PomodoroScreen extends React.Component {
                             color:'#B2B2B2',
                         }}>
                             {strings("currentTask")}
-                        </Text>
+                        </Text>      
                 </View>
 
                 <Timer 
@@ -308,7 +311,7 @@ export default class PomodoroScreen extends React.Component {
                     <View style={[sharedStyles.marginSide25,{marginTop:30}]}>   
                         <View>
                             <SettingsBarHeader 
-                                settingsName="Focus"
+                                settingsName={strings("focus")}
                                 settingsValue={(defaultProps.types[0].time)/60}  
                             />
                             <FlatListSlider 
@@ -321,7 +324,7 @@ export default class PomodoroScreen extends React.Component {
                         <View>
                             <SettingsBarHeader 
                                 style={{marginTop:30}}                        
-                                settingsName="Short Break"
+                                settingsName={strings("shortBreak")}
                                 settingsValue={(defaultProps.types[1].time)/60} 
                             />
 
@@ -335,7 +338,7 @@ export default class PomodoroScreen extends React.Component {
                         <View>
                             <SettingsBarHeader 
                                 style={{marginTop:30}}
-                                settingsName="Long Break"
+                                settingsName={strings("longBreak")}
                                 settingsValue={(defaultProps.types[2].time)/60} 
                             />
                             <FlatListSlider 
@@ -348,7 +351,7 @@ export default class PomodoroScreen extends React.Component {
                         <View>
                             <SettingsBarHeader 
                                 style={{marginTop:30}}
-                                settingsName='Long Break Intervals'
+                                settingsName={strings("longBreakIntervals")}
                                 settingsValue={this.state.autoLongBreakInterval}
                             />
                             <FlatListSlider 
@@ -360,14 +363,14 @@ export default class PomodoroScreen extends React.Component {
                         </View>
                             <SettingsSwitchBar
                                 style={{marginTop:30}}
-                                settingsName='Auto start pomodoro?'
+                                settingsName={strings("autoStartPomodoro")}
                                 switchValue={this.state.autoPomodoroStart}
                                 onValueChange={()=> this.changeAutoPomodoroStart()}
                             />
                             <SettingsSwitchBar
                             
                                 style={{marginTop:30}}                     
-                                settingsName='Auto start breaks?'
+                                settingsName={strings("autoStartBreak")}
                                 switchValue={this.state.autoBreakStart}
                                 onValueChange={()=> this.changeAutoBreakStart()}
                             />
