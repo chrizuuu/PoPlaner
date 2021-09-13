@@ -22,8 +22,9 @@ const ScheduleScreen = ({navigation}) => {
     const [currentDay,setCurrentDay] = useState(new Date())
 
     const onRealmChange =() => {
-        console.log(currentDay)
-        setTasksHandler(currentDay)
+        let date = currentDay
+        console.log(date.toLocaleDateString())
+        setTasksHandler(date)
     }
 
     const provideModalVisibleStatus = (taskModalVisibile) =>{
@@ -66,6 +67,7 @@ const ScheduleScreen = ({navigation}) => {
         setTasks(
             realm.objects("Task").filtered('deadlineDate >= $0 && deadlineDate <= $1', startOfDay(date), endOfDay(date))
         )
+        console.log("taskHAND:",date.toDateString())
     }
 
     const changeWeek = (amount) => {
@@ -211,6 +213,7 @@ const ScheduleScreen = ({navigation}) => {
                         {strings("calendarToday")}
                     </Text>
                 </TouchableOpacity>
+                <Text>  {currentDay.toDateString()}</Text>
                 <Icon 
                     type="ionicon"
                     name="add-outline" 
