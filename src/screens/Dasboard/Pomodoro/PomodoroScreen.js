@@ -13,6 +13,7 @@ import SettingsSwitchBar from '../../../components/components/settingsSwitchBar'
 import FlatListSlider from '../../../components/components/FlatListSlider';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import colors from "../../../styles/colorsLightTheme"
+import NotifService from "../../../notification/NotificationConfig"
 
 const pomodoroTimeValue = [1,15,20,25,30,35,40,45,50,55,60,70,80,90];
 const breaksTimeValue = [2,5,10,15,20,25,30];
@@ -81,7 +82,6 @@ export default class PomodoroScreen extends React.Component {
           settingsIsOpen:false,
       }
     }  
-
     componentDidMount() {
         this.props.navigation.setOptions({
             headerRight: () => (
@@ -99,23 +99,43 @@ export default class PomodoroScreen extends React.Component {
          });
     }
 
+    componentWillUnmount() {
+        this.notif.cancelSpecificNotif(9999)
+    }
     
+    notif = new NotifService()
 
     //
     handlePomodoro = () => {
-        this.stopTimer() 
+        this.stopTimer()
+        this.notif.cancelSpecificNotif(9999) 
         Vibration.vibrate(100,100,100)
         if(this.state.type === defaultProps.types[0]) {
             this.handleCountInterval()
             if((this.state.countInterval % this.state.autoLongBreakInterval) === 0) {
                 this.handleType(defaultProps.types[2]);
+                this.notif.pomodoroPushNotif({
+                    id:9999,
+                    title:'<p style="color: #4caf50;"><b>' + strings("timeUp") + '</span></p></b></p> &#128576;',
+                    message:strings("takeALongBreak"),
+                })
             }
             else{
                 this.handleType(defaultProps.types[1]);
+                this.notif.pomodoroPushNotif({
+                    id:9999,
+                    title:strings("timeUp"),
+                    message:strings("takeAShortBreak"),
+                })
             }
             this.state.autoBreakStart ? this.startTimer() : this.setState({status:defaultProps.statuses[2].name})
         } else {
             this.handleType(defaultProps.types[0])
+            this.notif.pomodoroPushNotif({
+                id:9999,
+                title:strings("endBreak"),
+                message:strings("backToWork"),
+            })
             this.state.autoPomodoroStart ? this.startTimer() : this.setState({status:null})
         }
     }
