@@ -2,13 +2,14 @@ import 'react-native-gesture-handler';
 import React, {useState} from 'react';
 import {StatusBar} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import DrawerNav from './src/navigations/drawerNav';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import {setI18Config} from './src/translations/translations'
-import TasksList from './src/screens/Dasboard/ToDo/TasksList';
-import DrawerNavigator from './src/navigations/newdrawer';
-import { navigationRef } from './src/navigations/newdrawer';
+import DrawerNav from './src/navigations/DrawerNav';
+import NotifService from "./src/notification/NotificationConfig"
+import realm from './src/Database/Database';
+import {startOfDay,endOfDay} from 'date-fns';
+
 
 const customFonts = {
   OpenSansReg: require("./src/assets/fonts/OpenSans-Regular.ttf"),
@@ -24,6 +25,16 @@ const App = () => {
   const [isLoaded] = useFonts(customFonts)
   const [strings, i18n] = useState(setI18Config())
 
+  const notif = new NotifService()
+
+  const date = new Date()
+
+  notif.taskScheduleNotif({
+    title: "Masz" +  realm.objects("Task").filtered('deadlineDate >= $0 && deadlineDate <= $1', startOfDay(date), endOfDay(date)).length + "do zrobienia",
+    message:realm.objects("Task").filtered('deadlineDate >= $0 && deadlineDate <= $1', startOfDay(date), endOfDay(date)).toString() ,
+    notificationDate: new Date(),
+  })
+
   if (!isLoaded){
     return <AppLoading />
   };
@@ -31,7 +42,7 @@ const App = () => {
     <>
     <StatusBar/>
     <NavigationContainer >
-      <DrawerNavigator />
+      <DrawerNav />
     </NavigationContainer>
     </>
   );
@@ -39,3 +50,4 @@ const App = () => {
 
 
 export default App;
+
