@@ -28,6 +28,8 @@
     "autoStartBreak": "Auto start break?",
     "takeAShortBreak": "Take a short break.",
     "takeALongBreak": "You deserve a long break.",
+    "endBreak": "End of the break!",
+    "backToWork": "Time to get to work.",
     "timeUp": "Time's up!",
 
     "settingsPomodoro": "Pomodor Settings",

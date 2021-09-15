@@ -5,7 +5,7 @@ import styleButton from './style';
 import InLineLayout from '../Layouts/InLineLayout'
 import colors from "../../styles/colorsLightTheme"
 
-export default ControlsButton = ({start,pause,reset,skip,status,style}) => {
+const ControlsPomodoroButton = ({start,pause,reset,skip,status,style}) => {
 
     const styles = StyleSheet.create({
         normalBtn: {
@@ -90,11 +90,4 @@ export default ControlsButton = ({start,pause,reset,skip,status,style}) => {
         </View>
     )
 }
-
-/*
-if 
-
-
-
-
-*/
+export default ControlsPomodoroButton
