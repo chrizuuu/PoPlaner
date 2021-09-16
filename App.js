@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StatusBar} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
@@ -9,7 +9,7 @@ import DrawerNav from './src/navigations/DrawerNav';
 import NotifService from "./src/notification/NotificationConfig"
 import realm from './src/Database/Database';
 import {startOfDay,endOfDay} from 'date-fns';
-
+import SplashScreen from 'react-native-splash-screen';
 
 const customFonts = {
   OpenSansReg: require("./src/assets/fonts/OpenSans-Regular.ttf"),
@@ -24,8 +24,11 @@ const customFonts = {
 const App = () => {
   const [isLoaded] = useFonts(customFonts)
   const [strings, i18n] = useState(setI18Config())
-
   const notif = new NotifService()
+
+  useEffect(() => {
+    SplashScreen.hide();
+  });
 
   const date = new Date()
 
@@ -35,9 +38,6 @@ const App = () => {
     notificationDate: new Date(),
   })
 
-  if (!isLoaded){
-    return <AppLoading />
-  };
   return (
     <>
     <StatusBar/>

@@ -55,7 +55,6 @@ const ScheduleScreen = ({navigation}) => {
         setTasks(
             realm.objects("Task").filtered('deadlineDate >= $0 && deadlineDate <= $1', startOfDay(date), endOfDay(date))
         )
-        console.log("taskHAND:",date.toDateString())
     }
 
     const changeWeek = (amount) => {

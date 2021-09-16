@@ -49,12 +49,9 @@ export default class NotifService {
       title: title, // (optional)
       message:message,// (required)
       ticker: ticker, // (optional)
-
       color: "#53D3AF", // (optional) default: system default
-      smallIcon: "@mipmap/ic_launcher", // (optional) default: "ic_notification" with fallback for "ic_launcher". Use "" for default small icon.
+      smallIcon: "ic_small_icon", // (optional) default: "ic_notification" with fallback for "ic_launcher". Use "" for default small icon.
       largeIcon: "", // (optional) default: "ic_launcher". Use "" for no large icon.
-      //when: new Date().toLocaleTimeString(),
-      //showWhen:true,
       autoCancel: true, // (optional) default: true
       vibrate: true, // (optional) default: true
       vibration: 300, // vibration length in milliseconds, ignored if vibrate=false, default: 1000
@@ -72,12 +69,9 @@ export default class NotifService {
       title: title, // (optional)
       message:message,// (required)
       ticker: ticker, // (optional)
-
       color: "#53D3AF", // (optional) default: system default
-      smallIcon: "@mipmap/ic_launcher", // (optional) default: "ic_notification" with fallback for "ic_launcher". Use "" for default small icon.
+      smallIcon: "ic_small_icon", // (optional) default: "ic_notification" with fallback for "ic_launcher". Use "" for default small icon.
       largeIcon: "", // (optional) default: "ic_launcher". Use "" for no large icon.
-      //when: new Date().toLocaleTimeString(),
-      //showWhen:true,
       autoCancel: true, // (optional) default: true
       vibrate: true, // (optional) default: true
       vibration: 300, // vibration length in milliseconds, ignored if vibrate=false, default: 1000
@@ -99,8 +93,9 @@ export default class NotifService {
       message:message,// (required)
       ticker: ticker, // (optional)
 
+      color: "#53D3AF",
+      smallIcon: "ic_small_icon", 
       autoCancel: true, // (optional) default: true
-      smallIcon: '@mipmap/ic_launcher', 
       vibrate: true, // (optional) default: true
       vibration: 300, // vibration length in milliseconds, ignored if vibrate=false, default: 1000
       invokeApp: false, // (optional) This enable click on actions to bring back the application to foreground or stay in background, default: true
