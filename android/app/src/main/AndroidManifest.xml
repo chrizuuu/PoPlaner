@@ -55,5 +55,6 @@
       </intent-filter>
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity"/>
+    <service android:name="com.chrizuuu.producitivityUp.pomodoroNotif" />
   </application>
 </manifest>

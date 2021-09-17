@@ -1,5 +1,5 @@
 import React from 'react';
-import { View,Text, Vibration,Pressable,TouchableOpacity,Dimensions,FlatList,StyleSheet} from 'react-native';
+import { View,Text, Vibration,Pressable,TouchableOpacity,Dimensions,FlatList,StyleSheet, AppRegistry} from 'react-native';
 import Modal from 'react-native-modal';
 import {strings} from '../../../translations/translations'
 import {formatTime} from '../../../components/Helpers/helpers';
@@ -14,10 +14,12 @@ import FlatListSlider from '../../../components/components/FlatListSlider';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import colors from "../../../styles/colorsLightTheme"
 import NotifService from "../../../notification/NotificationConfig"
+import BackgroundTimer from "react-native-background-timer"
+import { pomodoroNotif} from '../../../headless/notification';
 
-const pomodoroTimeValue = [1,15,20,25,30,35,40,45,50,55,60,70,80,90];
+const notif = new NotifService()
+const pomodoroTimeValue = [0.5,10,15,20,25,30,35,40,45,50,55,60,70,80,90];
 const breaksTimeValue = [2,5,10,15,20,25,30];
-var screen = Dimensions.get('window');
 
 const defaultProps = {
     types: [
@@ -62,8 +64,6 @@ const styles = StyleSheet.create ( {
         width:60,
         height:35,
     }
-
-
 })
 
 export default class PomodoroScreen extends React.Component {
@@ -98,40 +98,33 @@ export default class PomodoroScreen extends React.Component {
                 ),
          });
     }
-
-    componentWillUnmount() {
-        this.notif.cancelSpecificNotif(9999)
-    }
     
-    notif = new NotifService()
-
-    //
     handlePomodoro = () => {
         this.stopTimer()
-        this.notif.cancelSpecificNotif(9999) 
+        notif.cancelSpecificNotif(9999) 
         Vibration.vibrate(100,100,100)
         if(this.state.type === defaultProps.types[0]) {
             this.handleCountInterval()
             if((this.state.countInterval % this.state.autoLongBreakInterval) === 0) {
                 this.handleType(defaultProps.types[2]);
-                this.notif.pomodoroPushNotif({
+                pomodoroNotif({
                     id:9999,
-                    title:'<p style="color: #4caf50;"><b>' + strings("timeUp") + '</span></p></b></p> &#128576;',
+                    title:strings("timeUp"),
                     message:strings("takeALongBreak"),
                 })
             }
             else{
                 this.handleType(defaultProps.types[1]);
-                this.notif.pomodoroPushNotif({
+                pomodoroNotif({
                     id:9999,
                     title:strings("timeUp"),
-                    message:strings("takeAShortBreak"),
+                    message:strings("takeAShortBreak")
                 })
             }
             this.state.autoBreakStart ? this.startTimer() : this.setState({status:defaultProps.statuses[2].name})
         } else {
             this.handleType(defaultProps.types[0])
-            this.notif.pomodoroPushNotif({
+            pomodoroNotif({
                 id:9999,
                 title:strings("endBreak"),
                 message:strings("backToWork"),
@@ -140,35 +133,32 @@ export default class PomodoroScreen extends React.Component {
         }
     }
 
-    //
     handleCountInterval = () =>{
         this.setState({ 
             countInterval: ++this.state.countInterval
         })    
     }
 
-    //DONE
     timer = () => {
         this.state.time < 1 ? this.handlePomodoro() : this.setState(prevState => ({ time: --prevState.time}))
     }
 
-    //DONE
     startTimer = () => { 
         this.setState ({
             status: defaultProps.statuses[0].name,
             playing: true,
-            interval: setInterval(this.timer,1000),
+            interval: BackgroundTimer.setInterval(this.timer,1000),
         })
     }
 
     stopTimer = () => {
-        clearInterval(this.state.interval)
+        BackgroundTimer.clearInterval(this.state.interval)
         this.setState({
             interval:null,
         })
     };
 
-    //
+    
     resetTimer = () => {
         this.stopTimer()
         this.setState({
@@ -184,7 +174,6 @@ export default class PomodoroScreen extends React.Component {
         this.handlePomodoro()
     }
  
-    //DONE
     pauseTimer = () => { 
         if (this.state.playing){
             this.stopTimer() 
@@ -229,7 +218,6 @@ export default class PomodoroScreen extends React.Component {
         this.resetTimer()
     }
 
-    //
     handleType = type => { 
         this.stopTimer();
         this.setState({ 

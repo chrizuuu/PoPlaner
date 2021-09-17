@@ -20,4 +20,6 @@ target 'producitivityUp' do
   # end
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
+  pod 'react-native-background-timer', :path => '../node_modules/react-native-background-timer'
+
 end
