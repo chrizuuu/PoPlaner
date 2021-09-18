@@ -16,6 +16,8 @@ import colors from "../../../styles/colorsLightTheme"
 import NotifService from "../../../notification/NotificationConfig"
 import BackgroundTimer from "react-native-background-timer"
 import { pomodoroNotif} from '../../../headless/notification';
+import { differenceInSeconds } from "date-fns";
+
 
 const notif = new NotifService()
 const pomodoroTimeValue = [0.5,10,15,20,25,30,35,40,45,50,55,60,70,80,90];
@@ -139,20 +141,23 @@ export default class PomodoroScreen extends React.Component {
         })    
     }
 
-    timer = () => {
-        this.state.time < 1 ? this.handlePomodoro() : this.setState(prevState => ({ time: --prevState.time}))
+    timer = (startTime) => {
+        this.state.time < 1 ? this.handlePomodoro() : this.setState(prevState => ({ time: this.state.type.time - differenceInSeconds(new Date(), Date.parse(startTime))}))
     }
 
     startTimer = () => { 
+        const startTime = new Date()
+
         this.setState ({
             status: defaultProps.statuses[0].name,
             playing: true,
-            interval: BackgroundTimer.setInterval(this.timer,1000),
+            //interval: BackgroundTimer.setInterval(this.timer,1000),
+            interval: BackgroundTimer.runBackgroundTimer(() => { this.timer(startTime)},1000)
         })
     }
 
     stopTimer = () => {
-        BackgroundTimer.clearInterval(this.state.interval)
+        BackgroundTimer.stopBackgroundTimer()
         this.setState({
             interval:null,
         })
@@ -234,18 +239,6 @@ export default class PomodoroScreen extends React.Component {
       return (
         <FlexLayout style={{color:'#282828'}}> 
                 <View style = {styles.wrapper}>
-                    <View style={{
-                        alignItems:'center',
-                        justifyContent:'center'
-                    }}>
-                        <Text style={{
-                            paddingBottom:5,
-                            fontFamily:'OpenSansSemiBold',
-                            color:'#B2B2B2',
-                        }}>
-                            {strings("currentTask")}
-                        </Text>      
-                </View>
 
                 <Timer 
                     size = '280' 
@@ -297,6 +290,7 @@ export default class PomodoroScreen extends React.Component {
             <Modal 
                 animationIn="slideInRight"
                 animationOut="slideOutRight"
+                animationInTiming={600}
                 isVisible={this.state.settingsIsOpen} 
                 swipeDirection='right'
                 onSwipeComplete={() => this.setIsOpen(!this.state.settingsIsOpen)}
