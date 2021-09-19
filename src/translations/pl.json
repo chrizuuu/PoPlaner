@@ -65,5 +65,8 @@
     "inputEmptyError": "* Wprowadź tekst, aby kontynuować.",
     "save": "Zapisz",
 
+    "congratulations": "Wszystko zrobione!",
+    "doneAllTasks": "Nie masz więcej zaplanowaych zadan na dzisiejszy dzien!",
+
 
 }

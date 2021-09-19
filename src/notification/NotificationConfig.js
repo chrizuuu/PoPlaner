@@ -1,13 +1,17 @@
 import PushNotification, {Importance} from 'react-native-push-notification';
 import NotificationHandler from './NotificationHandler';
-import {strings} from "../translations/translations"
+import realm from '../Database/Database';
+import {startOfDay,endOfDay} from 'date-fns';
+import { Text } from 'react-native';
 
 export default class NotifService {
-  constructor(onNotification) {
+  constructor(onRegister, onNotification) {
     this.lastId = 0;
     this.lastChannelCounter = 0;
 
     this.createDefaultChannels();
+
+    NotificationHandler.attachRegister(onRegister);
     NotificationHandler.attachNotification(onNotification);
 
     // Clear badge number at start
@@ -16,106 +20,148 @@ export default class NotifService {
         PushNotification.setApplicationIconBadgeNumber(0);
       }
     });
+    
+    PushNotification.getChannels(function(channels) {
+      console.log(channels);
+    });
   }
 
-  createDefaultChannels = () => {
+  createDefaultChannels() {
     PushNotification.createChannel(
       {
         channelId: "task-notification", // (required)
-        channelName: `Task notification`, // (required)
-        importance: Importance.DEFAULT, // (optional) default: Importance.HIGH. Int value of the Android notification importance
-        vibrate: true,
+        channelName: `Task channel`, // (required)
+        soundName: "default", // (optional) See `soundName` parameter of `localNotification` function
+        importance: Importance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
+        vibrate: true, // (optional) default: true. Creates the default vibration pattern if true.
       },
+      (created) => console.log(`createChannel 'task-notification' returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
     );
     PushNotification.createChannel(
       {
-        channelId: "pomodoro-notification", // (required)
-        channelName: `Pomodoro notification`, // (required)
+        channelId: "pomodoro-channel", // (required)
+        channelName: `Pomodoro channel`, // (required)
+        soundName: "sample.mp3", // (optional) See `soundName` parameter of `localNotification` function
         importance: Importance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
-        vibrate: true, 
+        vibrate: true, // (optional) default: true. Creates the default vibration pattern if true.
       },
+      (created) => console.log(`createChannel 'pomodoro-channel' returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
     );
   }
 
-  popInitialNotification = () => {
-    PushNotification.popInitialNotification((notification));
+  popInitialNotification() {
+    PushNotification.popInitialNotification((notification) => console.log('InitialNotication:', notification));
   }
 
-  pomodoroPushNotif = ({id,title,message,ticker}) => {
+  pomodoroPushNotif({title,message,id}) {
     this.lastId++;
     PushNotification.localNotification({
-      channelId: "pomodoro-notification", // (required) channelId, if the channel doesn't exist, notification will not trigger.
-      id: id? id : this.lastId,
-      title: title, // (optional)
-      message:message,// (required)
-      ticker: ticker, // (optional)
-      color: "#53D3AF", // (optional) default: system default
-      smallIcon: "ic_small_icon", // (optional) default: "ic_notification" with fallback for "ic_launcher". Use "" for default small icon.
-      largeIcon: "", // (optional) default: "ic_launcher". Use "" for no large icon.
-      autoCancel: true, // (optional) default: true
-      vibrate: true, // (optional) default: true
-      vibration: 300, // vibration length in milliseconds, ignored if vibrate=false, default: 1000
-      visibility: "private", // (optional) set notification visibility, default: private
-      ignoreInForeground: false, // (optional) if true, the notification will not be visible when the app is in the foreground (useful for parity with how iOS notifications appear). should be used in combine with `com.dieam.reactnativepushnotification.notification_foreground` setting
-      timeoutAfter: null, // (optional) Specifies a duration in milliseconds after which this notification should be canceled, if it is not already canceled, default: null
-      invokeApp: true, // (optional) This enable click on actions to bring back the application to foreground or stay in background, default: true
-      soundName: "default",
-  })}
-
-  taskPushNotif = ({title,message,ticker}) => {
-    this.lastId++;
-    PushNotification.localNotification({
-      channelId: "task-notification", // (required) channelId, if the channel doesn't exist, notification will not trigger.
-      title: title, // (optional)
-      message:message,// (required)
-      ticker: ticker, // (optional)
-      color: "#53D3AF", // (optional) default: system default
-      smallIcon: "ic_small_icon", // (optional) default: "ic_notification" with fallback for "ic_launcher". Use "" for default small icon.
-      largeIcon: "", // (optional) default: "ic_launcher". Use "" for no large icon.
-      autoCancel: true, // (optional) default: true
-      vibrate: true, // (optional) default: true
-      vibration: 300, // vibration length in milliseconds, ignored if vibrate=false, default: 1000
-      visibility: "private", // (optional) set notification visibility, default: private
-      ignoreInForeground: false, // (optional) if true, the notification will not be visible when the app is in the foreground (useful for parity with how iOS notifications appear). should be used in combine with `com.dieam.reactnativepushnotification.notification_foreground` setting
-      timeoutAfter: null, // (optional) Specifies a duration in milliseconds after which this notification should be canceled, if it is not already canceled, default: null
-      invokeApp: true, // (optional) This enable click on actions to bring back the application to foreground or stay in background, default: true
-      soundName: "default",
-  })}
-
-  taskScheduleNotif = ({title,message,ticker}) => {
-    this.lastId++;
-    PushNotification.localNotificationSchedule({
-      date: new Date(Date.now() + 30), // in 30 secs
-
       /* Android Only Properties */
-      channelId: "task-notification",
-      title: title, // (optional)
-      message:message,// (required)
-      ticker: ticker, // (optional)
-
-      color: "#53D3AF",
-      smallIcon: "ic_small_icon", 
+      channelId:'pomodoro-channel',
       autoCancel: true, // (optional) default: true
+      smallIcon: "ic_small_icon",   
+      largeIcon: "",   
       vibrate: true, // (optional) default: true
-      vibration: 300, // vibration length in milliseconds, ignored if vibrate=false, default: 1000
-      invokeApp: false, // (optional) This enable click on actions to bring back the application to foreground or stay in background, default: true
-      repeatType:`day`,
-      allowWhileIdle: true, // (optional) set notification to work while on doze, default: false
-      ignoreInForeground: false, // (optional) if true, the notification will not be visible when the app is in the foreground (useful for parity with how iOS notifications appear)
-      soundName: 'default', 
-      visibility:"public",
+      vibration: 2000, // vibration length in milliseconds, ignored if vibrate=false, default: 1000
+      invokeApp: true, // (optional) This enable click on actions to bring back the application to foreground or stay in background, default: true
+
+      when: null, // (optionnal) Add a timestamp pertaining to the notification (usually the time the event occurred). For apps targeting Build.VERSION_CODES.N and above, this time is not shown anymore by default and must be opted into by using `showWhen`, default: null.
+      usesChronometer: false, // (optional) Show the `when` field as a stopwatch. Instead of presenting `when` as a timestamp, the notification will show an automatically updating display of the minutes and seconds since when. Useful when showing an elapsed time (like an ongoing phone call), default: false.
+      timeoutAfter: null, // (optional) Specifies a duration in milliseconds after which this notification should be canceled, if it is not already canceled, default: null
+      priority:"max",
+      /* iOS only properties */
+      category: '', // (optional) default: empty string
+
+      /* iOS and Android properties */
+      id: id, // (optional) Valid unique 32 bit integer specified as string. default: Autogenerated Unique ID
+      title: title, // (optional)
+      message: message, // (required)
+      number: 10, // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
     });
   }
-  cancelSpecificNotif = (id) => {
-    PushNotification.cancelLocalNotification(id)
+  taskPushNotif({title,message,id}) {
+    this.lastId++;
+    PushNotification.localNotification({
+      /* Android Only Properties */
+      channelId:'task-notification',
+      autoCancel: false, // (optional) default: true
+      smallIcon: "ic_small_icon",      
+      vibrate: true, // (optional) default: true
+      vibration: 1000, // vibration length in milliseconds, ignored if vibrate=false, default: 1000
+      invokeApp: true, // (optional) This enable click on actions to bring back the application to foreground or stay in background, default: true
+
+      when: null, // (optionnal) Add a timestamp pertaining to the notification (usually the time the event occurred). For apps targeting Build.VERSION_CODES.N and above, this time is not shown anymore by default and must be opted into by using `showWhen`, default: null.
+      usesChronometer: false, // (optional) Show the `when` field as a stopwatch. Instead of presenting `when` as a timestamp, the notification will show an automatically updating display of the minutes and seconds since when. Useful when showing an elapsed time (like an ongoing phone call), default: false.
+      timeoutAfter: null, // (optional) Specifies a duration in milliseconds after which this notification should be canceled, if it is not already canceled, default: null
+      priority:"max",
+      /* iOS only properties */
+      category: '', // (optional) default: empty string
+
+      /* iOS and Android properties */
+      id: this.lastId, // (optional) Valid unique 32 bit integer specified as string. default: Autogenerated Unique ID
+      title: title, // (optional)
+      message: message, // (required)
+      number: 10, // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
+    });
   }
 
-  cancelLastNotif = () => {
+  taskScheduleNotif() {
+    this.lastId++;
+    let date = new Date(Date.now() + 1500)
+    PushNotification.localNotificationSchedule({
+      date: date, // in 30 secs
+      /* Android Only Properties */
+      channelId: 'task-notification',
+      autoCancel: true, // (optional) default: true
+      smallIcon: 'ic_small_icon', // (optional) default: "ic_notification" with fallback for "ic_launcher"
+      vibrate: true, // (optional) default: true
+      vibration: 300, // vibration length in milliseconds, ignored if vibrate=false, default: 1000 
+      invokeApp: true, // (optional) This enable click on actions to bring back the application to foreground or stay in background, default: true
+      when: null, // (optionnal) Add a timestamp pertaining to the notification (usually the time the event occurred). For apps targeting Build.VERSION_CODES.N and above, this time is not shown anymore by default and must be opted into by using `showWhen`, default: null.
+      usesChronometer: true, // (optional) Show the `when` field as a stopwatch. Instead of presenting `when` as a timestamp, the notification will show an automatically updating display of the minutes and seconds since when. Useful when showing an elapsed time (like an ongoing phone call), default: false.
+      timeoutAfter: 3600 * 1000 * 23, // (optional) Specifies a duration in milliseconds after which this notification should be canceled, if it is not already canceled, default: null
+      repeatType: 'day',
+      repeatTime:1,
+      /* iOS only properties */
+      category: '', // (optional) default: empty string
+      
+      /* iOS and Android properties */
+      id: this.lastId, // (optional) Valid unique 32 bit integer specified as string. default: Autogenerated Unique ID
+      title:realm.objects("Task").filtered('deadlineDate >= $0 && deadlineDate <= $1', startOfDay(new Date()), endOfDay(new Date())).length, // (optional)
+      message:new Date().toDateString(), // (required)
+      number: 10, // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
+    });
+  }
+
+  checkPermission(cbk) {
+    return PushNotification.checkPermissions(cbk);
+  }
+
+  requestPermissions() {
+    return PushNotification.requestPermissions();
+  }
+
+  cancelNotif() {
     PushNotification.cancelLocalNotification(this.lastId);
   }
 
-  cancelAll = () => {
+  cancelAll() {
     PushNotification.cancelAllLocalNotifications();
   }
 
+  cancelSpecificNotif(id) {
+    PushNotification.cancelLocalNotification(id)
+  }
+
+  abandonPermissions() {
+    PushNotification.abandonPermissions();
+  }
+
+  getScheduledLocalNotifications(callback) {
+    PushNotification.getScheduledLocalNotifications(callback);
+  }
+
+  getDeliveredNotifications(callback) {
+    PushNotification.getDeliveredNotifications(callback);
+  }
 }
