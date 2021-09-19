@@ -20,8 +20,8 @@ import { differenceInSeconds } from "date-fns";
 
 
 const notif = new NotifService()
-const pomodoroTimeValue = [0.5,10,15,20,25,30,35,40,45,50,55,60,70,80,90];
-const breaksTimeValue = [2,5,10,15,20,25,30];
+const pomodoroTimeValue = [0.2,10,15,20,25,30,35,40,45,50,55,60,70,80,90];
+const breaksTimeValue = [0.2,2,5,10,15,20,25,30];
 
 const defaultProps = {
     types: [
@@ -68,7 +68,7 @@ const styles = StyleSheet.create ( {
     }
 })
 
-export default class PomodoroScreen extends React.Component {
+export default class PomodoroScreen extends React.PureComponent{
     constructor(props) {
       super(props);
       this.state = {
@@ -85,6 +85,7 @@ export default class PomodoroScreen extends React.Component {
       }
     }  
     componentDidMount() {
+        notif.cancelSpecificNotif(9998)
         this.props.navigation.setOptions({
             headerRight: () => (
                 <TouchableOpacity 
@@ -100,9 +101,23 @@ export default class PomodoroScreen extends React.Component {
                 ),
          });
     }
+
+    componentWillUnmount() {
+        this.props.navigation.setOptions({
+            headerRight: () => null
+         });
+        this.stopTimer()
+        if (this.state.playing === true) 
+            pomodoroNotif({
+                id:9998,
+                title:"Pomodoro Timer",
+                message:"Timer przestał dzialac",
+            })
+    }    
     
     handlePomodoro = () => {
         this.stopTimer()
+        BackgroundTimer.stopBackgroundTimer()
         notif.cancelSpecificNotif(9999) 
         Vibration.vibrate(100,100,100)
         if(this.state.type === defaultProps.types[0]) {
@@ -147,17 +162,15 @@ export default class PomodoroScreen extends React.Component {
 
     startTimer = () => { 
         const startTime = new Date()
-
         this.setState ({
             status: defaultProps.statuses[0].name,
             playing: true,
-            //interval: BackgroundTimer.setInterval(this.timer,1000),
-            interval: BackgroundTimer.runBackgroundTimer(() => { this.timer(startTime)},1000)
+            interval: BackgroundTimer.setInterval(() => { this.timer(startTime)},1000)
         })
     }
 
     stopTimer = () => {
-        BackgroundTimer.stopBackgroundTimer()
+        BackgroundTimer.clearInterval(this.state.interval)
         this.setState({
             interval:null,
         })

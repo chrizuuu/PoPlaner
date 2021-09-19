@@ -13,6 +13,7 @@ import { strings } from "../translations/translations";
 import { TouchableOpacity,Text,StyleSheet,ScrollView,View } from "react-native";
 import {Icon,Button} from "react-native-elements";
 import colors from "../styles/colorsLightTheme"
+import Home from "../screens/Dasboard/ToDo/Home";
 
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
@@ -35,7 +36,6 @@ const CustomDrawerContent = (props) => {
   const activeBackgroundColor = colors.sidebarSecondColor
   const { state } = props
   const { routes, index } = state; 
-  const focusedRoute = routes[index]
 
   const focusedCheck = value => {
     let actualRoute = state.routes[state.index];
@@ -177,6 +177,11 @@ function StackNavigator({navigation}) {
               fontSize:16,
           },
         })} >
+        <Stack.Screen 
+            name="Home" 
+            component={Home} 
+            options={{ title: strings("headerTitleCalendar") }}
+        />
         <Stack.Screen
             name="Priority"
             options={({ navigation, route }) => ({ 

@@ -24,11 +24,9 @@ const App = () => {
   const [isLoaded] = useFonts(customFonts)
   const [string, i18n] = useState(setI18Config())
   const [date,setDate] = useState(new Date())
-
   const notif = new NotifService();
   const tasks = realm.objects("Task")
   //notif.taskScheduleNotif()
-
 
   const onTasksChange = () => {
       const currDate = new Date()
@@ -45,12 +43,12 @@ const App = () => {
     }
   }
 
-
   useEffect(() => {
     tasks.addListener(onTasksChange)
     SplashScreen.hide();
     return () => {
       tasks.removeAllListeners()
+      realm.close();
     }
   }, [])
   
