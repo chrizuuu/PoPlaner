@@ -21,13 +21,19 @@
     "focus": "Skupienie",
     "shortBreak": "Krótka przerwa",
     "longBreak": "Długa przerwa",
-    "longBreakIntervals": "Interwały przed długą przerwą",
+    "longBreakIntervals": "Sesje przed długą przerwą",
     "autoStartPomodoro": "Automatyczny start sesji pomodoro?",
     "autoStartBreak": "Automatyczny start przerwy?",
     "takeBreak": "Zrób sobię przerwę na ",
     "stayFocus": "Pozostań skupiony przez ",
     "settingsPomodoro": "Ustawienia Pomodoro",
     "minutes": "Minuty",
+    "takeAShortBreak": "Zrób sobie krótką przerwę.",
+    "takeALongBreak": "Zasłuzyłeś na dłuszą przerwę.",
+    "endBreak": "Koniec przerwy!",
+    "backToWork": "Czas wziąć się do pracy.",
+    "timeUp": "Czas minął!",
+
     
     "currentTask": "Aktualne zadanie",
     "toLongBreak": " sesje do długiej przerwy",
@@ -58,6 +64,9 @@
 
     "inputEmptyError": "* Wprowadź tekst, aby kontynuować.",
     "save": "Zapisz",
+
+    "congratulations": "Wszystko zrobione!",
+    "doneAllTasks": "Nie masz więcej zaplanowaych zadan na dzisiejszy dzien!",
 
 
 }

@@ -63,7 +63,13 @@ const ProjectTasks = ({navigation,route}) => {
                     />
                 </Pressable>
             )
-    });}, [navigation]);
+    })
+        return () => {({
+            headerTitle: () => null,
+            headerRight: () => null,
+        })
+        }
+    ;}, [navigation]);
 
     function onRealmChange() {
         setTasks(getProjectTasks(project))
