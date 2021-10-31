@@ -26,6 +26,11 @@
     "longBreakIntervals": "Long break intervals",
     "autoStartPomodoro": "Auto start pomodoro?",
     "autoStartBreak": "Auto start break?",
+    "takeAShortBreak": "Take a short break.",
+    "takeALongBreak": "You deserve a long break.",
+    "endBreak": "End of the break!",
+    "backToWork": "Time to get to work.",
+    "timeUp": "Time's up!",
 
     "settingsPomodoro": "Pomodor Settings",
     "minutes": "Minutes",
@@ -60,6 +65,10 @@
 
     "inputEmptyError": "* Please enter the text to proceed.",
     "save": "Save",
+
+    "congratulations": "All done!",
+    "doneAllTasks": "You don't have any more tasks scheduled for today!"
+
 
 
     

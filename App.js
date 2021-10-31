@@ -1,14 +1,12 @@
-import 'react-native-gesture-handler';
-import React, {useState} from 'react';
-import {StatusBar} from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import DrawerNav from './src/navigations/drawerNav';
-import { useFonts } from 'expo-font';
-import AppLoading from 'expo-app-loading';
-import {setI18Config} from './src/translations/translations'
-import TasksList from './src/screens/Dasboard/ToDo/TasksList';
-import DrawerNavigator from './src/navigations/newdrawer';
-import { navigationRef } from './src/navigations/newdrawer';
+import "react-native-gesture-handler";
+import React, { useState, useEffect } from "react";
+import { StatusBar } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { useFonts } from "expo-font";
+import { setI18Config } from "./src/translations/translations";
+import DrawerNav from "./src/navigations/DrawerNav";
+import SplashScreen from "react-native-splash-screen";
+import realm from "./src/Database/Database";
 
 const customFonts = {
   OpenSansReg: require("./src/assets/fonts/OpenSans-Regular.ttf"),
@@ -16,27 +14,31 @@ const customFonts = {
   OpenSansBold: require("./src/assets/fonts/OpenSans-Bold.ttf"),
   OpenSansExtraBold: require("./src/assets/fonts/OpenSans-ExtraBold.ttf"),
   NexaBold: require("./src/assets/fonts/Nexa-Bold.otf"),
-
-
-}
+  MontserratRegular: require("./src/assets/fonts/Montserrat-Regular.ttf"),
+  MontserratMedium: require("./src/assets/fonts/Montserrat-Medium.ttf"),
+  MontserratSemiBold: require("./src/assets/fonts/Montserrat-SemiBold.ttf"),
+  MontserratBold: require("./src/assets/fonts/Montserrat-Bold.ttf"),
+};
 
 const App = () => {
-  const [isLoaded] = useFonts(customFonts)
-  const [strings, i18n] = useState(setI18Config())
+  const [isLoaded] = useFonts(customFonts);
+  const [string, i18n] = useState(setI18Config());
 
-  if (!isLoaded){
-    return <AppLoading />
-  };
+  useEffect(() => {
+    SplashScreen.hide();
+    return () => {
+      realm.close();
+    };
+  }, []);
 
   return (
     <>
-    <StatusBar/>
-    <NavigationContainer >
-      <DrawerNavigator />
-    </NavigationContainer>
+      <StatusBar />
+      <NavigationContainer>
+        <DrawerNav />
+      </NavigationContainer>
     </>
   );
-}
-
+};
 
 export default App;

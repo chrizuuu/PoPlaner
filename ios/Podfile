@@ -18,4 +18,10 @@ target 'producitivityUp' do
   #     flipper_post_install(installer)
   #   end
   # end
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
+  pod 'react-native-background-timer', :path => '../node_modules/react-native-background-timer'
+
+  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-async-storage/async-storage'
+
 end

@@ -21,7 +21,6 @@ const ScheduleScreen = ({navigation}) => {
     const [taskInputBackdrop,setTaskInputBackdrop] = useState(false)
     const inputTaskRef = useRef(null)
 
-
     const onRealmChange =() => {
         setTasksHandler(currentDay)
     }
@@ -29,6 +28,9 @@ const ScheduleScreen = ({navigation}) => {
     useEffect(() => {
         setDaysHandler()
         setTasksHandler(currentDay)
+        return () => {
+            realm.removeAllListeners();
+        }
     }, [navigation])
 
     useLayoutEffect(() => {
@@ -38,7 +40,12 @@ const ScheduleScreen = ({navigation}) => {
                     {format(currentDay,"EEEE, d LLLL yyyy", {locale: pl})}  
                 </Text>
         ),})
-    ;}, [currentDay]);
+        return () => {
+            navigation.setOptions({ 
+                headerTitle: () => null
+            ,})
+        }
+    ;}, [currentDay,navigation]);
 
     useEffect(() => {
         setTasksHandler(currentDay)
@@ -47,7 +54,7 @@ const ScheduleScreen = ({navigation}) => {
         }
         realm.addListener("change", onRealmChange);
         return () =>
-            realm.removeAllListeners()
+            realm.removeListener("change",onRealmChange);
     }, [currentDay])
 
 

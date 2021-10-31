@@ -1,15 +1,24 @@
-Zadania na tydzień 17-23 maj:
+Structure of project:
+    ☐ Sprawdzic jak dziala memoize() i dlaczego sie tego uzywa i kiedy?
+    ☐ Poprawic jakosc kodu i logike
+    ☐ Przeleciec caly projekt Preetierem i eslintem 
+    ☐ ZMienic UI aplikacji na nowy
+    ☐ Rozdzielic projekt na wiecej re-uzywalnych komponentow
+    ☐ Stworzyc wlasny modal-component (?)
+    ☐ Create global state for settings (Mobx or Redux)
+    ☐ Add Night/Dark mode - create globally colors sets
+    ☐ Change font-family t- Montserrat
+    ☐ ProjectTasks poprawic i uproscic ilosc statow
 
-☐ Sprawdzic jak dziala memoize() i dlaczego sie tego uzywa i kiedy?
-✔ DOdac Image do ekranu logowania @done (5/15/2021, 10:07:56 PM)
-✔ Stworzyc ekran rejestracji @done (5/22/2021, 12:09:15 AM)
-✔ Dodac secureTextEntry dla TextInput Password @done (5/22/2021, 12:12:40 AM)
+Pomodoro:
+    ☐ Poprawic backgorund Timer (natywny komponent?)
+    ☐ Poprawic powiadomienia (natywny komponent?)
+    
 
-☐ Dodac default config
-☐ Dodac ekran z ustawieniami pomodoro
-✔ Dodac sprawdzanie warunkowe autoBreak i autoPomodoro @done (5/28/2021, 8:51:43 AM)
-☐ Poprawic jakosc kodu aby był zgodny z wszelkimi standardami
-☐ Poprawic ogolna logike
-✔ Dodac przyciski zmiany typu Timera: Pomodoro / Breaks @done (5/29/2021, 10:43:49 PM)
+Tasks module:
+    ☐ uzyj stanu gloalnego dla listy zadan - zmieniaj ten stan gdy zmieni sie ekran lub jakies inne wartosci np. inna data w kalendarzu
+
+
+
 
 
