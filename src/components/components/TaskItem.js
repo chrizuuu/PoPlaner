@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 import {
   View,
   Text,
@@ -7,27 +7,27 @@ import {
   StyleSheet,
   TextInput,
   ScrollView,
-} from "react-native";
+} from "react-native"
 import realm, {
   changePriority,
   updateIsDone,
   deleteTask,
   getAllProjects,
-} from "../../Database/Database";
-import CheckBox from "../Buttons/CheckBox";
-import { Picker } from "@react-native-picker/picker";
-import DatePicker from "react-native-date-picker";
-import { Icon } from "react-native-elements";
-import Modal from "react-native-modal";
-import sharedStyles from "../../styles/shared";
-import FlexLayout from "../Layouts/FlexLayout";
-import PropertyItem from "../components/PropertyItem";
-import { strings } from "../../translations/translations";
-import CustomizingHeaderBar from "../Header/CustomizingHeaderBar";
-import ErrorText from "../Text/ErrorText";
-import TaskPropertyOnList from "./TaskPropertyOnList";
-import colors from "../../styles/colorsLightTheme";
-import { TouchableWithoutFeedback } from "react-native";
+} from "../../Database/realm"
+import CheckBox from "../Buttons/CheckBox"
+import { Picker } from "@react-native-picker/picker"
+import DatePicker from "react-native-date-picker"
+import { Icon } from "react-native-elements"
+import Modal from "react-native-modal"
+import sharedStyles from "../../styles/shared"
+import FlexLayout from "../Layouts/FlexLayout"
+import PropertyItem from "../components/PropertyItem"
+import { strings } from "../../translations/translations"
+import CustomizingHeaderBar from "../Header/CustomizingHeaderBar"
+import ErrorText from "../Text/ErrorText"
+import TaskPropertyOnList from "./TaskPropertyOnList"
+import colors from "../../styles/colorsLightTheme"
+import { TouchableWithoutFeedback } from "react-native"
 
 const styles = StyleSheet.create({
   container: {
@@ -106,11 +106,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: "OpenSansReg",
   },
-});
+})
 
 export default class TaskItem extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       inputTitle: this.task.title,
       errorTitleStatus: false,
@@ -121,14 +121,14 @@ export default class TaskItem extends React.Component {
       taskPageIsOpen: false,
       taskDeadlineDatePicker: false,
       dateInput: this.task.deadlineDate,
-    };
+    }
   }
 
-  task = realm.objectForPrimaryKey("Task", this.props.item_id);
+  task = realm.objectForPrimaryKey("Task", this.props.item_id)
 
   changeTitleHandler = (value) => {
-    this.setState({ inputTitle: value });
-  };
+    this.setState({ inputTitle: value })
+  }
 
   submitTitleHandler = () => {
     if (
@@ -136,41 +136,41 @@ export default class TaskItem extends React.Component {
       this.state.inputTitle.trim().length > 0
     ) {
       realm.write(() => {
-        this.task.title = this.state.inputTitle;
-      });
-      Keyboard.dismiss();
+        this.task.title = this.state.inputTitle
+      })
+      Keyboard.dismiss()
       this.setState({
         errorTitleStatus: false,
-      });
+      })
     } else {
       this.setState({
         errorTitleStatus: true,
-      });
+      })
     }
-  };
+  }
 
   changeCommentHandler = (value) => {
     this.setState({
       inputComment: value,
       inputCommentBtn: true,
-    });
-  };
+    })
+  }
 
   commentInputTurnOn = () => {
     this.setState({
       inputCommentFocus: true,
       taskDeadlineDatePicker: false,
-    });
-  };
+    })
+  }
 
   commentInputDismiss = () => {
     this.setState({
       inputCommentFocus: false,
       inputCommentBtn: false,
       errorCommentStatus: false,
-    });
-    Keyboard.dismiss();
-  };
+    })
+    Keyboard.dismiss()
+  }
 
   submitCommentHandler = () => {
     if (
@@ -178,56 +178,56 @@ export default class TaskItem extends React.Component {
       this.state.inputComment.trim().length > 0
     ) {
       realm.write(() => {
-        this.task.comment = this.state.inputComment;
-      });
-      this.commentInputDismiss();
-      Keyboard.dismiss();
+        this.task.comment = this.state.inputComment
+      })
+      this.commentInputDismiss()
+      Keyboard.dismiss()
     } else {
       this.setState({
         errorCommentStatus: true,
-      });
+      })
     }
-  };
+  }
 
   setTaskPageIsOpen = (visible) => {
     this.setState({
       taskPageIsOpen: visible,
-    });
-    this.commentInputDismiss();
+    })
+    this.commentInputDismiss()
     // provide information about taskPageIsOpen
     //this.props.provideModalVisibleStatus(visible)
-  };
+  }
 
   saveProject = (value) => {
     realm.write(() => {
-      let taskToDelete = this.task.project.tasks.indexOf(this.task);
-      this.task.project.tasks.splice(taskToDelete, 1);
-      value.tasks.push(this.task);
-      this.task.project = value;
-    });
-  };
+      let taskToDelete = this.task.project.tasks.indexOf(this.task)
+      this.task.project.tasks.splice(taskToDelete, 1)
+      value.tasks.push(this.task)
+      this.task.project = value
+    })
+  }
 
   setDeadlineDate = (value) => {
     realm.write(() => {
-      this.task.deadlineDate = value;
-    });
+      this.task.deadlineDate = value
+    })
     this.setState({
       taskDeadlineDatePicker: false,
-    });
-  };
+    })
+  }
 
   render() {
     let priorityTaskStatus =
       this.task.priority === true
         ? { color: "rgb(83,211,175)", icon: "star" }
-        : { color: "rgba(48,48,48,0.3)", icon: "star-border" };
+        : { color: "rgba(48,48,48,0.3)", icon: "star-border" }
 
-    let isDoneTaskOpacity = this.task.isDone === true ? 0.4 : 1;
-    let displayDatePicker = this.state.taskDeadlineDatePicker ? "flex" : "none";
+    let isDoneTaskOpacity = this.task.isDone === true ? 0.4 : 1
+    let displayDatePicker = this.state.taskDeadlineDatePicker ? "flex" : "none"
     let focusCommentInput = this.state.inputCommentFocus
       ? styles.commentInputFocusWrapper
-      : styles.commentInputWrapper;
-    let projects = realm.objects("Project");
+      : styles.commentInputWrapper
+    let projects = realm.objects("Project")
     return (
       <>
         <Pressable
@@ -308,7 +308,7 @@ export default class TaskItem extends React.Component {
                     defaultValue={this.task.title}
                     onChangeText={(input) => this.changeTitleHandler(input)}
                     onSubmitEditing={() => {
-                      this.submitTitleHandler();
+                      this.submitTitleHandler()
                     }}
                   />
                   {this.state.errorTitleStatus === true ? (
@@ -435,7 +435,7 @@ export default class TaskItem extends React.Component {
                       <Text
                         style={styles.saveBtn}
                         onPress={() => {
-                          this.submitCommentHandler();
+                          this.submitCommentHandler()
                         }}
                       >
                         {strings("saveComment")}
@@ -485,6 +485,6 @@ export default class TaskItem extends React.Component {
           </FlexLayout>
         </Modal>
       </>
-    );
+    )
   }
 }
