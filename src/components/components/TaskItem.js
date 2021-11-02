@@ -1,3 +1,6 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable react/destructuring-assignment */
+
 import React from "react"
 import {
   View,
@@ -6,28 +9,25 @@ import {
   Pressable,
   StyleSheet,
   TextInput,
-  ScrollView,
-} from "react-native"
-import realm, {
-  changePriority,
-  updateIsDone,
-  deleteTask,
-  getAllProjects,
-} from "../../Database/realm"
-import CheckBox from "../Buttons/CheckBox"
+ TouchableWithoutFeedback } from "react-native"
 import { Picker } from "@react-native-picker/picker"
 import DatePicker from "react-native-date-picker"
 import { Icon } from "react-native-elements"
 import Modal from "react-native-modal"
+import CheckBox from "../Buttons/CheckBox"
+import database, {
+  changePriority,
+  updateIsDone,
+  deleteTask,
+} from "../../Database/Database"
 import sharedStyles from "../../styles/shared"
 import FlexLayout from "../Layouts/FlexLayout"
-import PropertyItem from "../components/PropertyItem"
+import PropertyItem from "./PropertyItem"
 import { strings } from "../../translations/translations"
 import CustomizingHeaderBar from "../Header/CustomizingHeaderBar"
 import ErrorText from "../Text/ErrorText"
 import TaskPropertyOnList from "./TaskPropertyOnList"
 import colors from "../../styles/colorsLightTheme"
-import { TouchableWithoutFeedback } from "react-native"
 
 const styles = StyleSheet.create({
   container: {
@@ -124,7 +124,23 @@ export default class TaskItem extends React.Component {
     }
   }
 
-  task = realm.objectForPrimaryKey("Task", this.props.item_id)
+  setTaskPageIsOpen = (visible) => {
+    this.setState({
+      taskPageIsOpen: visible,
+    })
+    this.commentInputDismiss()
+    // provide information about taskPageIsOpen
+    // this.props.provideModalVisibleStatus(visible)
+  }
+
+  setDeadlineDate = (value) => {
+    database.write(() => {
+      this.task.deadlineDate = value
+    })
+    this.setState({
+      taskDeadlineDatePicker: false,
+    })
+  }
 
   changeTitleHandler = (value) => {
     this.setState({ inputTitle: value })
@@ -135,7 +151,7 @@ export default class TaskItem extends React.Component {
       this.state.inputTitle !== "" &&
       this.state.inputTitle.trim().length > 0
     ) {
-      realm.write(() => {
+      database.write(() => {
         this.task.title = this.state.inputTitle
       })
       Keyboard.dismiss()
@@ -177,7 +193,7 @@ export default class TaskItem extends React.Component {
       this.state.inputComment !== "" &&
       this.state.inputComment.trim().length > 0
     ) {
-      realm.write(() => {
+      database.write(() => {
         this.task.comment = this.state.inputComment
       })
       this.commentInputDismiss()
@@ -189,45 +205,29 @@ export default class TaskItem extends React.Component {
     }
   }
 
-  setTaskPageIsOpen = (visible) => {
-    this.setState({
-      taskPageIsOpen: visible,
-    })
-    this.commentInputDismiss()
-    // provide information about taskPageIsOpen
-    //this.props.provideModalVisibleStatus(visible)
-  }
-
   saveProject = (value) => {
-    realm.write(() => {
-      let taskToDelete = this.task.project.tasks.indexOf(this.task)
+    database.write(() => {
+      const taskToDelete = this.task.project.tasks.indexOf(this.task)
       this.task.project.tasks.splice(taskToDelete, 1)
       value.tasks.push(this.task)
       this.task.project = value
     })
   }
 
-  setDeadlineDate = (value) => {
-    realm.write(() => {
-      this.task.deadlineDate = value
-    })
-    this.setState({
-      taskDeadlineDatePicker: false,
-    })
-  }
+  task = database.objectForPrimaryKey("Task", this.props.item_id)
 
   render() {
-    let priorityTaskStatus =
+    const priorityTaskStatus =
       this.task.priority === true
         ? { color: "rgb(83,211,175)", icon: "star" }
         : { color: "rgba(48,48,48,0.3)", icon: "star-border" }
 
-    let isDoneTaskOpacity = this.task.isDone === true ? 0.4 : 1
-    let displayDatePicker = this.state.taskDeadlineDatePicker ? "flex" : "none"
-    let focusCommentInput = this.state.inputCommentFocus
+    const isDoneTaskOpacity = this.task.isDone === true ? 0.4 : 1
+    const displayDatePicker = this.state.taskDeadlineDatePicker ? "flex" : "none"
+    const focusCommentInput = this.state.inputCommentFocus
       ? styles.commentInputFocusWrapper
       : styles.commentInputWrapper
-    let projects = realm.objects("Project")
+    const projects = database.objects("Project")
     return (
       <>
         <Pressable
@@ -370,10 +370,9 @@ export default class TaskItem extends React.Component {
                   valueIcon="today"
                   valueTitle={strings("taskPropertyDate")}
                   onPress={() =>
-                    this.setState({
-                      taskDeadlineDatePicker:
-                        !this.state.taskDeadlineDatePicker,
-                    })
+                    this.setState((prevState) => ({
+                      taskDeadlineDatePicker: !prevState.taskDeadlineDatePicker,
+                    }))
                   }
                   valueContainer={
                     <Text style={{ textAlign: "right" }}>
@@ -447,7 +446,7 @@ export default class TaskItem extends React.Component {
                     onBlur={() => this.commentInputDismiss()}
                     style={styles.commentInput}
                     name="input"
-                    multiline={true}
+                    multiline
                     maxLength={1000}
                     defaultValue={this.task.comment}
                     onChangeText={(input) => this.changeCommentHandler(input)}
@@ -459,9 +458,9 @@ export default class TaskItem extends React.Component {
 
                   <Text style={[sharedStyles.padding10, styles.text]}>
                     {strings("taskCreatedAt")}
-                    {this.task.createdDate.toLocaleDateString() +
-                      " " +
-                      this.task.createdDate.toLocaleTimeString()}
+                    {`${this.task.createdDate.toLocaleDateString() 
+                      } ${ 
+                      this.task.createdDate.toLocaleTimeString()}`}
                   </Text>
                 </View>
               </View>

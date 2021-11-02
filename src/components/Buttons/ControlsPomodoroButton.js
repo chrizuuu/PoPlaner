@@ -1,9 +1,9 @@
-import React from "react";
-import { TouchableOpacity, View, StyleSheet } from "react-native";
-import { Icon } from "react-native-elements";
-import styleButton from "./style";
-import InLineLayout from "../Layouts/InLineLayout";
-import colors from "../../styles/colorsLightTheme";
+import React from "react"
+import { TouchableOpacity, View, StyleSheet } from "react-native"
+import { Icon } from "react-native-elements"
+import styleButton from "./style"
+import InLineLayout from "../Layouts/InLineLayout"
+import colors from "../../styles/colorsLightTheme"
 
 const ControlsPomodoroButton = ({
   start,
@@ -24,12 +24,12 @@ const ControlsPomodoroButton = ({
       height: 54,
       width: 54,
     },
-  });
+  })
 
-  const backgroundColorChanger = status === "Playing" ? "#EE5436" : "#53D3AF";
+  const backgroundColorChanger = status === "Playing" ? "#EE5436" : "#53D3AF"
   return (
     <View style={[{ ...style }]}>
-      {!status || status == "Finished" ? (
+      {!status || status === "Finished" ? (
         <TouchableOpacity
           style={[
             styleButton.buttonControls,
@@ -60,8 +60,7 @@ const ControlsPomodoroButton = ({
             />
           </TouchableOpacity>
 
-          {
-            <TouchableOpacity
+          <TouchableOpacity
               style={[
                 styleButton.buttonControls,
                 styles.normalBtn,
@@ -76,7 +75,6 @@ const ControlsPomodoroButton = ({
                 size={48}
               />
             </TouchableOpacity>
-          }
           <TouchableOpacity
             style={[styleButton.buttonControls, styles.smallBtn]}
             onPress={skip}
@@ -86,6 +84,6 @@ const ControlsPomodoroButton = ({
         </InLineLayout>
       ) : null}
     </View>
-  );
-};
-export default ControlsPomodoroButton;
+  )
+}
+export default ControlsPomodoroButton

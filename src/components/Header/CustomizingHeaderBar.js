@@ -1,41 +1,26 @@
-import React from 'react';
-import {View,Text} from 'react-native';
-import InLineLayout from '../Layouts/InLineLayout';
-import {Icon} from 'react-native-elements';
-import styleHeader from './style';
-import sharedStyles from '../../styles/shared';
-import { TouchableOpacity } from 'react-native';
+import React from "react"
+import { View } from "react-native"
+import InLineLayout from "../Layouts/InLineLayout"
+import styleHeader from "./style"
 
-const CustomizingHeaderBar = ({style,leftSide,centerSide,rightSide}) => {
-    return (
-        <View style = {[styleHeader.container,{...style}]} >
-            <InLineLayout style={styleHeader.wrapper}>
-                {(leftSide) ? 
-                    <View
-                        style={styleHeader.iconWrapper} 
-                    >
-                        {leftSide}
-                    </View>
+const CustomizingHeaderBar = ({ style, leftSide, centerSide, rightSide }) => (
+    <View style={[styleHeader.container, { ...style }]}>
+      <InLineLayout style={styleHeader.wrapper}>
+        {leftSide ? (
+          <View style={styleHeader.iconWrapper}>{leftSide}</View>
+        ) : (
+          <View style={styleHeader.iconWrapper} />
+        )}
 
-                : <View style={styleHeader.iconWrapper} />}
+        {centerSide}
 
-                        {centerSide}
-
-                {(rightSide)? 
-
-                    <View
-                        style={styleHeader.iconWrapper} 
-                    >
-                        {rightSide}
-                    </View>
-
-                : <View style={styleHeader.iconWrapper} /> }
-            </InLineLayout>
-        </View>
-    )
-}
-
+        {rightSide ? (
+          <View style={styleHeader.iconWrapper}>{rightSide}</View>
+        ) : (
+          <View style={styleHeader.iconWrapper} />
+        )}
+      </InLineLayout>
+    </View>
+  )
 
 export default CustomizingHeaderBar
-
-

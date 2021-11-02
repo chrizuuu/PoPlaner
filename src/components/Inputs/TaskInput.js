@@ -1,36 +1,16 @@
 import React, { useState, useRef, forwardRef, useImperativeHandle } from "react"
 import { View, TextInput, StyleSheet, Keyboard } from "react-native"
 import { Icon } from "react-native-elements"
-import { createTask } from "../../Database/realm"
+import { createTask } from "../../Database/Database"
 import { strings } from "../../translations/translations"
 import colors from "../../styles/colorsLightTheme"
 import ErrorText from "../Text/ErrorText"
-import PropTypes from "prop-types"
 
 const TaskInput = forwardRef((props, ref) => {
   const [addFormVisible, setAddFormVisible] = useState(false)
   const [errorStatus, setErrorStatus] = useState(false)
   const [inputValue, setInputValue] = useState("")
   const inputTask = useRef(null)
-
-  useImperativeHandle(ref, () => {
-    return {
-      addFormSetVisible: addFormSetVisible,
-      backdropHandler: backdropHandler,
-    }
-  })
-
-  const submitTaskHandler = () => {
-    if (inputValue !== "" && inputValue.trim().length > 0) {
-      createTask(inputValue, props.priority, props.project, props.date)
-      setErrorStatus(false)
-      setInputValue("")
-      addFormDismiss()
-    } else {
-      setErrorStatus(true)
-      setTimeout(() => inputTask.current.focus(), 0)
-    }
-  }
 
   const inputValueHandler = (value) => {
     setInputValue(value)
@@ -62,6 +42,23 @@ const TaskInput = forwardRef((props, ref) => {
       setAddFormVisible(false)
     }
     props.addFormSetVisible(false)
+  }
+
+  useImperativeHandle(ref, () => ({
+      addFormSetVisible,
+      backdropHandler,
+    }))
+
+  const submitTaskHandler = () => {
+    if (inputValue !== "" && inputValue.trim().length > 0) {
+      createTask(inputValue, props.priority, props.project, props.date)
+      setErrorStatus(false)
+      setInputValue("")
+      addFormDismiss()
+    } else {
+      setErrorStatus(true)
+      setTimeout(() => inputTask.current.focus(), 0)
+    }
   }
 
   const styles = StyleSheet.create({
@@ -110,10 +107,5 @@ const TaskInput = forwardRef((props, ref) => {
     </>
   )
 })
-
-TaskInput.propTypes = {
-  addFormSetVisible: PropTypes.func.isRequired,
-  addFormDismiss: PropTypes.func.isRequired,
-}
 
 export default TaskInput

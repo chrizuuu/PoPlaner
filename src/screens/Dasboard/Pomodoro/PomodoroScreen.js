@@ -1,35 +1,26 @@
-import React from "react";
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-unused-expressions */
+import React from "react"
 import {
   View,
   Text,
   Vibration,
   Pressable,
   TouchableOpacity,
-  Dimensions,
-  FlatList,
   StyleSheet,
-  AppRegistry,
-} from "react-native";
-import Modal from "react-native-modal";
-import { strings } from "../../../translations/translations";
-import { formatTime } from "../../../components/Helpers/helpers";
-import FlexLayout from "../../../components/Layouts/FlexLayout";
-import ControlsPomodoroButton from "../../../components/Buttons/ControlsPomodoroButton";
-import sharedStyles from "../../../styles/shared";
-import HeaderBar from "../../../components/Header/HeaderBar";
-import { Timer } from "../../../components/components/Timer";
-import SettingsBarHeader from "../../../components/components/settingsBarHeader";
-import SettingsSwitchBar from "../../../components/components/settingsSwitchBar";
-import FlatListSlider from "../../../components/components/FlatListSlider";
-import { Icon } from "react-native-elements/dist/icons/Icon";
-import colors from "../../../styles/colorsLightTheme";
-import BackgroundTimer from "react-native-background-timer";
-import { differenceInSeconds } from "date-fns";
+} from "react-native"
+import { Icon } from "react-native-elements/dist/icons/Icon"
+import BackgroundTimer from "react-native-background-timer"
+import { differenceInSeconds } from "date-fns"
+import { strings } from "../../../translations/translations"
+import formatTime from "../../../components/Helpers/helpers"
+import FlexLayout from "../../../components/Layouts/FlexLayout"
+import ControlsPomodoroButton from "../../../components/Buttons/ControlsPomodoroButton"
+import Timer from "../../../components/components/Timer"
+import colors from "../../../styles/colorsLightTheme"
 
-const pomodoroTimeValue = [
-  0.2, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 70, 80, 90,
-];
-const breaksTimeValue = [0.2, 2, 5, 10, 15, 20, 25, 30];
+// const pomodoroTimeValue = [  0.2, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60,70, 80, 90,]
+// const breaksTimeValue = [0.2, 2, 5, 10, 15, 20, 25, 30]
 
 const defaultProps = {
   types: [
@@ -38,7 +29,7 @@ const defaultProps = {
     { name: "Long Break", time: 600 },
   ],
   statuses: [{ name: "Playing" }, { name: "Paused" }, { name: "Finished" }],
-};
+}
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -70,11 +61,11 @@ const styles = StyleSheet.create({
     width: 60,
     height: 35,
   },
-});
+})
 
 export default class PomodoroScreen extends React.PureComponent {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       type: defaultProps.types[0],
       time: defaultProps.types[0].time,
@@ -85,155 +76,157 @@ export default class PomodoroScreen extends React.PureComponent {
       autoBreakStart: false,
       autoLongBreakInterval: 4,
       autoPomodoroStart: false,
-      //settingsIsOpen: false,
-    };
+      // settingsIsOpen: false,
+    }
   }
+
   componentDidMount() {
     this.props.navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
           style={{ marginRight: 11 }}
-          onPress={() => this.setIsOpen(!this.state.settingsIsOpen)}
+          onPress={() => this.setIsOpen((prevstate) => !prevstate.value)}
         >
           <Icon type="ionicon" name="information-circle-outline" />
         </TouchableOpacity>
       ),
-    });
+    })
   }
 
   componentWillUnmount() {
     this.props.navigation.setOptions({
       headerRight: () => null,
-    });
-    this.stopTimer();
+    })
+    this.stopTimer()
   }
 
   handlePomodoro = () => {
-    this.stopTimer();
-    BackgroundTimer.stopBackgroundTimer();
-    Vibration.vibrate(100, 100, 100);
+    this.stopTimer()
+    BackgroundTimer.stopBackgroundTimer()
+    Vibration.vibrate(100, 100, 100)
     if (this.state.type === defaultProps.types[0]) {
-      this.handleCountInterval();
+      this.handleCountInterval()
       this.state.countInterval % this.state.autoLongBreakInterval === 0
         ? this.handleType(defaultProps.types[2])
-        : this.handleType(defaultProps.types[1]);
+        : this.handleType(defaultProps.types[1])
 
       this.state.autoBreakStart
         ? this.startTimer()
-        : this.setState({ status: defaultProps.statuses[2].name });
+        : this.setState({ status: defaultProps.statuses[2].name })
     } else {
-      this.handleType(defaultProps.types[0]);
+      this.handleType(defaultProps.types[0])
       this.state.autoPomodoroStart
         ? this.startTimer()
-        : this.setState({ status: null });
+        : this.setState({ status: null })
     }
-  };
+  }
 
   handleCountInterval = () => {
+    this.setState((prevState) => ({
+      countInterval: prevState.countInterval + 1,
+    }))
+  }
+
+  handleType = (type) => {
+    this.stopTimer()
     this.setState({
-      countInterval: ++this.state.countInterval,
-    });
-  };
+      type,
+      time: type.time,
+      playing: false,
+      status: null,
+    })
+  }
+
+  setIsOpen = (visible) => {
+    this.setState({
+      settingsIsOpen: visible,
+    })
+  }
+
+  startTimer = () => {
+    const startTime = new Date()
+    this.setState({
+      status: defaultProps.statuses[0].name,
+      playing: true,
+      interval: BackgroundTimer.setInterval(() => {
+        this.timer(startTime)
+      }, 1000),
+    })
+  }
+
+  stopTimer = () => {
+    BackgroundTimer.clearInterval(this.state.interval)
+    this.setState({
+      interval: null,
+    })
+  }
+
+  resetTimer = () => {
+    this.stopTimer()
+    this.setState((prevState) => ({
+      time: prevState.type.time,
+      playing: false,
+      status: null,
+      countInterval: 0,
+    }))
+  }
+
+  skipTimer = () => {
+    this.handlePomodoro()
+  }
+
+  pauseTimer = () => {
+    if (this.state.playing) {
+      this.stopTimer()
+      this.setState({
+        status: defaultProps.statuses[1].name,
+        playing: false,
+      })
+    } else {
+      this.startTimer()
+    }
+  }
 
   timer = (startTime) => {
     this.state.time < 1
       ? this.handlePomodoro()
       : this.setState((prevState) => ({
           time:
-            this.state.type.time -
+            prevState.time -
             differenceInSeconds(new Date(), Date.parse(startTime)),
-        }));
-  };
-
-  startTimer = () => {
-    const startTime = new Date();
-    this.setState({
-      status: defaultProps.statuses[0].name,
-      playing: true,
-      interval: BackgroundTimer.setInterval(() => {
-        this.timer(startTime);
-      }, 1000),
-    });
-  };
-
-  stopTimer = () => {
-    BackgroundTimer.clearInterval(this.state.interval);
-    this.setState({
-      interval: null,
-    });
-  };
-
-  resetTimer = () => {
-    this.stopTimer();
-    this.setState({
-      time: this.state.type.time,
-      playing: false,
-      status: null,
-      countInterval: 0,
-    });
-  };
-
-  skipTimer = () => {
-    this.handlePomodoro();
-  };
-
-  pauseTimer = () => {
-    if (this.state.playing) {
-      this.stopTimer();
-      this.setState({
-        status: defaultProps.statuses[1].name,
-        playing: false,
-      });
-    } else {
-      this.startTimer();
-    }
-  };
-
-  setIsOpen = (visible) => {
-    this.setState({
-      settingsIsOpen: visible,
-    });
-  };
+        }))
+  }
 
   changeDefaultProps = (type, value) => {
-    defaultProps.types[type].time = value * 60;
-    this.resetTimer();
-  };
+    defaultProps.types[type].time = value * 60
+    this.resetTimer()
+  }
 
   changeIntervals = (value) => {
     this.setState({
       autoLongBreakInterval: value,
-    });
-    this.resetTimer();
-  };
+    })
+    this.resetTimer()
+  }
 
   changeAutoPomodoroStart = () => {
-    this.setState({
-      autoPomodoroStart: !this.state.autoPomodoroStart,
-    });
-    this.resetTimer();
-  };
+    this.setState((prevState) => ({
+      autoPomodoroStart: !prevState.autoPomodoroStart,
+    }))
+    this.resetTimer()
+  }
 
   changeAutoBreakStart = () => {
-    this.setState({
-      autoBreakStart: !this.state.autoBreakStart,
-    });
-    this.resetTimer();
-  };
+    this.setState((prevState) => ({
+      autoBreakStart: !prevState.autoBreakStart,
+    }))
 
-  handleType = (type) => {
-    this.stopTimer();
-    this.setState({
-      type: type,
-      time: type.time,
-      playing: false,
-      status: null,
-    });
-  };
+    this.resetTimer()
+  }
 
   render() {
-    let timePercent =
-      ((this.state.type.time - this.state.time) / this.state.type.time) * 100;
+    const timePercent =
+      ((this.state.type.time - this.state.time) / this.state.type.time) * 100
 
     return (
       <FlexLayout style={{ color: "#282828" }}>
@@ -270,7 +263,7 @@ export default class PomodoroScreen extends React.PureComponent {
           </View>
         </View>
       </FlexLayout>
-    );
+    )
   }
 }
 

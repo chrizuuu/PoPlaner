@@ -1,21 +1,20 @@
-import { StyleSheet} from 'react-native';
-import { color } from 'react-native-reanimated';
+import { StyleSheet } from "react-native"
 import colors from "../../styles/colorsLightTheme"
-const styleText = StyleSheet.create ({
-   header: {
-    fontSize:34,
-    color:colors.textColor,
-    fontWeight:'700',
-    marginTop:20,
-    opacity:0.8,
-   },
-   
-   subHeader: {
-    opacity:0.7,
-    marginBottom:20,
-    fontSize:16,
-   },
 
-});
+const styleText = StyleSheet.create({
+  header: {
+    fontSize: 34,
+    color: colors.textColor,
+    fontWeight: "700",
+    marginTop: 20,
+    opacity: 0.8,
+  },
 
-export default styleText;
+  subHeader: {
+    opacity: 0.7,
+    marginBottom: 20,
+    fontSize: 16,
+  },
+})
+
+export default styleText

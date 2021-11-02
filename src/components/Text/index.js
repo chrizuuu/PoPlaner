@@ -1,7 +1,4 @@
-import HeaderTx from './headerTx';
-import SubHeaderTx from './subHeaderTx'
+import HeaderTx from "./HeaderTx"
+import SubHeaderTx from "./SubHeaderTx"
 
-export {
-    HeaderTx,
-    SubHeaderTx,
-}
+export { HeaderTx, SubHeaderTx }

@@ -5,8 +5,10 @@
       "plugin:react/recommended",
       "prettier"
     ],
+    "parser": "@babel/eslint-parser",
     "rules": {
       "react/jsx-filename-extension": 0,
+      "react/prop-types": "off",
       "import/no-named-as-default": 0,
       "import/no-unresolved": [
         2, 

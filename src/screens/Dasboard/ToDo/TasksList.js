@@ -1,11 +1,12 @@
-import React, { useState, useRef } from "react";
-import { FlatList, View, StyleSheet, Pressable } from "react-native";
-import realm from "../../../Database/Database";
-import { useFocusEffect } from "@react-navigation/native";
-import TaskItem from "../../../components/components/TaskItem";
-import TaskInput from "../../../components/Inputs/TaskInput";
-import ToDoSTyles from "./style";
-import FooterList from "../../../components/components/FooterList";
+/* eslint-disable no-underscore-dangle */
+import React, { useState, useRef } from "react"
+import { FlatList, View, StyleSheet, Pressable } from "react-native"
+import { useFocusEffect } from "@react-navigation/native"
+import realm from "../../../Database/Database"
+import TaskItem from "../../../components/components/TaskItem"
+import TaskInput from "../../../components/Inputs/TaskInput"
+import ToDoSTyles from "./style"
+import FooterList from "../../../components/components/FooterList"
 
 const TasksList = ({
   navigation,
@@ -13,25 +14,25 @@ const TasksList = ({
   priority,
   displayProjectProperty,
 }) => {
-  const [tasks, setTasks] = useState(tasksType);
-  const [taskInputBackdrop, setTaskInputBackdrop] = useState(false);
-  const inputTaskRef = useRef(null);
+  const [tasks, setTasks] = useState(tasksType)
+  const [taskInputBackdrop, setTaskInputBackdrop] = useState(false)
+  const inputTaskRef = useRef(null)
 
   function onRealmChange() {
-    setTasks(tasksType);
+    setTasks(tasksType)
   }
 
   useFocusEffect(
     React.useCallback(() => {
-      setTasks(tasksType);
-      realm.addListener("change", onRealmChange);
-      return () => realm.removeListener("change", onRealmChange);
+      setTasks(tasksType)
+      realm.addListener("change", onRealmChange)
+      return () => realm.removeListener("change", onRealmChange)
     }, [navigation])
-  );
+  )
 
   const showTaskInput = () => {
-    inputTaskRef.current.addFormSetVisible();
-  };
+    inputTaskRef.current.addFormSetVisible()
+  }
 
   const styles = StyleSheet.create({
     backdropPressable: {
@@ -41,14 +42,14 @@ const TasksList = ({
       top: 60,
       opacity: 0.5,
     },
-  });
+  })
 
   return (
     <>
       <View style={ToDoSTyles.tasksListContainer}>
         <FlatList
           style={{ flex: 1 }}
-          keyboardShouldPersistTaps={"handled"}
+          keyboardShouldPersistTaps="handled"
           ListHeaderComponent={
             <TaskInput
               priority={priority}
@@ -61,15 +62,13 @@ const TasksList = ({
           data={tasks}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item) => item._id.toString()}
-          renderItem={({ item }) => {
-            return (
+          renderItem={({ item }) => (
               <TaskItem
                 // provideModalVisibleStatus={provideModalVisibleStatus}
                 item_id={item._id}
                 displayProjectProperty={displayProjectProperty}
               />
-            );
-          }}
+            )}
         />
         <FooterList leftIcon="add-outline" leftIconOnPress={showTaskInput} />
       </View>
@@ -80,7 +79,7 @@ const TasksList = ({
         />
       ) : null}
     </>
-  );
-};
+  )
+}
 
-export default React.memo(TasksList);
+export default React.memo(TasksList)

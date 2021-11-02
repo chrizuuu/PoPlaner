@@ -1,7 +1,6 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
-import Svg, { Circle } from "react-native-svg";
-import colors from "../../styles/colorsLightTheme";
+import React from "react"
+import { View, StyleSheet } from "react-native"
+import Svg, { Circle } from "react-native-svg"
 
 const styles = StyleSheet.create({
   container: {
@@ -13,23 +12,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-});
+})
 
-export const Timer = ({
-  size,
-  strokeWidth,
-  strokeColor,
-  progress,
-  children,
-}) => {
-  const center = size / 2;
-  const radius = size / 2 - strokeWidth / 2;
-  const circumference = 2 * Math.PI * radius;
+const Timer = ({ size, strokeWidth, strokeColor, progress, children }) => {
+  const center = size / 2
+  const radius = size / 2 - strokeWidth / 2
+  const circumference = 2 * Math.PI * radius
   return (
     <View style={styles.container}>
       <Svg width={size} height={size}>
         <Circle
-          stroke={"#EBEBEB"}
+          stroke="#EBEBEB"
           cx={center}
           cy={center}
           r={radius}
@@ -50,5 +43,7 @@ export const Timer = ({
 
       <View style={styles.childrenContainer}>{children}</View>
     </View>
-  );
-};
+  )
+}
+
+export default Timer

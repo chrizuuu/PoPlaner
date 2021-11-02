@@ -1,8 +1,10 @@
+/* eslint-disable no-underscore-dangle */
+
 import React, { useState } from "react"
 import { FlatList, View, StyleSheet, Pressable } from "react-native"
-import realm, { getAllProjects } from "../../../Database/Database"
 import Modal from "react-native-modal"
 import { CommonActions, useFocusEffect } from "@react-navigation/native"
+import realm, { getAllProjects } from "../../../Database/Database"
 import ProjectItem from "../../../components/components/ProjectItem"
 import ModalCreateProject from "../../../components/ModalComponents/ModalCreateProject"
 import FooterList from "../../../components/components/FooterList"
@@ -37,12 +39,10 @@ const ProjectsListScreen = ({ navigation }) => {
       <View style={styles.container}>
         <FlatList
           showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps={"handled"}
+          keyboardShouldPersistTaps="handled"
           data={projects}
-          showsVerticalScrollIndicator={false}
           keyExtractor={(item) => item._id.toString()}
-          renderItem={({ item }) => {
-            return (
+          renderItem={({ item }) => (
               <Pressable
                 onPress={() => {
                   navigation.dispatch(
@@ -58,10 +58,9 @@ const ProjectsListScreen = ({ navigation }) => {
                   )
                 }}
               >
-                <ProjectItem item_id={item._id} />
+                <ProjectItem itemID={item._id} />
               </Pressable>
-            )
-          }}
+            )}
         />
         <FooterList
           leftIcon="add-outline"

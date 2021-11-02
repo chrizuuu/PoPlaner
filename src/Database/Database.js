@@ -1,6 +1,12 @@
+/* eslint-disable max-classes-per-file */
+/* eslint-disable no-return-assign */
+/* eslint-disable prefer-destructuring */
+
 import Realm from "realm"
 import { ObjectId } from "bson"
-let initProject = null
+import { object } from "prop-types"
+
+let { initProject } = object
 
 class TaskSchema extends Realm.Object {
   static schema = {
@@ -34,22 +40,8 @@ class ProjectSchema extends Realm.Object {
   }
 }
 
-class PomodoroTimerSchema extends Realm.Object {
-  static schema = {
-    name: "PomodoroTimer",
-    primaryKey: "_id",
-    properties: {
-      _id: "objectId",
-      tasks: "Task[]",
-      startTime: "date",
-      endTime: "date?",
-      duration: "int?",
-    },
-  }
-}
-
-const realm = new Realm({
-  schema: [TaskSchema, ProjectSchema, PomodoroTimerSchema],
+const database = new Realm({
+  schema: [TaskSchema, ProjectSchema],
   schemaVersion: 1,
 })
 
@@ -57,8 +49,8 @@ const realm = new Realm({
 
 const createTask = (_title, _priority, _project, _date) => {
   const taskProject = _project != null ? _project : initProject
-  realm.write(() => {
-    const task = realm.create("Task", {
+  database.write(() => {
+    const task = database.create("Task", {
       _id: new ObjectId(),
       title: _title,
       createdDate: new Date(),
@@ -71,95 +63,96 @@ const createTask = (_title, _priority, _project, _date) => {
   })
 }
 
-const getAllTasks = () => {
-  return realm
+const getAllTasks = () => database
     .objects("Task")
     .filtered("isDone == false AND project == $0", initProject)
     .sorted("createdDate", true)
-}
 
-const getPriorityTasks = () => {
-  return realm
+const getPriorityTasks = () => database
     .objects("Task")
     .filtered("isDone == false AND priority == true")
     .sorted("createdDate", true)
-}
 
 const getProjectTasks = (project) => {
-  return realm
+  const projectObject = project
+  return database
     .objects("Task")
-    .filtered("isDone == false AND project == $0", project)
+    .filtered("isDone == false AND project == $0", projectObject)
     .sorted("deadlineDate")
 }
 
 const changePriority = (_task) => {
-  realm.write(() => {
-    _task.priority = !_task.priority
+  const task = _task
+  database.write(() => {
+    task.priority = !task.priority
   })
 }
 
 const updateIsDone = (_task) => {
-  realm.write(() => {
-    _task.isDone = !_task.isDone
+  const task = _task
+  database.write(() => {
+    task.isDone = !task.isDone
   })
 }
 
 const deleteTask = (_task) => {
-  realm.write(() => {
-    realm.delete(_task)
+  const task = _task
+  database.write(() => {
+    database.delete(task)
   })
 }
 
 // Project handlers
 
 const createProject = (_title, _comment) => {
-  realm.write(() => {
-    const project = realm.create("Project", {
-      _id: realm.objects("Project").max("_id") + 1,
-      title: _title,
+  const title = _title
+  const comment = _comment
+  database.write(() => {
+    database.create("Project", {
+      _id: database.objects("Project").max("_id") + 1,
+      title,
       createdDate: new Date(),
-      description: _comment,
+      description: comment,
     })
   })
 }
 
-const getAllProjects = () => {
-  return realm
+const getAllProjects = () => database
     .objects("Project")
     .filtered("visible == true")
     .sorted("createdDate", "Descendig")
-}
 
-const deleteProject = (project) => {
-  realm.write(() => {
-    for (let i = 0; i < project.tasks.length; i++) {
+/* eslint consistent-return: off */
+
+const deleteProject = (_project) => {
+  const project = _project
+  database.write(() => {
+    for (let i = 0; i < project.tasks.length; i += 1) {
       project.tasks[0].project = initProject
     }
-    realm.delete(project)
+    database.delete(project)
   })
 }
 
 // init objects on first run
 
 const initDB = () => {
-  if (realm.objects("Project").length < 1) {
-    realm.write(() => {
-      return (initProject = realm.create("Project", {
+  if (database.objects("Project").length < 1) {
+    database.write(() => (initProject = database.create("Project", {
         _id: 1,
         title: "Wszystkie sprawy",
         createdDate: new Date(),
         visible: false,
-      }))
-    })
+      })))
   } else {
-    return (initProject = realm
+    return (initProject = database
       .objects("Project")
       .filtered("visible == false")[0])
   }
 }
 initDB()
 
-export default realm
+export default database
 
 export {
   createTask,

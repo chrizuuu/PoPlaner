@@ -1,60 +1,59 @@
-import { StyleSheet} from 'react-native';
+import { StyleSheet } from "react-native"
 import colors from "./colorsLightTheme"
 
-const sharedStyles = StyleSheet.create ({
-    //MARGIN TOP
-    margintop15: {marginTop:15},
-    margintop20: {marginTop:20},
-    //MARGIN BOTTOM
-    marginBottom5: {marginBottom:5},
-    marginBottom10: { marginBottom:10},
-    marginBottom25: {marginBottom:25},
-    
-    marginSide25: {
-        marginLeft:25,
-        marginRight:25,
-    },
-    paddingSide25: {
-        paddingHorizontal:25,
-    },
-    paddingSide10: {
-        paddingHorizontal:10,
-    },
+const sharedStyles = StyleSheet.create({
+  // MARGIN TOP
+  margintop15: { marginTop: 15 },
+  margintop20: { marginTop: 20 },
+  // MARGIN BOTTOM
+  marginBottom5: { marginBottom: 5 },
+  marginBottom10: { marginBottom: 10 },
+  marginBottom25: { marginBottom: 25 },
 
-    borderRadius:{ borderRadius:15},
-    padding10:{padding:10},
+  marginSide25: {
+    marginLeft: 25,
+    marginRight: 25,
+  },
+  paddingSide25: {
+    paddingHorizontal: 25,
+  },
+  paddingSide10: {
+    paddingHorizontal: 10,
+  },
 
-    container: {
-        height:'100%',
-        width:'100%',
-        backgroundColor:colors.secondColor,
-    },
+  borderRadius: { borderRadius: 15 },
+  padding10: { padding: 10 },
 
-    wrapperFlex: {
-        flex:1,
-    },
+  container: {
+    height: "100%",
+    width: "100%",
+    backgroundColor: colors.secondColor,
+  },
 
-    wrapperInLine: {
-        flexDirection:'row',
-        alignItems:'center',
-    },
+  wrapperFlex: {
+    flex: 1,
+  },
 
-    errorText: {
-        fontFamily:"OpenSansReg",
-        fontSize:12,
-        color:"#EE5436",
-        padding:5,
-        marginLeft:15,
-    },
+  wrapperInLine: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
 
-    modalContainer: {
-        backgroundColor: colors.secondColor,
-        height:'100%',
-        marginRight:0,
-        marginTop:0,
-        marginBottom:0,
-    }
+  errorText: {
+    fontFamily: "OpenSansReg",
+    fontSize: 12,
+    color: "#EE5436",
+    padding: 5,
+    marginLeft: 15,
+  },
 
+  modalContainer: {
+    backgroundColor: colors.secondColor,
+    height: "100%",
+    marginRight: 0,
+    marginTop: 0,
+    marginBottom: 0,
+  },
 })
 
-export default sharedStyles;
+export default sharedStyles

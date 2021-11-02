@@ -1,12 +1,14 @@
-import "react-native-gesture-handler";
-import React, { useState, useEffect } from "react";
-import { StatusBar } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { useFonts } from "expo-font";
-import { setI18Config } from "./src/translations/translations";
-import DrawerNav from "./src/navigations/DrawerNav";
-import SplashScreen from "react-native-splash-screen";
-import realm from "./src/Database/Database";
+/* eslint-disable import/no-named-as-default-member */
+/* eslint-disable global-require */
+import "react-native-gesture-handler"
+import React, { useState, useEffect } from "react"
+import SplashScreen from "react-native-splash-screen"
+import { StatusBar } from "react-native"
+import { NavigationContainer } from "@react-navigation/native"
+import { useFonts } from "expo-font"
+import { setI18Config } from "./src/translations/translations"
+import DrawerNav from "./src/navigations/DrawerNav"
+import database from "./src/Database/Database"
 
 const customFonts = {
   OpenSansReg: require("./src/assets/fonts/OpenSans-Regular.ttf"),
@@ -18,18 +20,20 @@ const customFonts = {
   MontserratMedium: require("./src/assets/fonts/Montserrat-Medium.ttf"),
   MontserratSemiBold: require("./src/assets/fonts/Montserrat-SemiBold.ttf"),
   MontserratBold: require("./src/assets/fonts/Montserrat-Bold.ttf"),
-};
+}
 
 const App = () => {
-  const [isLoaded] = useFonts(customFonts);
-  const [string, i18n] = useState(setI18Config());
+  // eslint-disable-next-line no-unused-vars
+  const [isLoaded] = useFonts(customFonts)
+  // eslint-disable-next-line no-unused-vars
+  const [string, i18n] = useState(setI18Config())
 
   useEffect(() => {
-    SplashScreen.hide();
+    SplashScreen.hide()
     return () => {
-      realm.close();
-    };
-  }, []);
+      database.close()
+    }
+  }, [])
 
   return (
     <>
@@ -38,7 +42,7 @@ const App = () => {
         <DrawerNav />
       </NavigationContainer>
     </>
-  );
-};
+  )
+}
 
-export default App;
+export default App
