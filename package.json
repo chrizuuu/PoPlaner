@@ -62,7 +62,7 @@
     "lint-st//aged": "^11.2.6"
   },
   "lint-staged": {
-    "*.j": [
+    "*.js": [
       "prettier --config .prettierrc --write",
       "eslint --fix"
     ]
