@@ -24,9 +24,9 @@ import colors from "../../../styles/colorsLightTheme"
 
 const defaultProps = {
   types: [
-    { name: "Pomodoro", time: 300 },
-    { name: "Short Break", time: 300 },
-    { name: "Long Break", time: 600 },
+    { name: "Pomodoro", time: 20 },
+    { name: "Short Break", time: 20 },
+    { name: "Long Break", time: 20 },
   ],
   statuses: [{ name: "Playing" }, { name: "Paused" }, { name: "Finished" }],
 }
@@ -73,9 +73,9 @@ export default class PomodoroScreen extends React.PureComponent {
       status: null,
       interval: null,
       countInterval: 0,
-      autoBreakStart: false,
+      autoBreakStart: true,
       autoLongBreakInterval: 4,
-      autoPomodoroStart: false,
+      autoPomodoroStart: true,
       // settingsIsOpen: false,
     }
   }
@@ -190,11 +190,13 @@ export default class PomodoroScreen extends React.PureComponent {
   timer = (startTime) => {
     this.state.time < 1
       ? this.handlePomodoro()
-      : this.setState((prevState) => ({
+      : /* eslint-disable react/no-access-state-in-setstate */
+        this.setState(() => ({
           time:
-            prevState.time -
+            this.state.type.time -
             differenceInSeconds(new Date(), Date.parse(startTime)),
         }))
+    /* eslint-enable react/no-access-state-in-setstate */
   }
 
   changeDefaultProps = (type, value) => {
@@ -261,6 +263,7 @@ export default class PomodoroScreen extends React.PureComponent {
               status={this.state.status}
             />
           </View>
+          <Text>{this.state.countInterval}</Text>
         </View>
       </FlexLayout>
     )
