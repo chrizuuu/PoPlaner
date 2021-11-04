@@ -1,5 +1,5 @@
 import React from "react"
-import { Pressable , StyleSheet } from "react-native"
+import { Pressable, StyleSheet } from "react-native"
 import { Icon } from "react-native-elements"
 import colors from "../../styles/colorsLightTheme"
 

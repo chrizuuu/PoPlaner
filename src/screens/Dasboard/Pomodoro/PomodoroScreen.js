@@ -16,15 +16,15 @@ import { strings } from "../../../translations/translations"
 import formatTime from "../../../components/Helpers/helpers"
 import FlexLayout from "../../../components/Layouts/FlexLayout"
 import ControlsPomodoroButton from "../../../components/Buttons/ControlsPomodoroButton"
-import Timer from "../../../components/components/Timer"
+import Timer from "../../../components/Timer/Timer"
 import colors from "../../../styles/colorsLightTheme"
 
 // const pomodoroTimeValue = [  0.2, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60,70, 80, 90,]
 // const breaksTimeValue = [0.2, 2, 5, 10, 15, 20, 25, 30]
 
-const defaultProps = {
+const timerProps = {
   types: [
-    { name: "Pomodoro", time: 20 },
+    { name: "Pomodoro", time: 1500 },
     { name: "Short Break", time: 20 },
     { name: "Long Break", time: 20 },
   ],
@@ -67,15 +67,15 @@ export default class PomodoroScreen extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      type: defaultProps.types[0],
-      time: defaultProps.types[0].time,
+      type: timerProps.types[0],
+      time: timerProps.types[0].time,
       playing: false,
       status: null,
       interval: null,
       countInterval: 0,
-      autoBreakStart: true,
-      autoLongBreakInterval: 4,
-      autoPomodoroStart: true,
+      autoBreakStart: false,
+      longBreakInterval: 4,
+      autoPomodoroStart: false,
       // settingsIsOpen: false,
     }
   }
@@ -104,17 +104,17 @@ export default class PomodoroScreen extends React.PureComponent {
     this.stopTimer()
     BackgroundTimer.stopBackgroundTimer()
     Vibration.vibrate(100, 100, 100)
-    if (this.state.type === defaultProps.types[0]) {
+    if (this.state.type === timerProps.types[0]) {
       this.handleCountInterval()
-      this.state.countInterval % this.state.autoLongBreakInterval === 0
-        ? this.handleType(defaultProps.types[2])
-        : this.handleType(defaultProps.types[1])
+      this.state.countInterval % this.state.longBreakInterval === 0
+        ? this.handleType(timerProps.types[2])
+        : this.handleType(timerProps.types[1])
 
       this.state.autoBreakStart
         ? this.startTimer()
-        : this.setState({ status: defaultProps.statuses[2].name })
+        : this.setState({ status: timerProps.statuses[2].name })
     } else {
-      this.handleType(defaultProps.types[0])
+      this.handleType(timerProps.types[0])
       this.state.autoPomodoroStart
         ? this.startTimer()
         : this.setState({ status: null })
@@ -137,16 +137,19 @@ export default class PomodoroScreen extends React.PureComponent {
     })
   }
 
+  /*
   setIsOpen = (visible) => {
     this.setState({
       settingsIsOpen: visible,
     })
   }
 
+  */
+
   startTimer = () => {
     const startTime = new Date()
     this.setState({
-      status: defaultProps.statuses[0].name,
+      status: timerProps.statuses[0].name,
       playing: true,
       interval: BackgroundTimer.setInterval(() => {
         this.timer(startTime)
@@ -179,7 +182,7 @@ export default class PomodoroScreen extends React.PureComponent {
     if (this.state.playing) {
       this.stopTimer()
       this.setState({
-        status: defaultProps.statuses[1].name,
+        status: timerProps.statuses[1].name,
         playing: false,
       })
     } else {
@@ -199,14 +202,16 @@ export default class PomodoroScreen extends React.PureComponent {
     /* eslint-enable react/no-access-state-in-setstate */
   }
 
-  changeDefaultProps = (type, value) => {
-    defaultProps.types[type].time = value * 60
+  /* Settings function
+
+  changetimerProps = (type, value) => {
+    timerProps.types[type].time = value * 60
     this.resetTimer()
   }
 
   changeIntervals = (value) => {
     this.setState({
-      autoLongBreakInterval: value,
+      longBreakInterval: value,
     })
     this.resetTimer()
   }
@@ -225,6 +230,7 @@ export default class PomodoroScreen extends React.PureComponent {
 
     this.resetTimer()
   }
+  */
 
   render() {
     const timePercent =
@@ -248,7 +254,7 @@ export default class PomodoroScreen extends React.PureComponent {
             </Pressable>
 
             <Text style={styles.boldText}>
-              {this.state.type === defaultProps.types[0]
+              {this.state.type === timerProps.types[0]
                 ? strings("stayFocus")
                 : strings("takeBreak")}
               {this.state.type.time / 60} min
@@ -300,12 +306,12 @@ export default class PomodoroScreen extends React.PureComponent {
               <View>
                 <SettingsBarHeader
                   settingsName={strings("focus")}
-                  settingsValue={defaultProps.types[0].time / 60}
+                  settingsValue={timerProps.types[0].time / 60}
                 />
                 <FlatListSlider
                   data={pomodoroTimeValue}
-                  currentValue={defaultProps.types[0].time / 60}
-                  onPress={(value) => this.changeDefaultProps(0, value)}
+                  currentValue={timerProps.types[0].time / 60}
+                  onPress={(value) => this.changetimerProps(0, value)}
                   showIndicator={false}
                 />
               </View>
@@ -313,13 +319,13 @@ export default class PomodoroScreen extends React.PureComponent {
                 <SettingsBarHeader
                   style={{ marginTop: 30 }}
                   settingsName={strings("shortBreak")}
-                  settingsValue={defaultProps.types[1].time / 60}
+                  settingsValue={timerProps.types[1].time / 60}
                 />
 
                 <FlatListSlider
                   data={breaksTimeValue}
-                  currentValue={defaultProps.types[1].time / 60}
-                  onPress={(value) => this.changeDefaultProps(1, value)}
+                  currentValue={timerProps.types[1].time / 60}
+                  onPress={(value) => this.changetimerProps(1, value)}
                   showIndicator={false}
                 />
               </View>
@@ -327,12 +333,12 @@ export default class PomodoroScreen extends React.PureComponent {
                 <SettingsBarHeader
                   style={{ marginTop: 30 }}
                   settingsName={strings("longBreak")}
-                  settingsValue={defaultProps.types[2].time / 60}
+                  settingsValue={timerProps.types[2].time / 60}
                 />
                 <FlatListSlider
                   data={breaksTimeValue}
-                  currentValue={defaultProps.types[2].time / 60}
-                  onPress={(value) => this.changeDefaultProps(2, value)}
+                  currentValue={timerProps.types[2].time / 60}
+                  onPress={(value) => this.changetimerProps(2, value)}
                   showIndicator={false}
                 />
               </View>
@@ -340,11 +346,11 @@ export default class PomodoroScreen extends React.PureComponent {
                 <SettingsBarHeader
                   style={{ marginTop: 30 }}
                   settingsName={strings("longBreakIntervals")}
-                  settingsValue={this.state.autoLongBreakInterval}
+                  settingsValue={this.state.longBreakInterval}
                 />
                 <FlatListSlider
                   data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]}
-                  currentValue={this.state.autoLongBreakInterval}
+                  currentValue={this.state.longBreakInterval}
                   onPress={this.changeIntervals}
                   showIndicator={false}
                 />

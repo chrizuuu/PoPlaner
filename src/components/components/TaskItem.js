@@ -9,12 +9,13 @@ import {
   Pressable,
   StyleSheet,
   TextInput,
- TouchableWithoutFeedback } from "react-native"
+  TouchableWithoutFeedback,
+} from "react-native"
 import { Picker } from "@react-native-picker/picker"
 import DatePicker from "react-native-date-picker"
 import { Icon } from "react-native-elements"
 import Modal from "react-native-modal"
-import CheckBox from "../Buttons/CheckBox"
+import CheckBox from "../Buttons/Checkbox"
 import database, {
   changePriority,
   updateIsDone,
@@ -223,7 +224,9 @@ export default class TaskItem extends React.Component {
         : { color: "rgba(48,48,48,0.3)", icon: "star-border" }
 
     const isDoneTaskOpacity = this.task.isDone === true ? 0.4 : 1
-    const displayDatePicker = this.state.taskDeadlineDatePicker ? "flex" : "none"
+    const displayDatePicker = this.state.taskDeadlineDatePicker
+      ? "flex"
+      : "none"
     const focusCommentInput = this.state.inputCommentFocus
       ? styles.commentInputFocusWrapper
       : styles.commentInputWrapper
@@ -458,9 +461,7 @@ export default class TaskItem extends React.Component {
 
                   <Text style={[sharedStyles.padding10, styles.text]}>
                     {strings("taskCreatedAt")}
-                    {`${this.task.createdDate.toLocaleDateString() 
-                      } ${ 
-                      this.task.createdDate.toLocaleTimeString()}`}
+                    {`${this.task.createdDate.toLocaleDateString()} ${this.task.createdDate.toLocaleTimeString()}`}
                   </Text>
                 </View>
               </View>

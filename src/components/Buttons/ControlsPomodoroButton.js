@@ -61,20 +61,20 @@ const ControlsPomodoroButton = ({
           </TouchableOpacity>
 
           <TouchableOpacity
-              style={[
-                styleButton.buttonControls,
-                styles.normalBtn,
-                { backgroundColor: backgroundColorChanger },
-              ]}
-              onPress={pause}
-            >
-              <Icon
-                type="material"
-                name={status === "Playing" ? "pause" : "play-arrow"}
-                iconStyle={{ color: colors.primeColor }}
-                size={48}
-              />
-            </TouchableOpacity>
+            style={[
+              styleButton.buttonControls,
+              styles.normalBtn,
+              { backgroundColor: backgroundColorChanger },
+            ]}
+            onPress={pause}
+          >
+            <Icon
+              type="material"
+              name={status === "Playing" ? "pause" : "play-arrow"}
+              iconStyle={{ color: colors.primeColor }}
+              size={48}
+            />
+          </TouchableOpacity>
           <TouchableOpacity
             style={[styleButton.buttonControls, styles.smallBtn]}
             onPress={skip}
