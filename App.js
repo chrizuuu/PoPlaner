@@ -8,7 +8,6 @@ import { NavigationContainer } from "@react-navigation/native"
 import { useFonts } from "expo-font"
 import { setI18Config } from "./src/translations/translations"
 import DrawerNav from "./src/navigations/DrawerNav"
-import database from "./src/Database/Database"
 
 const customFonts = {
   OpenSansReg: require("./src/assets/fonts/OpenSans-Regular.ttf"),
@@ -31,7 +30,7 @@ const App = () => {
   useEffect(() => {
     SplashScreen.hide()
     return () => {
-      database.close()
+      // database.close() enabled in futurue
     }
   }, [])
 
