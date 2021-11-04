@@ -1,51 +1,52 @@
 import React from "react"
 import { TouchableOpacity, View, StyleSheet } from "react-native"
 import { Icon } from "react-native-elements"
-import InLineLayout from "../Layouts/InLineLayout"
 import colors from "../../styles/colorsLightTheme"
 
-const TimerController = ({ handleTimer, reset, skip, isPlaying, style }) => {
+const TimerController = ({ handleTimer, reset, skip, isPlaying }) => {
+  // const widthDevice = Dimensions.get("window").width
+  const backgroundColorChanger = isPlaying === true ? "#EE5436" : "#53D3AF"
+
   const styles = StyleSheet.create({
-    normalBtn: {
-      width: 72,
-      height: 72,
-    },
-    smallBtn: {
-      borderColor: "#EFF1F4",
-      borderWidth: 1,
-      height: 54,
-      width: 54,
-    },
-    buttonControls: {
+    buttonStyle: {
       fontSize: 16,
       justifyContent: "center",
       borderRadius: 50,
       margin: 10,
     },
+    normalBtn: {
+      width: 72,
+      height: 72,
+      backgroundColor: backgroundColorChanger,
+    },
+    smallBtn: {
+      height: 54,
+      width: 54,
+      backgroundColor: "#fff", // to change
+    },
+
+    container: {
+      width: "100%",
+    },
+    wrapper: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-evenly",
+    },
   })
 
-  const backgroundColorChanger = isPlaying === true ? "#EE5436" : "#53D3AF"
   return (
-    <View style={[{ ...style }]}>
-      <InLineLayout>
+    <View style={styles.container}>
+      <View style={styles.wrapper}>
         <TouchableOpacity
-          style={[styles.buttonControls, styles.smallBtn]}
+          style={[styles.buttonStyle, styles.smallBtn]}
           onPress={reset}
         >
-          <Icon
-            type="material"
-            name="replay"
-            iconStyle={{ color: "#C3C5CA" }}
-            size={36}
-          />
+          <Icon name="replay" iconStyle={{ color: "#C3C5CA" }} size={36} />
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[
-            styles.buttonControls,
-            styles.normalBtn,
-            { backgroundColor: backgroundColorChanger },
-          ]}
+          style={[styles.buttonStyle, styles.normalBtn]}
           onPress={handleTimer}
         >
           <Icon
@@ -56,12 +57,12 @@ const TimerController = ({ handleTimer, reset, skip, isPlaying, style }) => {
           />
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.buttonControls, styles.smallBtn]}
+          style={[styles.buttonStyle, styles.smallBtn]}
           onPress={skip}
         >
           <Icon name="skip-next" iconStyle={{ color: "#C3C5CA" }} size={36} />
         </TouchableOpacity>
-      </InLineLayout>
+      </View>
     </View>
   )
 }
