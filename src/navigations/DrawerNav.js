@@ -10,7 +10,7 @@ import { createStackNavigator } from "@react-navigation/stack"
 
 import { TouchableOpacity, StyleSheet } from "react-native"
 import { Icon } from "react-native-elements"
-import PomodoroScreen from "../screens/Dasboard/Pomodoro/PomodoroScreen"
+import PomodoroScreen from "../screens/Dasboard/Pomodoro/PomodoroScreen.js"
 import ScheduleScreen from "../screens/Dasboard/ToDo/ScheduleScreen"
 import TasksList from "../screens/Dasboard/ToDo/TasksList"
 import ProjectTasks from "../screens/Dasboard/ToDo/ProjectTasks"
@@ -49,9 +49,8 @@ const CustomDrawerContent = (props) => {
     }
     if (value === actualRoute.name) {
       return true
-    } 
-      return false
-    
+    }
+    return false
   }
 
   return (
@@ -184,6 +183,11 @@ function StackNavigator({ navigation }) {
       })}
     >
       <Stack.Screen
+        name="Pomodoro"
+        component={PomodoroScreen}
+        options={{ title: "Pomodoro Timer" }}
+      />
+      <Stack.Screen
         name="Priority"
         options={() => ({
           title: strings("headerTitlePriorityTasks"),
@@ -224,11 +228,6 @@ function StackNavigator({ navigation }) {
         name="Calendar"
         component={ScheduleScreen}
         options={{ title: strings("headerTitleCalendar") }}
-      />
-      <Stack.Screen
-        name="Pomodoro"
-        component={PomodoroScreen}
-        options={{ title: "Pomodoro Timer" }}
       />
       <Stack.Screen
         name="ProjectTasks"

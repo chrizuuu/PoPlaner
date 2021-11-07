@@ -6,22 +6,30 @@ import BackgroundTimer from "react-native-background-timer"
 import { differenceInSeconds } from "date-fns"
 import TimerCycle from "./TimerCycle"
 import TimerController from "./TimerController"
+import TimerSession from "./TimerSessions"
 import formatTime from "../Helpers/helpers"
 import colors from "../../styles/colorsLightTheme"
+import { strings } from "../../translations/translations"
 
 const timerProps = {
   types: [
-    { name: "Pomodoro", time: 4 },
-    { name: "Short Break", time: 3 },
-    { name: "Long Break", time: 10 },
+    { name: "Pomodoro", time: 2 },
+    { name: "Short Break", time: 2 },
+    { name: "Long Break", time: 4 },
   ],
 }
 
 const styles = StyleSheet.create({
   timerValue: {
-    fontSize: 60,
+    fontSize: 58,
     fontFamily: "MontserratBold",
     color: colors.textColor,
+  },
+  boldText: {
+    fontFamily: "MontserratMedium",
+    color: colors.textColor,
+    position: "relative",
+    top: 30,
   },
 })
 
@@ -35,23 +43,21 @@ class Timer extends React.PureComponent {
       isPlaying: false,
       interval: null,
       countInterval: 0,
-      longBreakInterval: 4,
+      countTimer: 0,
+      intervalToLongBreak: 4,
     }
   }
 
-  // done
   componentWillUnmount() {
     this.stopTimer()
   }
 
-  // done
   handleCountInterval = () => {
     this.setState((prevState) => ({
       countInterval: prevState.countInterval + 1,
     }))
   }
 
-  // done
   handleType = (_type) => {
     this.stopTimer()
     this.setState({
@@ -62,7 +68,6 @@ class Timer extends React.PureComponent {
     })
   }
 
-  // done
   handleTimer = () => {
     this.state.isPlaying ? this.pauseTimer() : this.startTimer()
   }
@@ -108,11 +113,18 @@ class Timer extends React.PureComponent {
 
   manageTimer = () => {
     this.stopTimer()
+    this.setState((prevState) => ({
+      countTimer: prevState.countTimer + 1,
+    }))
     if (this.state.type === timerProps.types[0]) {
       this.handleCountInterval()
-      this.state.countInterval % this.state.longBreakInterval === 0
-        ? this.handleType(timerProps.types[2])
-        : this.handleType(timerProps.types[1])
+      if (this.state.countInterval % this.state.intervalToLongBreak === 0) {
+        this.handleType(timerProps.types[2])
+        this.setState(() => ({
+          countInterval: 0,
+          countTimer: -1,
+        }))
+      } else this.handleType(timerProps.types[1])
     } else {
       this.handleType(timerProps.types[0])
     }
@@ -136,7 +148,7 @@ class Timer extends React.PureComponent {
     return (
       <View>
         <TimerCycle
-          size="350"
+          size="365"
           strokeWidth="20"
           strokeColor="#53D3AF"
           progress={timePercent}
@@ -144,8 +156,25 @@ class Timer extends React.PureComponent {
           <Text style={styles.timerValue}>
             {formatTime(this.state.actualTime)}
           </Text>
+          <Text style={styles.boldText}>
+            {this.state.type === timerProps.types[0]
+              ? strings("stayFocus")
+              : strings("takeBreak")}
+            {this.state.type.time / 60} min
+          </Text>
         </TimerCycle>
-        <View style={{ alignItems: "center", justifyContent: "center" }}>
+        <View
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: 30,
+          }}
+        >
+          <TimerSession
+            maxInterval={this.state.intervalToLongBreak}
+            currentInterval={this.state.countInterval}
+            timerCount={this.state.countTimer}
+          />
           <TimerController
             handleTimer={this.handleTimer}
             isPlaying={this.state.isPlaying}
