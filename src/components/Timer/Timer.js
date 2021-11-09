@@ -1,7 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-unused-expressions */
 import React from "react"
-import { View, Text, StyleSheet } from "react-native"
+import { View, Text, StyleSheet, Dimensions } from "react-native"
 import BackgroundTimer from "react-native-background-timer"
 import { differenceInSeconds } from "date-fns"
 import TimerCycle from "./TimerCycle"
@@ -11,25 +11,32 @@ import formatTime from "../Helpers/helpers"
 import colors from "../../styles/colorsLightTheme"
 import { strings } from "../../translations/translations"
 
+const windowHeight = Dimensions.get("window").height - 60
+const windowWidth = Dimensions.get("window").width - 60
+
 const timerProps = {
   types: [
-    { name: "Pomodoro", time: 2 },
+    { name: "Pomodoro", time: 3 },
     { name: "Short Break", time: 2 },
-    { name: "Long Break", time: 4 },
+    { name: "Long Break", time: 5 },
   ],
 }
 
 const styles = StyleSheet.create({
-  timerValue: {
-    fontSize: 58,
-    fontFamily: "MontserratBold",
+  timerText: {
+    textAlign: "center",
+    width: windowWidth,
     color: colors.textColor,
   },
-  boldText: {
+  timerValueText: {
+    fontSize: windowWidth / 6,
+    fontFamily: "MontserratBold",
+  },
+  timerStatusText: {
     fontFamily: "MontserratMedium",
-    color: colors.textColor,
     position: "relative",
     top: 30,
+    fontSize: 14,
   },
 })
 
@@ -91,7 +98,7 @@ class Timer extends React.PureComponent {
   }
 
   skipTimer = () => {
-    this.manageTimer()
+    this.manageTimer(true)
   }
 
   resetTimer = () => {
@@ -99,7 +106,8 @@ class Timer extends React.PureComponent {
     this.setState((prevState) => ({
       actualTime: prevState.type.time,
       durationTime: prevState.type.time,
-      countInterval: 0,
+      countInterval: prevState.countInterval,
+      countTimer: prevState.countTimer,
     }))
   }
 
@@ -111,6 +119,13 @@ class Timer extends React.PureComponent {
     })
   }
 
+  resetCounter = () => {
+    this.setState(() => ({
+      countInterval: 0,
+      countTimer: -1,
+    }))
+  }
+
   manageTimer = () => {
     this.stopTimer()
     this.setState((prevState) => ({
@@ -118,12 +133,12 @@ class Timer extends React.PureComponent {
     }))
     if (this.state.type === timerProps.types[0]) {
       this.handleCountInterval()
-      if (this.state.countInterval % this.state.intervalToLongBreak === 0) {
+      if (
+        this.state.countInterval !== 0 &&
+        this.state.countInterval % this.state.intervalToLongBreak === 0
+      ) {
         this.handleType(timerProps.types[2])
-        this.setState(() => ({
-          countInterval: 0,
-          countTimer: -1,
-        }))
+        this.resetCounter()
       } else this.handleType(timerProps.types[1])
     } else {
       this.handleType(timerProps.types[0])
@@ -145,43 +160,44 @@ class Timer extends React.PureComponent {
     const timePercent =
       ((this.state.type.time - this.state.actualTime) / this.state.type.time) *
       100
+
     return (
-      <View>
-        <TimerCycle
-          size="365"
-          strokeWidth="20"
-          strokeColor="#53D3AF"
-          progress={timePercent}
-        >
-          <Text style={styles.timerValue}>
-            {formatTime(this.state.actualTime)}
-          </Text>
-          <Text style={styles.boldText}>
-            {this.state.type === timerProps.types[0]
-              ? strings("stayFocus")
-              : strings("takeBreak")}
-            {this.state.type.time / 60} min
-          </Text>
-        </TimerCycle>
-        <View
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: 30,
-          }}
-        >
+      <View
+        style={{
+          justifyContent: "space-evenly",
+          height: windowHeight,
+        }}
+      >
+        <View>
+          <TimerCycle
+            size={windowWidth}
+            strokeWidth="16"
+            strokeColor="#53D3AF"
+            progress={timePercent}
+          >
+            <Text style={[styles.timerValueText, styles.timerText]}>
+              {formatTime(this.state.actualTime)}
+            </Text>
+            <Text style={[styles.timerText, styles.timerStatusText]}>
+              {this.state.type === timerProps.types[0]
+                ? strings("stayFocus")
+                : strings("takeBreak")}
+              {this.state.type.time / 60} min
+            </Text>
+          </TimerCycle>
           <TimerSession
-            maxInterval={this.state.intervalToLongBreak}
             currentInterval={this.state.countInterval}
+            maxInterval={this.state.intervalToLongBreak}
             timerCount={this.state.countTimer}
-          />
-          <TimerController
-            handleTimer={this.handleTimer}
-            isPlaying={this.state.isPlaying}
-            skip={this.skipTimer}
-            reset={this.resetTimer}
+            style={{ top: 25 }}
           />
         </View>
+        <TimerController
+          handleTimer={this.handleTimer}
+          isPlaying={this.state.isPlaying}
+          skip={this.skipTimer}
+          reset={this.resetTimer}
+        />
       </View>
     )
   }

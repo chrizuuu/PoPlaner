@@ -3,7 +3,7 @@ import { TouchableOpacity, View, StyleSheet } from "react-native"
 import { Icon } from "react-native-elements"
 import colors from "../../styles/colorsLightTheme"
 
-const TimerController = ({ handleTimer, reset, skip, isPlaying }) => {
+const TimerController = ({ handleTimer, reset, skip, isPlaying, style }) => {
   // const widthDevice = Dimensions.get("window").width
   const backgroundColorChanger = isPlaying === true ? "#EE5436" : "#53D3AF"
 
@@ -22,7 +22,9 @@ const TimerController = ({ handleTimer, reset, skip, isPlaying }) => {
     smallBtn: {
       height: 54,
       width: 54,
-      backgroundColor: "#fff", // to change
+      backgroundColor: "#fff",
+      borderWidth: 2,
+      borderColor: "rgb(245,245,245)",
     },
 
     container: {
@@ -36,7 +38,7 @@ const TimerController = ({ handleTimer, reset, skip, isPlaying }) => {
   })
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { ...style }]}>
       <View style={styles.wrapper}>
         <TouchableOpacity
           style={[styles.buttonStyle, styles.smallBtn]}

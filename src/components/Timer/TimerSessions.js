@@ -1,6 +1,24 @@
 import React, { useEffect, useState } from "react"
-import { View, Dimensions } from "react-native"
+import { View, Text, Dimensions, StyleSheet } from "react-native"
 import Svg, { Circle } from "react-native-svg"
+import { strings } from "../../translations/translations"
+
+const windowWidth = Dimensions.get("window").width - 60
+
+const styles = StyleSheet.create({
+  wrapper: {
+    alignItems: "center",
+  },
+  sessionText: {
+    fontFamily: "MontserratMedium",
+    color: "#808080",
+    top: 10,
+    marginBottom: 30,
+    fontSize: 14,
+    width: "100%",
+    textAlign: "center",
+  },
+})
 
 const TimerSessionCircle = ({ color }) => {
   const size = 20
@@ -21,9 +39,8 @@ const TimerSessionCircle = ({ color }) => {
   )
 }
 
-const TimerSession = ({ currentInterval, maxInterval, timerCount }) => {
+const TimerSession = ({ currentInterval, maxInterval, timerCount, style }) => {
   const [arrayOfCircles, setArrayOfObjects] = useState([])
-  const windowWidth = Dimensions.get("window").width
 
   const createCircles = () => {
     const updateArray = []
@@ -62,14 +79,19 @@ const TimerSession = ({ currentInterval, maxInterval, timerCount }) => {
   ))
 
   return (
-    <View
-      style={{
-        flexDirection: "row",
-        justifyContent: "space-evenly",
-        width: windowWidth,
-      }}
-    >
-      {renderMap}
+    <View style={[styles.wrapper, { ...style }]}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-evenly",
+          width: windowWidth,
+        }}
+      >
+        {renderMap}
+      </View>
+      <Text style={styles.sessionText}>
+        {currentInterval}/{maxInterval} {strings("sessions")}
+      </Text>
     </View>
   )
 }
