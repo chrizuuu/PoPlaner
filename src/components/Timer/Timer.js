@@ -59,9 +59,18 @@ class Timer extends React.PureComponent {
     this.stopTimer()
   }
 
-  handleCountInterval = () => {
+  handleCountInterval = (callback) => {
+    this.setState(
+      (prevState) => ({
+        countInterval: prevState.countInterval + 1,
+      }),
+      callback
+    )
+  }
+
+  handleCountTimer = () => {
     this.setState((prevState) => ({
-      countInterval: prevState.countInterval + 1,
+      countTimer: prevState.countTimer + 1,
     }))
   }
 
@@ -98,7 +107,7 @@ class Timer extends React.PureComponent {
   }
 
   skipTimer = () => {
-    this.manageTimer(true)
+    this.manageTimer()
   }
 
   resetTimer = () => {
@@ -122,25 +131,26 @@ class Timer extends React.PureComponent {
   resetCounter = () => {
     this.setState(() => ({
       countInterval: 0,
-      countTimer: -1,
+      countTimer: 0,
     }))
   }
 
   manageTimer = () => {
     this.stopTimer()
-    this.setState((prevState) => ({
-      countTimer: prevState.countTimer + 1,
-    }))
-    if (this.state.type === timerProps.types[0]) {
-      this.handleCountInterval()
-      if (
-        this.state.countInterval !== 0 &&
-        this.state.countInterval % this.state.intervalToLongBreak === 0
-      ) {
-        this.handleType(timerProps.types[2])
-        this.resetCounter()
-      } else this.handleType(timerProps.types[1])
-    } else {
+    this.handleCountTimer()
+    const timerType = this.state.type
+    if (timerType === timerProps.types[0]) {
+      this.handleCountInterval(() => {
+        if (this.state.countInterval % this.state.intervalToLongBreak === 0) {
+          this.handleType(timerProps.types[2])
+        } else {
+          this.handleType(timerProps.types[1])
+        }
+      })
+    } else if (timerType === timerProps.types[2]) {
+      this.resetCounter()
+      this.handleType(timerProps.types[0])
+    } else if (timerType === timerProps.types[1]) {
       this.handleType(timerProps.types[0])
     }
   }
@@ -157,10 +167,9 @@ class Timer extends React.PureComponent {
   }
 
   render() {
+    const time = this.state.actualTime >= 0 ? this.state.actualTime : 0
     const timePercent =
-      ((this.state.type.time - this.state.actualTime) / this.state.type.time) *
-      100
-
+      ((this.state.type.time - time) / this.state.type.time) * 100
     return (
       <View
         style={{
@@ -176,7 +185,7 @@ class Timer extends React.PureComponent {
             progress={timePercent}
           >
             <Text style={[styles.timerValueText, styles.timerText]}>
-              {formatTime(this.state.actualTime)}
+              {formatTime(time)}
             </Text>
             <Text style={[styles.timerText, styles.timerStatusText]}>
               {this.state.type === timerProps.types[0]

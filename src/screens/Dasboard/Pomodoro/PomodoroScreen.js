@@ -9,11 +9,7 @@ import colors from "../../../styles/colorsLightTheme"
 
 const styles = StyleSheet.create({
   wrapper: {
-    alignItems: "center",
-    justifyContent: "space-evenly",
-    paddingTop: 50,
     height: "100%",
-    paddingBottom: 80,
     backgroundColor: colors.primeColor,
   },
 })

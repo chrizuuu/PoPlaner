@@ -63,12 +63,14 @@ const createTask = (_title, _priority, _project, _date) => {
   })
 }
 
-const getAllTasks = () => database
+const getAllTasks = () =>
+  database
     .objects("Task")
     .filtered("isDone == false AND project == $0", initProject)
     .sorted("createdDate", true)
 
-const getPriorityTasks = () => database
+const getPriorityTasks = () =>
+  database
     .objects("Task")
     .filtered("isDone == false AND priority == true")
     .sorted("createdDate", true)
@@ -117,7 +119,8 @@ const createProject = (_title, _comment) => {
   })
 }
 
-const getAllProjects = () => database
+const getAllProjects = () =>
+  database
     .objects("Project")
     .filtered("visible == true")
     .sorted("createdDate", "Descendig")
@@ -138,12 +141,15 @@ const deleteProject = (_project) => {
 
 const initDB = () => {
   if (database.objects("Project").length < 1) {
-    database.write(() => (initProject = database.create("Project", {
-        _id: 1,
-        title: "Wszystkie sprawy",
-        createdDate: new Date(),
-        visible: false,
-      })))
+    database.write(
+      () =>
+        (initProject = database.create("Project", {
+          _id: 1,
+          title: "Wszystkie sprawy",
+          createdDate: new Date(),
+          visible: false,
+        }))
+    )
   } else {
     return (initProject = database
       .objects("Project")
