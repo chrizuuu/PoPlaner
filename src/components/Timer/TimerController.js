@@ -1,14 +1,15 @@
+/* eslint-enable react/prop-types */
+
 import React from "react"
 import { TouchableOpacity, View, StyleSheet } from "react-native"
 import { Icon } from "react-native-elements"
 import colors from "../../styles/colorsLightTheme"
 
 const TimerController = ({ handleTimer, reset, skip, isPlaying, style }) => {
-  // const widthDevice = Dimensions.get("window").width
   const backgroundColorChanger = isPlaying === true ? "#EE5436" : "#53D3AF"
 
   const styles = StyleSheet.create({
-    buttonStyle: {
+    btn: {
       fontSize: 16,
       justifyContent: "center",
       borderRadius: 50,
@@ -40,15 +41,12 @@ const TimerController = ({ handleTimer, reset, skip, isPlaying, style }) => {
   return (
     <View style={[styles.container, { ...style }]}>
       <View style={styles.wrapper}>
-        <TouchableOpacity
-          style={[styles.buttonStyle, styles.smallBtn]}
-          onPress={reset}
-        >
+        <TouchableOpacity style={[styles.btn, styles.smallBtn]} onPress={reset}>
           <Icon name="replay" iconStyle={{ color: "#C3C5CA" }} size={36} />
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.buttonStyle, styles.normalBtn]}
+          style={[styles.btn, styles.normalBtn]}
           onPress={handleTimer}
         >
           <Icon
@@ -58,10 +56,7 @@ const TimerController = ({ handleTimer, reset, skip, isPlaying, style }) => {
             size={48}
           />
         </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.buttonStyle, styles.smallBtn]}
-          onPress={skip}
-        >
+        <TouchableOpacity style={[styles.btn, styles.smallBtn]} onPress={skip}>
           <Icon name="skip-next" iconStyle={{ color: "#C3C5CA" }} size={36} />
         </TouchableOpacity>
       </View>

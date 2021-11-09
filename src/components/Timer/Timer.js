@@ -1,5 +1,4 @@
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable no-unused-expressions */
+/* eslint-enable react/prop-types */
 import React from "react"
 import { View, Text, StyleSheet, Dimensions } from "react-native"
 import BackgroundTimer from "react-native-background-timer"
@@ -13,14 +12,6 @@ import { strings } from "../../translations/translations"
 
 const windowHeight = Dimensions.get("window").height - 60
 const windowWidth = Dimensions.get("window").width - 60
-
-const timerProps = {
-  types: [
-    { name: "Pomodoro", time: 3 },
-    { name: "Short Break", time: 2 },
-    { name: "Long Break", time: 5 },
-  ],
-}
 
 const styles = StyleSheet.create({
   timerText: {
@@ -39,6 +30,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 })
+
+const timerProps = {
+  types: [
+    { name: "Pomodoro", time: 3 },
+    { name: "Short Break", time: 2 },
+    { name: "Long Break", time: 3 },
+  ],
+}
 
 class Timer extends React.PureComponent {
   constructor(props) {
@@ -85,7 +84,9 @@ class Timer extends React.PureComponent {
   }
 
   handleTimer = () => {
-    this.state.isPlaying ? this.pauseTimer() : this.startTimer()
+    // eslint-disable-next-line react/destructuring-assignment
+    if (this.state.isPlaying) this.pauseTimer()
+    else this.startTimer()
   }
 
   startTimer = () => {
@@ -121,6 +122,7 @@ class Timer extends React.PureComponent {
   }
 
   stopTimer = () => {
+    // eslint-disable-next-line react/destructuring-assignment
     BackgroundTimer.clearInterval(this.state.interval)
     this.setState({
       interval: null,
@@ -138,38 +140,45 @@ class Timer extends React.PureComponent {
   manageTimer = () => {
     this.stopTimer()
     this.handleCountTimer()
-    const timerType = this.state.type
-    if (timerType === timerProps.types[0]) {
+    const { type } = this.state
+    if (type === timerProps.types[0]) {
       this.handleCountInterval(() => {
-        if (this.state.countInterval % this.state.intervalToLongBreak === 0) {
+        const { countInterval, intervalToLongBreak } = this.state
+        if (countInterval % intervalToLongBreak === 0) {
           this.handleType(timerProps.types[2])
         } else {
           this.handleType(timerProps.types[1])
         }
       })
-    } else if (timerType === timerProps.types[2]) {
+    } else if (type === timerProps.types[2]) {
       this.resetCounter()
       this.handleType(timerProps.types[0])
-    } else if (timerType === timerProps.types[1]) {
+    } else if (type === timerProps.types[1]) {
       this.handleType(timerProps.types[0])
     }
   }
 
   timerMechanism = (startTime) => {
-    this.state.actualTime < 1
-      ? this.manageTimer()
-      : /* eslint-disable react/no-access-state-in-setstate */
-        this.setState({
-          actualTime:
-            this.state.durationTime -
-            differenceInSeconds(new Date(), Date.parse(startTime)),
-        })
+    const { actualTime, durationTime } = this.state
+    if (actualTime < 1) this.manageTimer()
+    /* eslint-disable react/no-access-state-in-setstate */ else
+      this.setState({
+        actualTime:
+          durationTime - differenceInSeconds(new Date(), Date.parse(startTime)),
+      })
   }
 
   render() {
-    const time = this.state.actualTime >= 0 ? this.state.actualTime : 0
-    const timePercent =
-      ((this.state.type.time - time) / this.state.type.time) * 100
+    const {
+      countInterval,
+      countTimer,
+      intervalToLongBreak,
+      actualTime,
+      type,
+      isPlaying,
+    } = this.state
+    const time = actualTime >= 0 ? actualTime : 0
+    const timePercent = ((type.time - time) / type.time) * 100
     return (
       <View
         style={{
@@ -188,22 +197,22 @@ class Timer extends React.PureComponent {
               {formatTime(time)}
             </Text>
             <Text style={[styles.timerText, styles.timerStatusText]}>
-              {this.state.type === timerProps.types[0]
+              {type === timerProps.types[0]
                 ? strings("stayFocus")
                 : strings("takeBreak")}
-              {this.state.type.time / 60} min
+              {type.time / 60} min
             </Text>
           </TimerCycle>
           <TimerSession
-            currentInterval={this.state.countInterval}
-            maxInterval={this.state.intervalToLongBreak}
-            timerCount={this.state.countTimer}
+            currentInterval={countInterval}
+            maxInterval={intervalToLongBreak}
+            timerCount={countTimer}
             style={{ top: 25 }}
           />
         </View>
         <TimerController
           handleTimer={this.handleTimer}
-          isPlaying={this.state.isPlaying}
+          isPlaying={isPlaying}
           skip={this.skipTimer}
           reset={this.resetTimer}
         />

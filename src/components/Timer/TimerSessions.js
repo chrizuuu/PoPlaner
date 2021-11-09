@@ -1,3 +1,5 @@
+/* eslint-enable react/prop-types */
+
 import React, { useEffect, useState } from "react"
 import { View, Text, Dimensions, StyleSheet } from "react-native"
 import Svg, { Circle } from "react-native-svg"
@@ -6,16 +8,21 @@ import { strings } from "../../translations/translations"
 const windowWidth = Dimensions.get("window").width - 60
 
 const styles = StyleSheet.create({
-  wrapper: {
+  container: {
     alignItems: "center",
   },
+  wrapper: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: windowWidth,
+  },
   sessionText: {
-    fontFamily: "MontserratMedium",
-    color: "#808080",
+    width: "100%",
     top: 10,
     marginBottom: 30,
     fontSize: 14,
-    width: "100%",
+    fontFamily: "MontserratMedium",
+    color: "#808080",
     textAlign: "center",
   },
 })
@@ -43,11 +50,11 @@ const TimerSession = ({ currentInterval, maxInterval, timerCount, style }) => {
   const [arrayOfCircles, setArrayOfObjects] = useState([])
 
   const createCircles = () => {
-    const updateArray = []
+    const newArrayOfCircles = []
     for (let i = 1; i <= maxInterval; i += 1) {
-      updateArray.push({ key: i, color: "rgb(230,230,230)" })
+      newArrayOfCircles.push({ key: i, color: "rgb(230,230,230)" })
     }
-    setArrayOfObjects(updateArray)
+    setArrayOfObjects(newArrayOfCircles)
   }
 
   const updateCircle = () => {
@@ -79,16 +86,8 @@ const TimerSession = ({ currentInterval, maxInterval, timerCount, style }) => {
   ))
 
   return (
-    <View style={[styles.wrapper, { ...style }]}>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-evenly",
-          width: windowWidth,
-        }}
-      >
-        {renderMap}
-      </View>
+    <View style={[styles.container, { ...style }]}>
+      <View style={styles.wrapper}>{renderMap}</View>
       <Text style={styles.sessionText}>
         {currentInterval}/{maxInterval} {strings("sessions")}
       </Text>
