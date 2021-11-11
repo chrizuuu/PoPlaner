@@ -32,8 +32,9 @@ const styles = StyleSheet.create({
     borderRadius: 0,
   },
   drawerItemLabel: {
-    fontFamily: "OpenSansSemiBold",
+    fontFamily: "MontserratMedium",
     color: colors.primeColor,
+    fontSize: 13,
   },
 })
 
@@ -197,7 +198,7 @@ function StackNavigator({ navigation }) {
           backgroundColor: "#F8F9FA",
         },
         headerTitleStyle: {
-          fontFamily: "OpenSansBold",
+          fontFamily: "MontserratBold",
           fontSize: 16,
         },
       })}
