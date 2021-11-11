@@ -32,9 +32,9 @@ const styles = StyleSheet.create({
     borderRadius: 0,
   },
   drawerItemLabel: {
-    fontFamily: "MontserratMedium",
+    fontFamily: "MontserratBold",
     color: colors.primeColor,
-    fontSize: 13,
+    fontSize: 12,
   },
 })
 
