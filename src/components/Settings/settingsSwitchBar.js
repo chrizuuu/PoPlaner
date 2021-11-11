@@ -16,12 +16,12 @@ const SettingsSwitchBar = ({
   onValueChange,
   style,
 }) => (
-    <View style={[{ ...style }]}>
-      <InLineLayout style={styles.box}>
-        <Text style={{ fontFamily: "OpenSansSemiBold" }}>{settingsName}</Text>
-        <CheckBox status={switchValue} onChange={onValueChange} />
-      </InLineLayout>
-    </View>
-  )
+  <View style={[{ ...style }]}>
+    <InLineLayout style={styles.box}>
+      <Text style={{ fontFamily: "OpenSansSemiBold" }}>{settingsName}</Text>
+      <CheckBox status={switchValue} onChange={onValueChange} />
+    </InLineLayout>
+  </View>
+)
 
 export default SettingsSwitchBar

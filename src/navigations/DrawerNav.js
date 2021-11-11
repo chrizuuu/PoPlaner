@@ -15,6 +15,7 @@ import ScheduleScreen from "../screens/Dasboard/ToDo/ScheduleScreen"
 import TasksList from "../screens/Dasboard/ToDo/TasksList"
 import ProjectTasks from "../screens/Dasboard/ToDo/ProjectTasks"
 import ProjectsListScreen from "../screens/Dasboard/ToDo/ProjectsListScreen"
+import SettingsScreen from "../screens/Dasboard/SettingsScreen"
 import { getAllTasks, getPriorityTasks } from "../Database/Database"
 import { strings } from "../translations/translations"
 import colors from "../styles/colorsLightTheme"
@@ -58,6 +59,24 @@ const CustomDrawerContent = (props) => {
       {...props}
       style={{ backgroundColor: colors.sidebarPrimeColor }}
     >
+      <DrawerItem
+        style={styles.drawerItem}
+        label="Pomodoro Timer"
+        activeBackgroundColor={activeBackgroundColor}
+        labelStyle={styles.drawerItemLabel}
+        icon={({ focused }) => (
+          <Icon
+            type="ionicon"
+            color={focused ? "#53D3AF" : colors.primeColor}
+            size={26}
+            name={focused ? "timer" : "timer-outline"}
+          />
+        )}
+        onPress={() => {
+          props.navigation.navigate("Pomodoro Timer")
+        }}
+        focused={focusedCheck("Pomodoro Timer")}
+      />
       <DrawerItem
         style={styles.drawerItem}
         activeBackgroundColor={activeBackgroundColor}
@@ -130,9 +149,10 @@ const CustomDrawerContent = (props) => {
         }}
         focused={focusedCheck("Calendar")}
       />
+
       <DrawerItem
         style={styles.drawerItem}
-        label="Pomodoro"
+        label={strings("headerTitleSettings")}
         activeBackgroundColor={activeBackgroundColor}
         labelStyle={styles.drawerItemLabel}
         icon={({ focused }) => (
@@ -140,13 +160,13 @@ const CustomDrawerContent = (props) => {
             type="ionicon"
             color={focused ? "#53D3AF" : colors.primeColor}
             size={26}
-            name={focused ? "timer" : "timer-outline"}
+            name={focused ? "settings" : "settings-outline"}
           />
         )}
         onPress={() => {
-          props.navigation.navigate("Pomodoro")
+          props.navigation.navigate("Settings")
         }}
-        focused={focusedCheck("Pomodoro")}
+        focused={focusedCheck("Settings")}
       />
     </DrawerContentScrollView>
   )
@@ -183,7 +203,7 @@ function StackNavigator({ navigation }) {
       })}
     >
       <Stack.Screen
-        name="Pomodoro"
+        name="Pomodoro Timer"
         component={PomodoroScreen}
         options={{ title: "Pomodoro Timer" }}
       />
@@ -228,6 +248,12 @@ function StackNavigator({ navigation }) {
         name="Calendar"
         component={ScheduleScreen}
         options={{ title: strings("headerTitleCalendar") }}
+      />
+
+      <Stack.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{ title: strings("headerTitleSettings") }}
       />
       <Stack.Screen
         name="ProjectTasks"

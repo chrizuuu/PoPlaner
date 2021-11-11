@@ -19,14 +19,14 @@ const styles = StyleSheet.create({
 })
 
 const SettingsBarHeader = ({ settingsName, settingsInfo, style }) => (
-    <View style={[{ ...style }]}>
-      <InLineLayout style={styles.box}>
-        <Text style={styles.settingsName}>{settingsName}</Text>
-        <View style={sharedStyles.wrapperInLine}>
-          <Text style={styles.settingsInfo}>{settingsInfo}</Text>
-        </View>
-      </InLineLayout>
-    </View>
-  )
+  <View style={[{ ...style }]}>
+    <InLineLayout style={styles.box}>
+      <Text style={styles.settingsName}>{settingsName}</Text>
+      <View style={sharedStyles.wrapperInLine}>
+        <Text style={styles.settingsInfo}>{settingsInfo}</Text>
+      </View>
+    </InLineLayout>
+  </View>
+)
 
 export default SettingsBarHeader
