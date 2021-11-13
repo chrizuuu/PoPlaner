@@ -15,6 +15,11 @@ const styleText = StyleSheet.create({
     marginBottom: 20,
     fontSize: 16,
   },
+
+  textDefaultStyle: {
+    fontSize: 14,
+    color: "#000000",
+  },
 })
 
 export default styleText
