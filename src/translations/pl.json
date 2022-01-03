@@ -1,0 +1,17 @@
+{
+  "timerIntervalRound": "Runda ",
+  "timerFocus": "Skupienie",
+  "timerShortBreak": "Krótka przerwa",
+  "timerLongBreak": "Długa przerwa",
+  "timerTakeBreak": "Zrób sobie przerwę na ",
+  "timerStayFocus": "Pozostań skupiony przez ",
+  "timerLongBreakIntervals": "Sesje przed długą przerwą",
+  "timerAutoStartPomodoro": "Auto start sesji pomodoro?",
+  "timerAutoStartBreak": "Auto start przerwy?",
+  "timerTakeAShortBreak": "Zrób sobie krótką przerwę.",
+  "timerTakeALongBreak": "Zasłuzyłeś na dłuszą przerwę.",
+  "timerEndBreak": "Koniec przerwy!",
+  "timerBackToWork": "Czas wziąć się do pracy.",
+  "timerTimeUp": "Czas minął!",
+  "timerSessions": " sesje"
+}

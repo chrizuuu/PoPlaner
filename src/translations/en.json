@@ -1,0 +1,17 @@
+{
+  "timerIntervalRound": "Round ",
+  "timerFocus": "Focus",
+  "timerShortBreak": "Short break",
+  "timerLongBreak": "Long break",
+  "timerTakeBreak": "Take a break for ",
+  "timerStayFocus": "Stay focus for ",
+  "timerLongBreakIntervals": "Long break intervals",
+  "timerAutoStartPomodoro": "Auto start pomodoro?",
+  "timerAutoStartBreak": "Auto start break?",
+  "timerTakeAShortBreak": "Take a short break.",
+  "timerTakeALongBreak": "You deserve a long break.",
+  "timerEndBreak": "End of the break!",
+  "timerBackToWork": "Time to get to work.",
+  "timerTimeUp": "Time's up!",
+  "timerSessions": " sessions"
+}
