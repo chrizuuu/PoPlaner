@@ -13,7 +13,7 @@ import { View, StyleSheet, Pressable } from "react-native"
 import { format } from "date-fns"
 import Checkbox from "../../Buttons/Checkbox"
 import CheckboxPriority from "../../Buttons/CheckboxPriority"
-import { TextMed, TextReg } from "../../Text/Text"
+import { TextReg, TextMed } from "../../Text/Text"
 import TaskPage from "./TaskPage"
 
 const styles = StyleSheet.create({
