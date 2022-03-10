@@ -13,5 +13,27 @@
   "timerEndBreak": "End of the break!",
   "timerBackToWork": "Time to get to work.",
   "timerTimeUp": "Time's up!",
-  "timerSessions": " sessions"
+  "timerSessions": " sessions",
+
+  "taskInputTitle": "Task title",
+  "taskInputDesc": "Description",
+  "taskInputDate": "Date",
+  "taskInputTime": "Time",
+  "taskInputProjectEmpty": "Inbox",
+  "taskProjectPickerList": "Project",
+  "taskCreatedAt": "Created at ",
+  "taskInvalidInputTitle": "Invalid task title!",
+
+  "create": "Create",
+
+  "projectInputHeader": "New project",
+  "projectInputName": "Project name",
+  "projectTypeInputName": "Enter a name for the project",
+  "projectInvalidInputName": "Invalid project name!",
+
+  "deleteProjectAlertTitle": "Delete project?",
+  "deleteProjectAlertPart1": "This will delete the project ",
+  "deleteProjectAlertPart2": " along with all its tasks. This action cannot be undone.",
+  "deleteProjectAlertCancel": "Cancel",
+  "deleteProjectAlertDelete": "Delete"
 }

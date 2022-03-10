@@ -4,6 +4,7 @@ import {
   text,
   date,
   readonly,
+  children,
   relation,
   writer,
 } from "@nozbe/watermelondb/decorators"
@@ -32,16 +33,29 @@ export default class Task extends Model {
   @date("deadline_at")
   deadlineAt
 
+  @date("deadline_time_at")
+  deadlineTimeAt
+
+  @text("description")
+  description
+
   @relation("projects", "project_id")
   project
 
-  @relation("comments", "task_id")
+  @children("comments")
   comments
 
   @writer async changeTitle(newTaskTitle) {
     await this.update((task) => {
       const updatedTask = task
       updatedTask.title = newTaskTitle
+    })
+  }
+
+  @writer async changeDesc(newTaskDesc) {
+    await this.update((task) => {
+      const updatedTask = task
+      updatedTask.title = newTaskDesc
     })
   }
 
@@ -59,10 +73,38 @@ export default class Task extends Model {
     })
   }
 
-  @writer async changeDeadline(newDate) {
+  @writer async changeDeadlineDate(newTaskDeadline) {
     await this.update((task) => {
       const updatedTask = task
-      updatedTask.deadlineAt = newDate
+      updatedTask.deadlineAt = newTaskDeadline
+    })
+  }
+
+  @writer async changeDeadlineTime(newTaskDeadlineTime) {
+    await this.update((task) => {
+      const updatedTask = task
+      updatedTask.deadlineTimeAt = newTaskDeadlineTime
+    })
+  }
+
+  @writer async updateTask(
+    newTitle,
+    isDone,
+    isPriority,
+    newProject,
+    newDesc,
+    newDeadline,
+    newDeadlineTime
+  ) {
+    await this.update((task) => {
+      const updatedTask = task
+      updatedTask.title = newTitle
+      updatedTask.isDone = isDone
+      updatedTask.isPriority = isPriority
+      updatedTask.project.set(newProject)
+      updatedTask.desc = newDesc
+      updatedTask.deadlineAt = newDeadline
+      updatedTask.deadlineTimeAt = newDeadlineTime
     })
   }
 
@@ -84,8 +126,7 @@ export default class Task extends Model {
     return newComment
   }
 
-  async markAsDeleted() {
-    await this.comments.destrolAllPermantenlty()
-    await super.markAsDeleted()
+  @writer async delete() {
+    await super.destroyPermanently()
   }
 }

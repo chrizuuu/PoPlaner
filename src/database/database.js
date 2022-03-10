@@ -1,3 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable no-undef */
 /* eslint-disable global-require */
 import { Database } from "@nozbe/watermelondb"
 import SQLiteAdapter from "@nozbe/watermelondb/adapters/sqlite"
@@ -21,5 +23,18 @@ export const database = new Database({
 })
 
 /// FlipperDatabasesPlugin - START
+/*
+if (__DEV__) {
+  // Import connectDatabases function and required DBDrivers
+  const {
+    connectDatabases,
+    WatermelonDB,
+  } = require("react-native-flipper-databases")
 
+  connectDatabases([
+    new WatermelonDB(database), // Pass in database definition
+  ])
+}
+*/
+/// FlipperDatabasesPlugin - END
 // eslint-disable-next-line no-undef

@@ -13,5 +13,26 @@
   "timerEndBreak": "Koniec przerwy!",
   "timerBackToWork": "Czas wziąć się do pracy.",
   "timerTimeUp": "Czas minął!",
-  "timerSessions": " sesje"
+  "timerSessions": " sesje",
+
+  "taskInputTitle": "Nazwa zadania",
+  "taskInputDesc": "Opis",
+  "taskInputDate": "Data",
+  "taskInputTime": "Czas",
+  "taskInputProjectEmpty": "Inbox",
+  "taskProjectPickerList": "Projekt",
+  "taskCreatedAt": "Utworzono ",
+  "taskInvalidInputTitle": "Nieprawidłowa nazwa zadania!",
+  "create": "Utwórz",
+
+  "projectInputHeader": "Nowy projekt",
+  "projectInputName": "Nazwa projektu",
+  "projectTypeInputName": "Wprowadź nazwę projektu",
+  "projectInvalidInputName": "Nieprawidłowa nazwa projektu!",
+
+  "deleteProjectAlertTitle": "Usunąć projekt?",
+  "deleteProjectAlertPart1": "Spowoduje to usunięcie projektu ",
+  "deleteProjectAlertPart2": " wraz z jego wszystkimi zadaniami. Czynność ta nie moze zostać cofnięta.",
+  "deleteProjectAlertCancel": "Anuluj",
+  "deleteProjectAlertDelete": "Usuń"
 }

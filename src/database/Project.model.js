@@ -22,9 +22,6 @@ export default class Project extends Model {
   @date("created_at")
   createdAt
 
-  @field("is_visible")
-  isVisible
-
   @children("tasks")
   tasks
 
@@ -38,12 +35,13 @@ export default class Project extends Model {
     })
   }
 
-  @writer async addTask(_title, _isPriority, _deadlineAt) {
+  @writer async addTask(_title, _isPriority, _deadlineAt, _deadlineTimeAt) {
     const newTask = await this.collections.get(
       "tasks".create((task) => {
         task.title.set(_title)
         task.isPriority.set(_isPriority)
         task.deadlineAt.set(_deadlineAt)
+        task.deadlineTimeAt.set(_deadlineTimeAt)
         task.project.set(this)
       })
     )
@@ -61,9 +59,8 @@ export default class Project extends Model {
     return newComment
   }
 
-  async markAsDeleted() {
-    await this.comments.destrolAllPermantenlty()
-    await this.tasks.destrolAllPermantenlty()
+  async delete() {
+    await this.tasks.destroyAllPermanently()
     await super.markAsDeleted()
   }
 }

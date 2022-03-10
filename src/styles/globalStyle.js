@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native"
 import colors from "./colorsLightTheme"
 
-const sharedStyles = StyleSheet.create({
+const globalStyle = StyleSheet.create({
   // MARGIN TOP
   margintop15: { marginTop: 15 },
   margintop20: { marginTop: 20 },
@@ -56,4 +56,4 @@ const sharedStyles = StyleSheet.create({
   },
 })
 
-export default sharedStyles
+export default globalStyle

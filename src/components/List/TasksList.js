@@ -1,40 +1,57 @@
 import React, { useRef } from "react"
-import { StyleSheet, Dimensions, View } from "react-native"
-import withObservables from "@nozbe/with-observables"
-import TaskItem from "../Items/TaskItem"
+import { StyleSheet, View, FlatList } from "react-native"
+import PropTypes from "prop-types"
+import TaskItem from "../Items/Task/TaskItem"
+import TaskInput from "../Inputs/TaskInput"
 import FooterList from "../Components/FooterList"
-import TaskDAO from "../../database/DAO/TaskDAO"
 
-const windowHeight = Dimensions.get("window").height
-
-function TasksList({ tasks }) {
-  const inputTaskRef = useRef(null)
-
-  const showTaskInput = () => {
-    inputTaskRef.current.addFormSetVisible()
-  }
-
+const TasksList = ({ tasks, displayProject }) => {
   const styles = StyleSheet.create({
-    tasksListContainer: {
+    container: {
       flex: 1,
       width: "100%",
-      height: windowHeight,
-      backgroundColor: "#fff",
     },
   })
 
+  const taskInputRef = useRef()
   return (
-    <View style={styles.tasksListContainer}>
-      {tasks.map((task) => (
-        <TaskItem task={task} key={task.id} displayDeadlineAt displayProject />
-      ))}
-      <FooterList leftIcon="add-outline" leftIconOnPress={showTaskInput} />
-    </View>
+    <>
+      <View style={styles.container}>
+        <FlatList
+          style={{ flex: 1 }}
+          showsVerticalScrollIndicator={false}
+          data={tasks}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <TaskItem
+              task={item}
+              key={item.id}
+              displayDeadline
+              displayDeadlineTime
+              displayProject={displayProject}
+            />
+          )}
+        />
+
+        <FooterList
+          leftIcon="add"
+          leftIconOnPress={() => {
+            taskInputRef.current.openTaskInput()
+          }}
+        />
+      </View>
+      <TaskInput ref={taskInputRef} />
+    </>
   )
 }
 
-const enhance = withObservables([], () => ({
-  tasks: TaskDAO.observeTasks(),
-}))
+TasksList.defaultProps = {
+  displayProject: true,
+}
 
-export default enhance(TasksList)
+TasksList.propTypes = {
+  tasks: PropTypes.instanceOf(Array).isRequired,
+  displayProject: PropTypes.bool,
+}
+
+export default TasksList

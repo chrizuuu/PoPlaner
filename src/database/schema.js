@@ -9,8 +9,10 @@ export default appSchema({
         { name: "title", type: "string" },
         { name: "is_done", type: "boolean" },
         { name: "is_priority", type: "boolean" },
+        { name: "description", type: "string" },
         { name: "created_at", type: "number" },
         { name: "deadline_at", type: "number", isOptional: true },
+        { name: "deadline_time_at", type: "number", isOptional: true },
         {
           name: "project_id",
           type: "string",

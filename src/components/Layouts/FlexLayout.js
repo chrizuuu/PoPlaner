@@ -1,11 +1,11 @@
 import React from "react"
 import { View } from "react-native"
-import sharedStyles from "../../styles/shared"
+import globalStyle from "../../styles/globalStyle"
 
 function FlexLayout({ children, style }) {
   return (
     <View
-      style={[sharedStyles.wrapperFlex, sharedStyles.container, { ...style }]}
+      style={[globalStyle.wrapperFlex, globalStyle.container, { ...style }]}
     >
       {children}
     </View>

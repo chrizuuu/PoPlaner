@@ -12,6 +12,13 @@ target 'PoPlaner' do
     :hermes_enabled => true
   )
 
+
+  pod 'react-native-slider', :path => '../node_modules/@react-native-community/slider'
+
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+  pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
+
   target 'PoPlanerTests' do
     inherit! :complete
     # Pods for testing

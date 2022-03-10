@@ -5,7 +5,7 @@ import { TouchableOpacity, View, StyleSheet } from "react-native"
 import Icon from "react-native-vector-icons/MaterialIcons"
 import colors from "../../styles/colorsLightTheme"
 
-function TimerController({ handleTimer, reset, skip, isPlaying, style }) {
+const TimerController = ({ handleTimer, reset, skip, isPlaying, style }) => {
   const backgroundColorChanger = isPlaying === true ? "#EE5436" : "#53D3AF"
 
   const styles = StyleSheet.create({

@@ -118,12 +118,16 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  * on project.ext.react, JavaScript will not be compiled to Hermes Bytecode
  * and the benefits of using Hermes will therefore be sharply reduced.
  */
-def enableHermes = project.ext.react.get("enableHermes", false);
+def enableHermes = project.ext.react.get("enableHermes", true);
 
 /**
  * Architectures to build native code for in debug.
  */
 def nativeArchitectures = project.getProperties().get("reactNativeDebugArchitectures")
+
+configurations.all {
+    resolutionStrategy { force 'androidx.sqlite:sqlite-framework:2.1.0' }
+}
 
 android {
     ndkVersion rootProject.ext.ndkVersion
@@ -133,6 +137,7 @@ android {
         pickFirst '**/libc++_shared.so' // ⬅️ This (if missing)
     }
     defaultConfig {
+        multiDexEnabled true
         applicationId "com.poplaner"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
@@ -195,8 +200,11 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation project(':watermelondb-jsi') // ⬅️ This!
-
+    implementation 'com.android.support:multidex:2.0.1'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+
+    debugImplementation 'com.facebook.soloader:soloader:0.10.1'
+    releaseImplementation "com.facebook.flipper:flipper-noop:${FLIPPER_VERSION}"
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'

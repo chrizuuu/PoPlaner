@@ -1,16 +1,17 @@
 import React from "react"
 import { Pressable, StyleSheet } from "react-native"
-import { Icon } from "react-native-vector-icons"
-import colors from "../../styles/colorsLightTheme"
+import Icon from "react-native-vector-icons/MaterialIcons"
 
-function Checkbox({ status, onChange, style }) {
+function Checkbox({ status, onChange, style, size }) {
   const styles = StyleSheet.create({
     container: {
       borderWidth: 2,
       borderRadius: 25,
-      borderColor: colors.thirdColor,
-      height: 24,
-      width: 24,
+      borderColor: "rgb(210,210,210)",
+      height: size,
+      width: size,
+      justifyContent: "center",
+      alignItems: "center",
     },
 
     true: {
@@ -26,10 +27,10 @@ function Checkbox({ status, onChange, style }) {
 
   return (
     <Pressable
-      onPress={() => onChange()}
+      onPressOut={() => onChange()}
       style={[styles.container, { ...style }]}
     >
-      <Icon name="done" size={18} style={iconStatusChanger} />
+      <Icon name="done" size={size * 0.75} style={iconStatusChanger} />
     </Pressable>
   )
 }

@@ -23,13 +23,13 @@ const styles = StyleSheet.create({
     top: 10,
     marginBottom: 30,
     fontSize: 14,
-    // fontFamily: "MontserratMedium",
+    fontFamily: "Montserrat-Medium",
     color: "#808080",
     textAlign: "center",
   },
 })
 
-function TimerSessionCircle({ color }) {
+const TimerSessionCircle = ({ color }) => {
   const size = 20
   const strokeWidth = 3
   const center = size / 2

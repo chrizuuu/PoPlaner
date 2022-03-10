@@ -20,10 +20,10 @@ const styles = StyleSheet.create({
   },
   timerValueText: {
     fontSize: windowWidth / 6,
-    // fontFamily: "MontserratBold",
+    fontFamily: "Montserrat-Bold",
   },
   timerStatusText: {
-    // fontFamily: "MontserratMedium",
+    fontFamily: "Montserrat-Medium",
     position: "relative",
     top: 30,
     fontSize: 14,
@@ -182,7 +182,7 @@ class Timer extends React.PureComponent {
       <View
         style={{
           justifyContent: "space-evenly",
-          height: windowHeight,
+          height: windowHeight - 60,
         }}
       >
         <View>
