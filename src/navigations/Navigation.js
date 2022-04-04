@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable no-nested-ternary */
-import React, { useEffect } from "react"
+import React from "react"
 import { View, Pressable } from "react-native"
 import {
   DrawerContentScrollView,
@@ -20,28 +20,35 @@ import TodayTasksScreen from "../screens/TasksManager/TodayTasksScreen"
 import PrioritiesScreen from "../screens/TasksManager/PrioritiesScreen"
 import ProjectTasksScreen from "../screens/TasksManager/ProjectTasksScreen"
 import { TextBold, TextMed } from "../components/Text/Text"
-import NavigationProjectsList from "../components/List/NavigationProjectsList"
+import NavigationProjectsList from "./NavigationProjectsList"
 
 const Drawer = createDrawerNavigator()
 
 const CustomDrawer = (props) => {
   const { state, navigation } = props
 
+  /*
   useEffect(() => {
     let actualRoute = state.routes[state.index]
 
     while (actualRoute.state) {
       actualRoute = actualRoute.state.routes[actualRoute.state.index]
     }
-  }, [state])
 
+    //  actualRoute = actualRoute.state.routes[actualRoute.state.index]
+    console.log(actualRoute)
+  }, [state])
+*/
   const focusedCheck = (value) => {
     let actualRoute = state.routes[state.index]
+    let actualRouteName = null
 
     while (actualRoute.state) {
       actualRoute = actualRoute.state.routes[actualRoute.state.index]
     }
-    if (value === actualRoute.name) {
+
+    actualRouteName = actualRoute.name === "Drawer" ? "Inbox" : actualRoute.name
+    if (value === actualRouteName) {
       return true
     }
     return false
@@ -75,7 +82,6 @@ const CustomDrawer = (props) => {
       <DrawerItem
         style={{
           height: 50,
-          justifyContent: "center",
         }}
         focused={focusedCheck("Priorities")}
         label="Priorities"
@@ -125,7 +131,7 @@ const CustomDrawer = (props) => {
           navigation.navigate("Pomodoro Timer")
         }}
       />
-      <NavigationProjectsList style={{}} database />
+      <NavigationProjectsList database state={state} />
     </DrawerContentScrollView>
   )
 }
@@ -156,16 +162,12 @@ const StackDrawer = ({ navigation }) => {
       <Stack.Screen name="Priorities" component={PrioritiesScreen} />
       <Stack.Screen name="Pomodoro Timer" component={PomodoroScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
-      <Stack.Screen
-        name="Project"
-        component={ProjectTasksScreen}
-        options={({ route }) => ({ title: route.params.title })}
-      />
+      <Stack.Screen name="Project" component={ProjectTasksScreen} />
     </Stack.Navigator>
   )
 }
 
-const DrawerNav = () => {
+const Navigation = () => {
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawer {...props} />}
@@ -182,4 +184,4 @@ const DrawerNav = () => {
   )
 }
 
-export default DrawerNav
+export default Navigation

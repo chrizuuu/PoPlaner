@@ -24,7 +24,7 @@ function TimerCycle({ size, strokeWidth, strokeColor, progress, children }) {
     <View style={styles.container}>
       <Svg width={size} height={size}>
         <Circle
-          stroke="#EBEBEB"
+          stroke="rgb(235,235,235)"
           cx={center}
           cy={center}
           r={radius}

@@ -23,7 +23,7 @@ export const database = new Database({
 })
 
 /// FlipperDatabasesPlugin - START
-/*
+
 if (__DEV__) {
   // Import connectDatabases function and required DBDrivers
   const {
@@ -35,6 +35,5 @@ if (__DEV__) {
     new WatermelonDB(database), // Pass in database definition
   ])
 }
-*/
 /// FlipperDatabasesPlugin - END
 // eslint-disable-next-line no-undef

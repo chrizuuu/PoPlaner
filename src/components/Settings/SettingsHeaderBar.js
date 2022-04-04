@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   settingsName: {
     fontSize: 14,
     fontFamily: "Montserrat-Bold",
-    color: "#242424",
+    color: "rgb(36,36,36)",
   },
 })
 

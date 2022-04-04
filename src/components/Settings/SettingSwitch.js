@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 60,
     paddingHorizontal: 13,
-    backgroundColor: "#fff",
+    backgroundColor: "rgb(255,255,255)",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   settingNameStyle: {
     fontFamily: "Montserrat-SemiBold",
     fontSize: 13,
-    color: "#242424",
+    color: "rgb(36,36,36)",
   },
 })
 

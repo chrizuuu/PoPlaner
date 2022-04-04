@@ -16,7 +16,7 @@ import { StatusBar, LogBox } from "react-native"
 // import PomodoroScreen from "./src/screens/Pomodoro/PomodoroScreen"
 import { useFlipper } from "@react-navigation/devtools"
 import { setI18Config } from "./src/translations/translations"
-import DrawerNav from "./src/navigations/BottomTabsNav"
+import Navigation from "./src/navigations/Navigation"
 import { database } from "./src/database/database"
 
 function App() {
@@ -30,7 +30,7 @@ function App() {
     <DatabaseProvider database={database}>
       <NavigationContainer ref={navigationRef}>
         <StatusBar />
-        <DrawerNav />
+        <Navigation />
       </NavigationContainer>
     </DatabaseProvider>
   )

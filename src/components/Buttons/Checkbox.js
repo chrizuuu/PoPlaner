@@ -8,8 +8,6 @@ function Checkbox({ status, onChange, style, size }) {
       borderWidth: 2,
       borderRadius: 25,
       borderColor: "rgb(210,210,210)",
-      height: size,
-      width: size,
       justifyContent: "center",
       alignItems: "center",
     },
@@ -30,7 +28,7 @@ function Checkbox({ status, onChange, style, size }) {
       onPressOut={() => onChange()}
       style={[styles.container, { ...style }]}
     >
-      <Icon name="done" size={size * 0.75} style={iconStatusChanger} />
+      <Icon name="done" size={size} style={iconStatusChanger} />
     </Pressable>
   )
 }

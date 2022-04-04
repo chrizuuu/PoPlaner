@@ -18,7 +18,7 @@ const ProjectTasks = ({ navigation, project, tasks }) => {
         headerRight: () => (
           <Icon
             style={{ paddingRight: 15 }}
-            color="#000"
+            color="rgb(0,0,0)"
             size={24}
             onPress={() => projectPageRef.current.openProjectPage()}
             name="info-outline"
@@ -34,7 +34,7 @@ const ProjectTasks = ({ navigation, project, tasks }) => {
 
   useEffect(() => {
     navigation.setOptions({
-      title: project.name,
+      headerTitle: project.name,
     })
   }, [project.name])
 

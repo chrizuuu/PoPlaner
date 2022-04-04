@@ -11,4 +11,4 @@ const enhance = withObservables([], () => ({
   tasks: TaskDAO.observeInboxTasks(), // set global var in mobx to query
 }))
 
-export default enhance(InboxScreen)
+export default enhance(React.memo(InboxScreen))

@@ -17,7 +17,7 @@ const SettingSlider = ({
   const styles = StyleSheet.create({
     container: {
       paddingHorizontal: 13,
-      backgroundColor: "#fff",
+      backgroundColor: "rgb(255,255,255)",
     },
     wrapperSettingBar: {
       width: "100%",

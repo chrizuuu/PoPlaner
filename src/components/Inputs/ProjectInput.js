@@ -61,11 +61,8 @@ const ProjectInput = forwardRef((props, ref) => {
 
   const styles = StyleSheet.create({
     container: {
-      marign: 0,
       width: windowWidth,
       height: windowHeight,
-      justifyContent: "flex-end",
-      alignContent: "flex-end",
       flex: 1,
     },
     wrapper: {
@@ -82,19 +79,24 @@ const ProjectInput = forwardRef((props, ref) => {
       borderBottomColor: "rgb(245,245,245)",
       borderBottomWidth: 2,
     },
+    inputHeader: {
+      paddingHorizontal: 15,
+      paddingTop: 20,
+      paddingBottom: 10,
+      textTransform: "uppercase",
+    },
 
     inputName: {
       fontSize: 18,
       height: 36,
       fontFamily: "OpenSans-Regular",
-      paddingTop: 0,
-      paddingBottom: 0,
       color: "#000",
+      paddingVertical: 0,
       paddingHorizontal: 15,
     },
 
     backdrop: {
-      backgroundColor: "black",
+      backgroundColor: "rgb(0,0,0)",
       opacity: 0.3,
       flex: 1,
     },
@@ -134,15 +136,7 @@ const ProjectInput = forwardRef((props, ref) => {
             />
           </View>
 
-          <TextSemi
-            fontSize={16}
-            style={{
-              paddingHorizontal: 15,
-              paddingTop: 20,
-              paddingBottom: 10,
-              textTransform: "uppercase",
-            }}
-          >
+          <TextSemi fontSize={16} style={styles.inputHeader}>
             {strings("projectInputName")}
           </TextSemi>
 

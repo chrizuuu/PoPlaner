@@ -171,7 +171,7 @@ const TaskPage = forwardRef((props, ref) => {
               <Checkbox
                 status={taskIsDone}
                 onChange={() => setTaskIsDone(!taskIsDone)}
-                size={28}
+                size={24}
               />
               <TextInput
                 placeholder={strings("taskInputTitle")}

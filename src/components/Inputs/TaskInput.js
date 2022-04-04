@@ -30,7 +30,6 @@ const TaskInput = forwardRef((props, ref) => {
   const [inputTitleValidation, setInputTitleValidation] = useState(true)
   const [inputDesc, setInputDesc] = useState("")
   const [inputProject, setInputProject] = useState(null)
-
   // states for inputDate and inputTime
   const [inputDate, setInputDate] = useState(null)
   const [inputTime, setInputTime] = useState(null)
@@ -51,10 +50,14 @@ const TaskInput = forwardRef((props, ref) => {
     setProjectPickerVisible(true)
   }
 
-  const pickProject = (value) => {
-    setInputProject(value)
+  const closeProjectPicker = () => {
     setProjectPickerVisible(false)
     setModalVisible(true)
+  }
+
+  const pickProject = (value) => {
+    setInputProject(value)
+    closeProjectPicker()
   }
 
   useImperativeHandle(ref, () => ({
@@ -98,7 +101,6 @@ const TaskInput = forwardRef((props, ref) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      marign: 0,
       width: windowWidth,
       height: windowHeight,
       justifyContent: "flex-end",
@@ -106,7 +108,7 @@ const TaskInput = forwardRef((props, ref) => {
     },
     backdrop: {
       flex: 1,
-      backgroundColor: "black",
+      backgroundColor: "rgb(0,0,0)",
       opacity: 0.3,
     },
     wrapper: {
@@ -116,19 +118,17 @@ const TaskInput = forwardRef((props, ref) => {
     },
     inputTitle: {
       height: 36,
-      paddingTop: 0,
-      paddingBottom: 0,
+      paddingVertical: 0,
       paddingHorizontal: 15,
       fontSize: 18,
       fontFamily: "OpenSans-Medium",
-      color: "#000",
+      color: "rgb(0,0,0)",
     },
     inputDesc: {
       minHeight: 24,
       paddingHorizontal: 15,
-      fontSize: 14,
       fontFamily: "OpenSans-Medium",
-      color: "#000",
+      color: "rgb(0,0,0)",
     },
     projectPropertie: {
       flexDirection: "row",
@@ -142,10 +142,10 @@ const TaskInput = forwardRef((props, ref) => {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
-      height: 40,
-      paddingHorizontal: 15,
       borderTopColor: "rgb(245,245,245)",
       borderTopWidth: 1,
+      height: 40,
+      paddingHorizontal: 15,
     },
     wrapperProperties: {
       flex: 1,

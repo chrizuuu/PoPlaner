@@ -85,16 +85,13 @@ const ProjectPage = forwardRef((props, ref) => {
 
   const styles = StyleSheet.create({
     backdrop: {
-      backgroundColor: "black",
+      backgroundColor: "rgb(0,0,0)",
       opacity: 0.3,
       flex: 1,
     },
     container: {
-      marign: 0,
       width: windowWidth,
       height: windowHeight,
-      justifyContent: "flex-end",
-      alignContent: "flex-end",
       flex: 1,
     },
     wrapper: {
@@ -102,7 +99,6 @@ const ProjectPage = forwardRef((props, ref) => {
       paddingTop: 15,
       paddingHorizontal: 15,
       backgroundColor: "rgb(255,255,255)",
-      minHeight: "25%",
       justifyContent: "space-between",
     },
     wrapperTitle: {
@@ -124,8 +120,8 @@ const ProjectPage = forwardRef((props, ref) => {
       flex: 1,
       marginLeft: 10,
       fontSize: 22,
-      color: "#000",
       fontFamily: "OpenSans-Bold",
+      color: "rgb(0,0,0)",
     },
   })
 
@@ -140,7 +136,7 @@ const ProjectPage = forwardRef((props, ref) => {
           <View style={styles.wrapperTitle}>
             <TextInput
               onPressIn={() => setInputFocus(true)}
-              placeholder={strings("taskInputTitle")}
+              placeholder={strings("projectInputName")}
               style={styles.title}
               maxLength={30}
               defaultValue={project.title}

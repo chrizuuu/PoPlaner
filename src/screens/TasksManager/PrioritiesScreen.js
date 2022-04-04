@@ -11,4 +11,4 @@ const enhance = withObservables([], () => ({
   tasks: TaskDAO.observePriorityTasks(), // set global var in mobx to query
 }))
 
-export default enhance(PrioritiesScreen)
+export default enhance(React.memo(PrioritiesScreen))

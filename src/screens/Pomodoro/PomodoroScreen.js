@@ -9,7 +9,7 @@ import Timer from "../../components/Timer/Timer"
 const styles = StyleSheet.create({
   wrapper: {
     height: "100%",
-    backgroundColor: "#fff",
+    backgroundColor: "rgb(255,255,255)",
   },
 })
 

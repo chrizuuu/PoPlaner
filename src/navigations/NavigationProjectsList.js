@@ -12,12 +12,12 @@ import Animated, {
   FadeOut,
 } from "react-native-reanimated"
 import { CommonActions, useNavigation } from "@react-navigation/native"
-import { TextBold } from "../Text/Text"
-import ProjectDAO from "../../database/DAO/ProjectDAO"
-import ProjectInput from "../Inputs/ProjectInput"
-import ProjectItem from "../Items/Project/ProjectItem"
+import { TextBold } from "../components/Text/Text"
+import ProjectDAO from "../database/DAO/ProjectDAO"
+import ProjectInput from "../components/Inputs/ProjectInput"
+import ProjectItem from "../components/Items/Project/ProjectItem"
 
-const NavigationProjectsList = ({ projects, style }) => {
+const NavigationProjectsList = ({ projects, style, state }) => {
   const [isVisible, setIsVisible] = useState(false)
   const projectInputRef = useRef()
   const projectsListIconAnimation = useSharedValue("0deg")
@@ -26,6 +26,19 @@ const NavigationProjectsList = ({ projects, style }) => {
   const projectsListIconStyle = useAnimatedStyle(() => ({
     transform: [{ rotate: projectsListIconAnimation.value }],
   }))
+
+  const focusedCheck = (value) => {
+    let actualRoute = state.routes[state.index]
+
+    while (actualRoute.state) {
+      actualRoute = actualRoute.state.routes[actualRoute.state.index]
+    }
+
+    if (value === actualRoute.key) {
+      return true
+    }
+    return false
+  }
 
   const handleIsVisible = () => {
     const visibility = isVisible
@@ -51,7 +64,7 @@ const NavigationProjectsList = ({ projects, style }) => {
       marginBottom: 5,
     },
     item: {
-      height: 40,
+      height: 50,
       justifyContent: "center",
     },
   })
@@ -61,7 +74,12 @@ const NavigationProjectsList = ({ projects, style }) => {
       <View style={[styles.container, { ...style }]}>
         <View style={styles.wrapperHeader}>
           <TextBold fontSize={15}>Projects</TextBold>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
             <Animated.View style={projectsListIconStyle}>
               <Icon
                 style={{ marginRight: 5 }}
@@ -101,13 +119,15 @@ const NavigationProjectsList = ({ projects, style }) => {
                         key: project.id.toString(),
                         params: {
                           projectID: project.id,
-                          title: project.name,
                         },
                       })
                     )
                   }}
                 >
-                  <ProjectItem project={project} />
+                  <ProjectItem
+                    project={project}
+                    focused={focusedCheck(project.id)}
+                  />
                 </Pressable>
               </Animated.View>
             ))}

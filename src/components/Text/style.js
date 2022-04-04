@@ -18,7 +18,7 @@ const styleText = StyleSheet.create({
 
   textDefaultStyle: {
     fontSize: 14,
-    color: "#242424",
+    color: "rgb(36,36,36)",
   },
 })
 

@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     fontSize: 14,
     fontFamily: "Montserrat-Medium",
-    color: "#808080",
+    color: "rgb(128,128,128)",
     textAlign: "center",
   },
 })
@@ -64,7 +64,7 @@ function TimerSession({ currentInterval, maxInterval, timerCount, style }) {
     const targetCircle = arrayOfCircles.findIndex(
       (circle) => circle.key === currentInterval
     )
-    const newCircle = { key: currentInterval, color: "#53D3AF" }
+    const newCircle = { key: currentInterval, color: "rgb(83,211,175)" }
     copyArrayOfCircles[targetCircle] = newCircle
     setArrayOfObjects(copyArrayOfCircles)
   }
