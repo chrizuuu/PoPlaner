@@ -5,26 +5,19 @@ import { Q } from "@nozbe/watermelondb"
 import { TextSemi, TextReg } from "../../Text/Text"
 import { database } from "../../../database/database"
 
-const ProjectItem = ({ project, tasksCount, focused }) => {
+const ProjectItem = ({ project, tasksCount }) => {
   const styles = StyleSheet.create({
     wrapper: {
       height: 50,
+      paddingHorizontal: 5,
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      paddingHorizontal: 15,
     },
-    focused: { backgroundColor: "rgba(50,50,50,0.5)", borderRadius: 5 },
-    notFocused: { backgroundColor: "white" },
   })
 
   return (
-    <View
-      style={[
-        styles.wrapper,
-        focused === true ? styles.focused : styles.notFocused,
-      ]}
-    >
+    <View style={[styles.wrapper]}>
       <TextSemi>{project.name}</TextSemi>
       <TextReg>{tasksCount}</TextReg>
     </View>

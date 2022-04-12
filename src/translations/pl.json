@@ -25,6 +25,7 @@
   "taskInvalidInputTitle": "Nieprawidłowa nazwa zadania!",
   "create": "Utwórz",
 
+  "projects": "Projekty",
   "projectInputHeader": "Nowy projekt",
   "projectInputName": "Nazwa projektu",
   "projectTypeInputName": "Wprowadź nazwę projektu",
@@ -34,5 +35,10 @@
   "deleteProjectAlertPart1": "Spowoduje to usunięcie projektu ",
   "deleteProjectAlertPart2": " wraz z jego wszystkimi zadaniami. Czynność ta nie moze zostać cofnięta.",
   "deleteProjectAlertCancel": "Anuluj",
-  "deleteProjectAlertDelete": "Usuń"
+  "deleteProjectAlertDelete": "Usuń",
+
+  "navInbox": "Skrzynka",
+  "navToday": "Dzisiaj",
+  "navPriorities": "Priorytety",
+  "navTimer": "Pomodoro Timer"
 }

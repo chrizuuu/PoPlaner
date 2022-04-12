@@ -1,8 +1,9 @@
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-indent */
 /* eslint-disable object-shorthand */
 import React, { useState, useRef } from "react"
 import withObservables from "@nozbe/with-observables"
-import { StyleSheet, View, Pressable } from "react-native"
+import { StyleSheet, View } from "react-native"
 import Icon from "react-native-vector-icons/MaterialIcons"
 import Animated, {
   useAnimatedStyle,
@@ -12,10 +13,13 @@ import Animated, {
   FadeOut,
 } from "react-native-reanimated"
 import { CommonActions, useNavigation } from "@react-navigation/native"
+import { DrawerItem } from "@react-navigation/drawer"
+import { strings } from "../translations/translations"
 import { TextBold } from "../components/Text/Text"
 import ProjectDAO from "../database/DAO/ProjectDAO"
 import ProjectInput from "../components/Inputs/ProjectInput"
 import ProjectItem from "../components/Items/Project/ProjectItem"
+import globalStyle from "../styles/globalStyle"
 
 const NavigationProjectsList = ({ projects, style, state }) => {
   const [isVisible, setIsVisible] = useState(false)
@@ -52,11 +56,6 @@ const NavigationProjectsList = ({ projects, style, state }) => {
   }
 
   const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      width: "100%",
-      paddingHorizontal: 15,
-    },
     wrapperHeader: {
       flexDirection: "row",
       justifyContent: "space-between",
@@ -65,15 +64,14 @@ const NavigationProjectsList = ({ projects, style, state }) => {
     },
     item: {
       height: 50,
-      justifyContent: "center",
     },
   })
 
   return (
     <>
-      <View style={[styles.container, { ...style }]}>
+      <View style={[{ ...style }]}>
         <View style={styles.wrapperHeader}>
-          <TextBold fontSize={15}>Projects</TextBold>
+          <TextBold fontSize={15}>{strings("projects")}</TextBold>
           <View
             style={{
               flexDirection: "row",
@@ -102,6 +100,7 @@ const NavigationProjectsList = ({ projects, style, state }) => {
             />
           </View>
         </View>
+
         {isVisible ? (
           <View>
             {projects.map((project) => (
@@ -111,7 +110,9 @@ const NavigationProjectsList = ({ projects, style, state }) => {
                 entering={FadeIn}
                 exiting={FadeOut}
               >
-                <Pressable
+                <DrawerItem
+                  style={globalStyle.navItem}
+                  focused={focusedCheck(project.id)}
                   onPress={() => {
                     navigation.dispatch(
                       CommonActions.navigate({
@@ -123,12 +124,13 @@ const NavigationProjectsList = ({ projects, style, state }) => {
                       })
                     )
                   }}
-                >
-                  <ProjectItem
-                    project={project}
-                    focused={focusedCheck(project.id)}
-                  />
-                </Pressable>
+                  label={() => (
+                    <ProjectItem
+                      project={project}
+                      focused={focusedCheck(project.id)}
+                    />
+                  )}
+                />
               </Animated.View>
             ))}
           </View>

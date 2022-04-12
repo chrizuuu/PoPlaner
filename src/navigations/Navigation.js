@@ -8,18 +8,18 @@ import {
   DrawerItem,
   createDrawerNavigator,
 } from "@react-navigation/drawer"
-// import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createStackNavigator } from "@react-navigation/stack"
-
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { format } from "date-fns"
+import { strings } from "../translations/translations"
+import globalStyle from "../styles/globalStyle"
 import PomodoroScreen from "../screens/Pomodoro/PomodoroScreen"
 import SettingsScreen from "../screens/SettingsScreen"
 import InboxScreen from "../screens/TasksManager/InboxScreen"
 import TodayTasksScreen from "../screens/TasksManager/TodayTasksScreen"
 import PrioritiesScreen from "../screens/TasksManager/PrioritiesScreen"
 import ProjectTasksScreen from "../screens/TasksManager/ProjectTasksScreen"
-import { TextBold, TextMed } from "../components/Text/Text"
+import { TextBold, TextSemi } from "../components/Text/Text"
 import NavigationProjectsList from "./NavigationProjectsList"
 
 const Drawer = createDrawerNavigator()
@@ -27,18 +27,6 @@ const Drawer = createDrawerNavigator()
 const CustomDrawer = (props) => {
   const { state, navigation } = props
 
-  /*
-  useEffect(() => {
-    let actualRoute = state.routes[state.index]
-
-    while (actualRoute.state) {
-      actualRoute = actualRoute.state.routes[actualRoute.state.index]
-    }
-
-    //  actualRoute = actualRoute.state.routes[actualRoute.state.index]
-    console.log(actualRoute)
-  }, [state])
-*/
   const focusedCheck = (value) => {
     let actualRoute = state.routes[state.index]
     let actualRouteName = null
@@ -54,14 +42,21 @@ const CustomDrawer = (props) => {
     return false
   }
 
+  const routes = [
+    { name: strings("navInbox"), icon: "inbox" },
+    { name: strings("navToday"), icon: "today" },
+    { name: strings("navPriorities"), icon: "star" },
+    { name: strings("navTimer"), icon: "timelapse" },
+  ]
+
   return (
     <DrawerContentScrollView {...props} keyboardShouldPersistTaps="handled">
       <View
         style={{
           justifyContent: "space-between",
           flexDirection: "row",
-          height: 48,
           alignItems: "center",
+          height: 48,
           paddingHorizontal: 15,
           borderBottomColor: "rgb(245,245,245)",
           borderBottomWidth: 1.5,
@@ -74,64 +69,29 @@ const CustomDrawer = (props) => {
               navigation.navigate("Settings")
             }}
           >
-            <Icon size={24} color="#242424" name="settings" light />
+            <Icon size={24} color="#242424" name="settings" />
           </Pressable>
         </View>
       </View>
 
-      <DrawerItem
-        style={{
-          height: 50,
-        }}
-        focused={focusedCheck("Priorities")}
-        label="Priorities"
-        labelStyle={{ color: "#609806" }}
-        icon={({ size }) => <Icon size={size} name="star" color="#000" />}
-        onPress={() => {
-          navigation.navigate("Priorities")
-        }}
-      />
-      <DrawerItem
-        style={{
-          height: 50,
-          justifyContent: "center",
-        }}
-        focused={focusedCheck("Today")}
-        label="Today"
-        labelStyle={{ color: "#609806" }}
-        icon={({ size }) => <Icon size={size} name="today" color="#000" />}
-        onPress={() => {
-          navigation.navigate("Today")
-        }}
-      />
-      <DrawerItem
-        style={{
-          height: 50,
+      <View style={{ paddingHorizontal: 15 }}>
+        {routes.map((route) => (
+          <DrawerItem
+            key={route.name}
+            label={() => <TextSemi>{route.name}</TextSemi>}
+            focused={focusedCheck(route.name)}
+            style={globalStyle.navItem}
+            icon={({ size }) => (
+              <Icon size={size} name={route.icon} color="#000" />
+            )}
+            onPress={() => {
+              navigation.navigate(route.name)
+            }}
+          />
+        ))}
 
-          justifyContent: "center",
-        }}
-        focused={focusedCheck("Inbox")}
-        label={({ color }) => <TextMed style={{ color }}>Inbox</TextMed>}
-        labelStyle={{ color: "#609806" }}
-        icon={({ size }) => <Icon size={size} name="inbox" color="#000" />}
-        onPress={() => {
-          navigation.navigate("Inbox")
-        }}
-      />
-      <DrawerItem
-        style={{
-          height: 50,
-          justifyContent: "center",
-        }}
-        focused={focusedCheck("Pomodoro Timer")}
-        label="Pomodoro Timer"
-        labelStyle={{ color: "#609806" }}
-        icon={({ size }) => <Icon size={size} name="timelapse" color="#000" />}
-        onPress={() => {
-          navigation.navigate("Pomodoro Timer")
-        }}
-      />
-      <NavigationProjectsList database state={state} />
+        <NavigationProjectsList database state={state} />
+      </View>
     </DrawerContentScrollView>
   )
 }

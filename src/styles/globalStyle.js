@@ -54,6 +54,11 @@ const globalStyle = StyleSheet.create({
     marginTop: 0,
     marginBottom: 0,
   },
+  navItem: {
+    height: 50,
+    justifyContent: "center",
+    paddingHorizontal: 5,
+  },
 })
 
 export default globalStyle

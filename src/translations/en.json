@@ -26,6 +26,7 @@
 
   "create": "Create",
 
+  "projects": "Projects",
   "projectInputHeader": "New project",
   "projectInputName": "Project name",
   "projectTypeInputName": "Enter a name for the project",
@@ -35,5 +36,10 @@
   "deleteProjectAlertPart1": "This will delete the project ",
   "deleteProjectAlertPart2": " along with all its tasks. This action cannot be undone.",
   "deleteProjectAlertCancel": "Cancel",
-  "deleteProjectAlertDelete": "Delete"
+  "deleteProjectAlertDelete": "Delete",
+
+  "navInbox": "Inbox",
+  "navToday": "Today",
+  "navPriorities": "Priorities",
+  "navTimer": "Pomodoro Timer"
 }
