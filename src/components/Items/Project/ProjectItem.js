@@ -8,18 +8,29 @@ import { database } from "../../../database/database"
 const ProjectItem = ({ project, tasksCount }) => {
   const styles = StyleSheet.create({
     wrapper: {
+      width: "100%",
       height: 50,
-      paddingLeft: 5,
       flexDirection: "row",
-      justifyContent: "space-between",
       alignItems: "center",
     },
   })
 
   return (
     <View style={[styles.wrapper]}>
+      <View
+        style={{
+          marginRight: 20,
+          backgroundColor: "#e7e7e7",
+          width: 28,
+          height: 28,
+          alignItems: "center",
+          justifyContent: "center",
+          borderRadius: 15,
+        }}
+      >
+        <TextReg>{tasksCount}</TextReg>
+      </View>
       <TextSemi>{project.name}</TextSemi>
-      <TextReg>{tasksCount}</TextReg>
     </View>
   )
 }
