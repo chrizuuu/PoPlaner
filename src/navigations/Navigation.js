@@ -78,6 +78,7 @@ const CustomDrawer = (props) => {
       <View style={{ paddingHorizontal: 15 }}>
         {routes.map((route) => (
           <DrawerItem
+            activeBackgroundColor="#f7f7f7"
             key={route.route}
             label={() => <TextSemi>{route.name}</TextSemi>}
             focused={focusedCheck(route.route)}
@@ -139,7 +140,6 @@ const StackDrawer = ({ navigation }) => {
 const Navigation = () => {
   return (
     <Drawer.Navigator
-      drawerContent={(props) => <CustomDrawer {...props} />}
       screenOptions={{
         headerShown: false,
         drawerStyle: {
@@ -147,6 +147,7 @@ const Navigation = () => {
         },
         drawerType: "slide",
       }}
+      drawerContent={(props) => <CustomDrawer {...props} />}
     >
       <Drawer.Screen name="Drawer" component={StackDrawer} />
     </Drawer.Navigator>

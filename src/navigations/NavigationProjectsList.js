@@ -111,6 +111,7 @@ const NavigationProjectsList = ({ projects, style, state }) => {
                 exiting={FadeOut}
               >
                 <DrawerItem
+                  activeBackgroundColor="#f7f7f7"
                   style={globalStyle.navItem}
                   focused={focusedCheck(project.id)}
                   onPress={() => {
@@ -120,6 +121,7 @@ const NavigationProjectsList = ({ projects, style, state }) => {
                         key: project.id.toString(),
                         params: {
                           projectID: project.id,
+                          routeName: project.name,
                         },
                       })
                     )

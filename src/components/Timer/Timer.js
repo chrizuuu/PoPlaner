@@ -205,6 +205,7 @@ class Timer extends React.PureComponent {
                 ? strings("timerStayFocus")
                 : strings("timerTakeBreak")}
               {type.time / 60}
+              min
             </Text>
           </TimerCycle>
           <TimerSession
