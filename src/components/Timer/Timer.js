@@ -90,6 +90,7 @@ class Timer extends React.PureComponent {
 
   startTimer = () => {
     const startTime = new Date()
+    startTime.setMilliseconds(0)
     this.setState({
       isPlaying: true,
       interval: BackgroundTimer.setInterval(() => {
@@ -160,11 +161,15 @@ class Timer extends React.PureComponent {
   timerMechanism = (startTime) => {
     const { actualTime, durationTime } = this.state
     if (actualTime < 1) this.manageTimer()
-    /* eslint-disable react/no-access-state-in-setstate */ else
+    /* eslint-disable react/no-access-state-in-setstate */ else {
+      const currentTime = new Date()
+      currentTime.setMilliseconds(0)
       this.setState({
         actualTime:
-          durationTime - differenceInSeconds(new Date(), Date.parse(startTime)),
+          durationTime -
+          differenceInSeconds(currentTime, Date.parse(startTime)),
       })
+    }
   }
 
   render() {

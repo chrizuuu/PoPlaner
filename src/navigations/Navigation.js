@@ -43,10 +43,10 @@ const CustomDrawer = (props) => {
   }
 
   const routes = [
-    { name: strings("navInbox"), icon: "inbox" },
-    { name: strings("navToday"), icon: "today" },
-    { name: strings("navPriorities"), icon: "star" },
-    { name: strings("navTimer"), icon: "timelapse" },
+    { name: strings("navInbox"), route: "Inbox", icon: "inbox" },
+    { name: strings("navToday"), route: "Today", icon: "today" },
+    { name: strings("navPriorities"), route: "Priorities", icon: "star" },
+    { name: strings("navTimer"), route: "Pomodoro Timer", icon: "timelapse" },
   ]
 
   return (
@@ -60,6 +60,7 @@ const CustomDrawer = (props) => {
           paddingHorizontal: 15,
           borderBottomColor: "rgb(245,245,245)",
           borderBottomWidth: 1.5,
+          backgroundColor: "rgb(255,255,255)",
         }}
       >
         <TextBold fontSize={16}>{format(new Date(), "cccc, MMM do")}</TextBold>
@@ -77,15 +78,15 @@ const CustomDrawer = (props) => {
       <View style={{ paddingHorizontal: 15 }}>
         {routes.map((route) => (
           <DrawerItem
-            key={route.name}
+            key={route.route}
             label={() => <TextSemi>{route.name}</TextSemi>}
-            focused={focusedCheck(route.name)}
+            focused={focusedCheck(route.route)}
             style={globalStyle.navItem}
             icon={({ size }) => (
               <Icon size={size} name={route.icon} color="#000" />
             )}
             onPress={() => {
-              navigation.navigate(route.name)
+              navigation.navigate(route.route)
             }}
           />
         ))}
@@ -102,8 +103,12 @@ const StackDrawer = ({ navigation }) => {
   return (
     <Stack.Navigator
       screenOptions={{
+        headerTitleContainerStyle: {
+          width: "70%",
+        },
         headerTitleStyle: {
-          color: "#000",
+          color: "#121212",
+          textAlign: "center",
         },
         headerLeft: () => (
           <Pressable
@@ -121,7 +126,11 @@ const StackDrawer = ({ navigation }) => {
       <Stack.Screen name="Today" component={TodayTasksScreen} />
       <Stack.Screen name="Priorities" component={PrioritiesScreen} />
       <Stack.Screen name="Pomodoro Timer" component={PomodoroScreen} />
-      <Stack.Screen name="Settings" component={SettingsScreen} />
+      <Stack.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{ title: strings("navSettings") }}
+      />
       <Stack.Screen name="Project" component={ProjectTasksScreen} />
     </Stack.Navigator>
   )

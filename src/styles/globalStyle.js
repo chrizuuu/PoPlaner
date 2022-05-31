@@ -55,9 +55,8 @@ const globalStyle = StyleSheet.create({
     marginBottom: 0,
   },
   navItem: {
-    height: 50,
+    height: 48,
     justifyContent: "center",
-    paddingHorizontal: 5,
   },
 })
 

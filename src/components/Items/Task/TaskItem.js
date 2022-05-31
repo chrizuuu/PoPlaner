@@ -149,7 +149,9 @@ const TaskItem = ({
             onChange={() => task.handleIsDone()}
             size={24}
           />
-          <TextMed style={styles.title}>{task.title}</TextMed>
+          <TextMed maxLine={1} style={styles.title}>
+            {task.title}
+          </TextMed>
           <CheckboxPriority
             status={task.isPriority}
             onChange={() => task.handleIsPriority()}

@@ -3,7 +3,7 @@ import { StyleSheet, View, FlatList } from "react-native"
 import PropTypes from "prop-types"
 import TaskItem from "../Items/Task/TaskItem"
 import TaskInput from "../Inputs/TaskInput"
-import FooterList from "../Components/FooterList"
+import FooterList from "./FooterList"
 
 const TasksList = ({ tasks, displayProject }) => {
   const styles = StyleSheet.create({

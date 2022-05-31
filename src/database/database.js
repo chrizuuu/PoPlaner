@@ -21,7 +21,7 @@ export const database = new Database({
   adapter,
   modelClasses: [Task, Project, TaskComments, ProjectCommnets],
 })
-
+/*
 /// FlipperDatabasesPlugin - START
 
 if (__DEV__) {
@@ -37,3 +37,4 @@ if (__DEV__) {
 }
 /// FlipperDatabasesPlugin - END
 // eslint-disable-next-line no-undef
+*/

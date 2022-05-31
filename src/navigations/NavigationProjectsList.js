@@ -63,7 +63,7 @@ const NavigationProjectsList = ({ projects, style, state }) => {
       marginBottom: 5,
     },
     item: {
-      height: 50,
+      height: 48,
     },
   })
 

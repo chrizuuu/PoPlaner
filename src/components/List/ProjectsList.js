@@ -3,7 +3,7 @@ import React, { useRef } from "react"
 import { StyleSheet, Dimensions, View, FlatList } from "react-native"
 import withObservables from "@nozbe/with-observables"
 import ProjectItem from "../Items/Project/ProjectItem"
-import FooterList from "../Components/FooterList"
+import FooterList from "./FooterList"
 import ProjectDAO from "../../database/DAO/ProjectDAO"
 import ProjectInput from "../Inputs/ProjectInput"
 
