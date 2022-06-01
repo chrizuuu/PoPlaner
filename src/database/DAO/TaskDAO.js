@@ -38,7 +38,11 @@ export default {
     ),
 
   observePriorityTasks: () =>
-    tasks.query(Q.where("is_priority", true), Q.sortBy("created_at", Q.desc)),
+    tasks.query(
+      Q.where("is_done", false),
+      Q.where("is_priority", true),
+      Q.sortBy("created_at", Q.desc)
+    ),
 
   createTask: async (
     _title,

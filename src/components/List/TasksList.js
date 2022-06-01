@@ -1,5 +1,5 @@
 import React, { useRef } from "react"
-import { StyleSheet, View, FlatList } from "react-native"
+import { StyleSheet, View, ScrollView } from "react-native"
 import PropTypes from "prop-types"
 import TaskItem from "../Items/Task/TaskItem"
 import TaskInput from "../Inputs/TaskInput"
@@ -17,21 +17,17 @@ const TasksList = ({ tasks, displayProject }) => {
   return (
     <>
       <View style={styles.container}>
-        <FlatList
-          style={{ flex: 1 }}
-          showsVerticalScrollIndicator={false}
-          data={tasks}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
+        <ScrollView style={[{ width: "100%" }]}>
+          {tasks.map((task) => (
             <TaskItem
-              task={item}
-              key={item.id}
+              task={task}
+              key={task.id}
               displayDeadline
               displayDeadlineTime
               displayProject={displayProject}
             />
-          )}
-        />
+          ))}
+        </ScrollView>
 
         <FooterList
           leftIcon="add"

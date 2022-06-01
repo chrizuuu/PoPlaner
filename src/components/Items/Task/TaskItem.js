@@ -4,6 +4,7 @@ import withObservables from "@nozbe/with-observables"
 import Animated, {
   LightSpeedInLeft,
   LightSpeedOutRight,
+  Layout,
   useSharedValue,
   useAnimatedStyle,
   withTiming,
@@ -136,9 +137,10 @@ const TaskItem = ({
   return (
     <>
       <Animated.View
-        style={[styles.container, taskStyle]}
         entering={LightSpeedInLeft}
         exiting={LightSpeedOutRight}
+        style={[styles.container, taskStyle]}
+        layout={Layout.springify()}
       >
         <Pressable
           style={styles.wrapperTitle}

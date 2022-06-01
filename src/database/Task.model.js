@@ -63,6 +63,9 @@ export default class Task extends Model {
     await this.update((task) => {
       const updatedTask = task
       updatedTask.isDone = !updatedTask.isDone
+      if (updatedTask.isDone === true) {
+        super.destroyPermanently()
+      }
     })
   }
 
@@ -106,6 +109,9 @@ export default class Task extends Model {
       updatedTask.deadlineAt = newDeadline
       updatedTask.deadlineTimeAt = newDeadlineTime
     })
+    if (isDone === true) {
+      await super.destroyPermanently()
+    }
   }
 
   @writer async changeProject(projectID) {

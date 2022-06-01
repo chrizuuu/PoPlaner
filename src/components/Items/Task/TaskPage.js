@@ -61,14 +61,25 @@ const TaskPage = forwardRef((props, ref) => {
   const alertTaskIsDone = () =>
     Alert.alert("Task is done.", "", [
       {
-        text: "OK",
-        onPress: () => closeTaskPage(),
-      },
-      {
         text: "Undo",
         onPress: () => {
           setTaskIsDone(false)
         },
+      },
+      {
+        text: "OK",
+        onPress: () => closeTaskPage(),
+      },
+    ])
+
+  const alertDeleteTask = () =>
+    Alert.alert("Are you sure you want delete this task?", "", [
+      {
+        text: "Cancel",
+      },
+      {
+        text: "Delete",
+        onPress: () => task.delete(),
       },
     ])
 
@@ -236,7 +247,7 @@ const TaskPage = forwardRef((props, ref) => {
               <TextReg>
                 {strings("taskCreatedAt") + format(task.createdAt, "PP")}
               </TextReg>
-              <Pressable onLongPress={() => task.delete()}>
+              <Pressable onLongPress={() => alertDeleteTask()}>
                 <Icon name="delete-outline" size={22} />
               </Pressable>
             </View>
