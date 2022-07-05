@@ -57,9 +57,9 @@ class Timer extends React.PureComponent {
     this.stopTimer()
   }
 
-  handleCountInterval = (callback) => {
+  handleCountInterval = callback => {
     this.setState(
-      (prevState) => ({
+      prevState => ({
         countInterval: prevState.countInterval + 1,
       }),
       callback
@@ -67,12 +67,12 @@ class Timer extends React.PureComponent {
   }
 
   handleCountTimer = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       countTimer: prevState.countTimer + 1,
     }))
   }
 
-  handleType = (_type) => {
+  handleType = _type => {
     this.stopTimer()
     this.setState({
       type: _type,
@@ -101,7 +101,7 @@ class Timer extends React.PureComponent {
 
   pauseTimer = () => {
     this.stopTimer()
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       isPlaying: false,
       durationTime: prevState.actualTime,
     }))
@@ -113,7 +113,7 @@ class Timer extends React.PureComponent {
 
   resetTimer = () => {
     this.stopTimer()
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       actualTime: prevState.type.time,
       durationTime: prevState.type.time,
       countInterval: prevState.countInterval,
@@ -158,7 +158,7 @@ class Timer extends React.PureComponent {
     }
   }
 
-  timerMechanism = (startTime) => {
+  timerMechanism = startTime => {
     const { actualTime, durationTime } = this.state
     if (actualTime < 1) this.manageTimer()
     /* eslint-disable react/no-access-state-in-setstate */ else {
@@ -188,15 +188,13 @@ class Timer extends React.PureComponent {
         style={{
           justifyContent: "space-evenly",
           height: windowHeight - 60,
-        }}
-      >
+        }}>
         <View>
           <TimerCycle
             size={windowWidth}
             strokeWidth="16"
             strokeColor="#53D3AF"
-            progress={timePercent}
-          >
+            progress={timePercent}>
             <Text style={[styles.timerValueText, styles.timerText]}>
               {formatTimerTime(time)}
             </Text>

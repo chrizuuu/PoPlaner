@@ -1,7 +1,7 @@
 import React from "react"
 import { View, StyleSheet } from "react-native"
 import FlexLayout from "../../components/Layouts/FlexLayout"
-import Timer from "../../components/Timer/Timer"
+import TimerFunctionalComp from "../../components/Timer/TimerFunctionalComp"
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -15,7 +15,7 @@ export default class PomodoroScreen extends React.PureComponent {
     return (
       <FlexLayout>
         <View style={styles.wrapper}>
-          <Timer />
+          <TimerFunctionalComp />
         </View>
       </FlexLayout>
     )
