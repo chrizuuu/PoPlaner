@@ -1,19 +1,49 @@
-import React, { useState } from "react"
+/* eslint-disable no-underscore-dangle */
+import React from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { ScrollView } from "react-native"
 import SettingsBarHeader from "../components/Settings/SettingsHeaderBar"
-import SettingSwitch from "../components/Settings/SettingSwitch"
 import SettingSlider from "../components/Settings/SettingSlider"
+import SettingSwitch from "../components/Settings/SettingSwitch"
+import {
+  changeFocusTime,
+  changeShortBreak,
+  changeLongBreak,
+  changeWorkingSessions,
+  toggleAutoStartPomodoro,
+  toggleAutoStartBreak,
+} from "../redux/features/pomodoro/pomodoroSlice"
 
 const SettingsScreen = () => {
-  const [testValue, setTestValue] = useState(true)
+  // Selectors
+  // ===========================================================================
+  const focusTime = useSelector(state => state.pomodoro.focusTime)
+  const shortBreak = useSelector(state => state.pomodoro.shortBreak)
+  const longBreak = useSelector(state => state.pomodoro.longBreak)
+  const workingSessions = useSelector(state => state.pomodoro.workingSessions)
+  const autoStartBreak = useSelector(state => state.pomodoro.autoStartBreak)
+  const autoStartPomodoro = useSelector(
+    state => state.pomodoro.autoStartPomodoro
+  )
+
+  // Dispatch
+  // ===========================================================================
+  const dispatch = useDispatch()
+  const _changeFocusTime = val => dispatch(changeFocusTime(val))
+  const _changeShortBreak = val => dispatch(changeShortBreak(val))
+  const _changeLongBreak = val => dispatch(changeLongBreak(val))
+  const _changeWorkingSessions = val => dispatch(changeWorkingSessions(val))
+  const _toggleAutoStartPomodoro = () => dispatch(toggleAutoStartPomodoro())
+  const _toggleAutoStartBreak = () => dispatch(toggleAutoStartBreak())
 
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <SettingsBarHeader settingsSectionName="Pomodoro Timer Settings" />
       <SettingSlider
         settingName="Focus time"
         settingValueUnitText="min"
-        value={25}
+        value={focusTime}
+        onValueChange={val => _changeFocusTime(val)}
         minimumValue={5}
         maximumValue={60}
         step={5}
@@ -22,82 +52,41 @@ const SettingsScreen = () => {
       <SettingSlider
         settingName="Short break"
         settingValueUnitText="min"
-        value={5}
-        minimumValue={2}
-        maximumValue={30}
-        step={1}
+        value={shortBreak}
+        onValueChange={val => _changeShortBreak(val)}
+        minimumValue={5}
+        maximumValue={15}
+        step={5}
       />
 
       <SettingSlider
         settingName="Long break"
         settingValueUnitText="min"
-        value={15}
-        minimumValue={2}
+        value={longBreak}
+        onValueChange={val => _changeLongBreak(val)}
+        minimumValue={10}
         maximumValue={30}
-        step={1}
+        step={5}
       />
 
       <SettingSlider
         settingName="Working sessions"
-        settingValueUnitText="session"
-        value={4}
+        settingValueUnitText="sessions"
+        value={workingSessions}
+        onValueChange={val => _changeWorkingSessions(val)}
         minimumValue={1}
         maximumValue={12}
         step={1}
       />
-
       <SettingSwitch
         settingName="Auto start pomodoro?"
-        switchValue={testValue}
-        onValueChange={setTestValue}
+        switchValue={autoStartPomodoro}
+        onValueChange={_toggleAutoStartPomodoro}
       />
       <SettingSwitch
         settingName="Auto start break?"
-        switchValue={testValue}
-        onValueChange={setTestValue}
-      />
-
-      <SettingsBarHeader
-        settingsSectionName="Notifications"
-        style={{ marginTop: 10 }}
-      />
-
-      <SettingSwitch
-        settingName="Allow notifications?"
-        switchValue={testValue}
-        onValueChange={setTestValue}
-      />
-      <SettingSwitch
-        settingName="Sounds"
-        switchValue={testValue}
-        onValueChange={setTestValue}
-      />
-      <SettingSwitch
-        settingName="Pomodoro timer notifications"
-        switchValue={testValue}
-        onValueChange={setTestValue}
-      />
-      <SettingSwitch
-        settingName="Tasks notifications"
-        switchValue={testValue}
-        onValueChange={setTestValue}
-      />
-
-      <SettingsBarHeader
-        settingsSectionName="Night mode"
-        style={{ marginTop: 10 }}
-      />
-
-      <SettingSwitch
-        settingName="Night mode"
-        switchValue={testValue}
-        onValueChange={setTestValue}
-      />
-      <SettingSwitch
-        settingName="Automatically?"
-        switchValue={testValue}
-        onValueChange={setTestValue}
-        style={{ marginBottom: 40 }}
+        switchValue={autoStartBreak}
+        onValueChange={_toggleAutoStartBreak}
       />
     </ScrollView>
   )
