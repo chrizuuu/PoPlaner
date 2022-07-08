@@ -2,13 +2,6 @@ apply plugin: "com.android.application"
 
 import com.android.build.OutputFile
 
-apply plugin: "com.facebook.react"
-
-react {
-    reactRoot = rootProject.file("../node_modules/react-native/")
-    codegenDir = rootProject.file("../node_modules/react-native-codegen/")
-}
-
 /**
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
  * and bundleReleaseJsAndAssets).
@@ -213,7 +206,7 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
-    implementation project(":ReactAndroid")  
+    implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation project(':watermelondb-jsi') // ⬅️ This!
     implementation 'com.android.support:multidex:2.0.1'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"

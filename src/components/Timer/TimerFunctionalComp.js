@@ -45,9 +45,9 @@ function TimerFunctionalComponent() {
   )
 
   const timerType = [
-    { name: "Pomodoro", time: focusTime },
-    { name: "ShortBreak", time: shortBreak },
-    { name: "LongBreak", time: longBreak },
+    { name: "Pomodoro", time: focusTime * 60 },
+    { name: "ShortBreak", time: shortBreak * 60 },
+    { name: "LongBreak", time: longBreak * 60 },
   ]
 
   // Local State
@@ -165,7 +165,7 @@ function TimerFunctionalComponent() {
   useEffect(() => {
     if (type.name === "Pomodoro" && autoStartPomodoro) {
       startTimer()
-    } else if ((type.name === "ShortBreak" || "LongBreak") ** autoStartBreak) {
+    } else if ((type.name === "ShortBreak" || "LongBreak") && autoStartBreak) {
       startTimer()
     }
   }, [type])
@@ -177,13 +177,15 @@ function TimerFunctionalComponent() {
       style={{
         justifyContent: "space-evenly",
         height: windowHeight - 60,
-      }}>
+      }}
+    >
       <View>
         <TimerCycle
           size={windowWidth}
           strokeWidth="16"
           strokeColor="#53D3AF"
-          progress={timePercent}>
+          progress={timePercent}
+        >
           <Text style={[styles.timerValueText, styles.timerText]}>
             {formatTimerTime(time)}
           </Text>
@@ -191,7 +193,9 @@ function TimerFunctionalComponent() {
             {type.name === "Pomodoro"
               ? strings("timerStayFocus")
               : strings("timerTakeBreak")}
-            {durationTime} min
+            {durationTime}
+            {' '}
+            min
           </Text>
         </TimerCycle>
         <TimerSession
