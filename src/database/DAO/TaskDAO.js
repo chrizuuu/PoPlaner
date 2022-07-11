@@ -24,17 +24,27 @@ export default {
     tasks.query(
       Q.where(
         "deadline_at",
-        Q.gte(startOfToday().getTime()),
-        Q.lte(endOfToday().getTime())
+        Q.between(startOfToday().getTime(), endOfToday().getTime())
       )
     ),
-  observeSpecificDayTasks: (date) =>
+
+  observeSpecificDayTasksWithTime: date =>
     tasks.query(
       Q.where(
         "deadline_at",
-        Q.gte(startOfDay(date)).getTime(),
-        Q.lte(endOfDay(date).getTime())
-      )
+        Q.between(startOfDay(date).getTime(), endOfDay(date).getTime())
+      ),
+      Q.where("deadline_time_at", Q.notEq(null)),
+      Q.sortBy("deadline_time_at", Q.asc)
+    ),
+
+  observeSpecificDayTasks: date =>
+    tasks.query(
+      Q.where(
+        "deadline_at",
+        Q.between(startOfDay(date).getTime(), endOfDay(date).getTime())
+      ),
+      Q.where("deadline_time_at", null)
     ),
 
   observePriorityTasks: () =>
@@ -53,7 +63,7 @@ export default {
     _description
   ) => {
     await database.write(async () => {
-      await tasks.create((task) => {
+      await tasks.create(task => {
         task.title = _title
         task.project.set(_project)
         task.isDone = false

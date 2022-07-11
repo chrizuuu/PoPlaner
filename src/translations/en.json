@@ -42,5 +42,6 @@
   "navToday": "Today",
   "navPriorities": "Priorities",
   "navTimer": "Pomodoro Timer",
-  "navSettings": "Settings"
+  "navSettings": "Settings",
+  "navSchedule": "Schedule"
 }

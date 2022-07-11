@@ -8,7 +8,6 @@ import FooterList from "./FooterList"
 const TasksList = ({ tasks, displayProject }) => {
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
       width: "100%",
     },
   })
@@ -18,7 +17,7 @@ const TasksList = ({ tasks, displayProject }) => {
     <>
       <View style={styles.container}>
         <ScrollView style={[{ width: "100%" }]}>
-          {tasks.map((task) => (
+          {tasks.map(task => (
             <TaskItem
               task={task}
               key={task.id}

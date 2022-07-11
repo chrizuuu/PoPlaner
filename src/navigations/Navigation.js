@@ -17,6 +17,7 @@ import PomodoroScreen from "../screens/Pomodoro/PomodoroScreen"
 import SettingsScreen from "../screens/SettingsScreen"
 import InboxScreen from "../screens/TasksManager/InboxScreen"
 import TodayTasksScreen from "../screens/TasksManager/TodayTasksScreen"
+import ScheduleScreen from "../screens/TasksManager/ScheduleScreen/ScheduleScreen"
 import PrioritiesScreen from "../screens/TasksManager/PrioritiesScreen"
 import ProjectTasksScreen from "../screens/TasksManager/ProjectTasksScreen"
 import { TextBold, TextSemi } from "../components/Text/Text"
@@ -24,10 +25,10 @@ import NavigationProjectsList from "./NavigationProjectsList"
 
 const Drawer = createDrawerNavigator()
 
-const CustomDrawer = (props) => {
+const CustomDrawer = props => {
   const { state, navigation } = props
 
-  const focusedCheck = (value) => {
+  const focusedCheck = value => {
     let actualRoute = state.routes[state.index]
     let actualRouteName = null
 
@@ -45,6 +46,7 @@ const CustomDrawer = (props) => {
   const routes = [
     { name: strings("navInbox"), route: "Inbox", icon: "inbox" },
     { name: strings("navToday"), route: "Today", icon: "today" },
+    { name: strings("navSchedule"), route: "Schedule", icon: "calendar-today" },
     { name: strings("navPriorities"), route: "Priorities", icon: "star" },
     { name: strings("navTimer"), route: "Pomodoro Timer", icon: "timelapse" },
   ]
@@ -76,7 +78,7 @@ const CustomDrawer = (props) => {
       </View>
 
       <View style={{ paddingHorizontal: 15 }}>
-        {routes.map((route) => (
+        {routes.map(route => (
           <DrawerItem
             activeBackgroundColor="#f7f7f7"
             key={route.route}
@@ -126,6 +128,7 @@ const StackDrawer = ({ navigation }) => {
       <Stack.Screen name="Inbox" component={InboxScreen} />
       <Stack.Screen name="Today" component={TodayTasksScreen} />
       <Stack.Screen name="Priorities" component={PrioritiesScreen} />
+      <Stack.Screen name="Schedule" component={ScheduleScreen} />
       <Stack.Screen name="Pomodoro Timer" component={PomodoroScreen} />
       <Stack.Screen
         name="Settings"
@@ -147,7 +150,7 @@ const Navigation = () => {
         },
         drawerType: "slide",
       }}
-      drawerContent={(props) => <CustomDrawer {...props} />}
+      drawerContent={props => <CustomDrawer {...props} />}
     >
       <Drawer.Screen name="Drawer" component={StackDrawer} />
     </Drawer.Navigator>
