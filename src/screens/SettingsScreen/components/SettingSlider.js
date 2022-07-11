@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { View, StyleSheet, Pressable } from "react-native"
 import Slider from "@react-native-community/slider"
-import { TextReg, TextSemi } from "../Text/Text"
+import { TextReg, TextSemi } from "../../../components/Text/Text"
 
 const SettingSlider = ({
   settingName,
@@ -42,12 +42,15 @@ const SettingSlider = ({
     <View style={styles.container}>
       <Pressable
         onPress={() => setSliderVisible(!sliderVisible)}
-        style={styles.wrapperSettingBar}>
+        style={styles.wrapperSettingBar}
+      >
         <TextSemi fontSize={13} color="#242424">
           {settingName}
         </TextSemi>
         <TextReg fontSize={13} color="#242424">
-          {value} {settingValueUnitText}
+          {value} 
+          {' '}
+          {settingValueUnitText}
         </TextReg>
       </Pressable>
       <View style={styles.wrapperSlider}>

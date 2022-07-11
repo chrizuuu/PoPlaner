@@ -1,42 +1,24 @@
-import React, { useRef } from "react"
-import { StyleSheet, View, ScrollView } from "react-native"
+import React from "react"
+import { ScrollView } from "react-native"
 import PropTypes from "prop-types"
 import TaskItem from "../Items/Task/TaskItem"
-import TaskInput from "../Inputs/TaskInput"
-import FooterList from "./FooterList"
 
 const TasksList = ({ tasks, displayProject }) => {
-  const styles = StyleSheet.create({
-    container: {
-      width: "100%",
-    },
-  })
-
-  const taskInputRef = useRef()
   return (
-    <>
-      <View style={styles.container}>
-        <ScrollView style={[{ width: "100%" }]}>
-          {tasks.map(task => (
-            <TaskItem
-              task={task}
-              key={task.id}
-              displayDeadline
-              displayDeadlineTime
-              displayProject={displayProject}
-            />
-          ))}
-        </ScrollView>
-
-        <FooterList
-          leftIcon="add"
-          leftIconOnPress={() => {
-            taskInputRef.current.openTaskInput()
-          }}
+    <ScrollView
+      contentContainerStyle={{ paddingBottom: 60 }}
+      style={[{ width: "100%" }]}
+    >
+      {tasks.map(task => (
+        <TaskItem
+          task={task}
+          key={task.id}
+          displayDeadline
+          displayDeadlineTime
+          displayProject={displayProject}
         />
-      </View>
-      <TaskInput ref={taskInputRef} />
-    </>
+      ))}
+    </ScrollView>
   )
 }
 

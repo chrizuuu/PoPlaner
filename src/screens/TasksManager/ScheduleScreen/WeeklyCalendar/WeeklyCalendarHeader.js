@@ -25,6 +25,8 @@ function WeeklyCalendarHeader({ pickedDay, onChangeDay }) {
         typeValue="date"
         formatValue="PP"
         displayMode={Platform.OS === "ios" ? "inline" : null}
+        iconSize={24}
+        displayValue={false}
       />
     </View>
   )

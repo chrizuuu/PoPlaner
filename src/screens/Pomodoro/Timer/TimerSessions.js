@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from "react"
 import { View, Text, Dimensions, StyleSheet } from "react-native"
 import Svg, { Circle } from "react-native-svg"
-import { strings } from "../../translations/translations"
+import { strings } from "../../../translations/translations"
 // import { strings } from "../../translations/translations"
 
 const windowWidth = Dimensions.get("window").width - 60
@@ -62,7 +62,7 @@ function TimerSession({ currentInterval, maxInterval, timerCount, style }) {
   const updateCircle = () => {
     const copyArrayOfCircles = [...arrayOfCircles]
     const targetCircle = arrayOfCircles.findIndex(
-      (circle) => circle.key === currentInterval
+      circle => circle.key === currentInterval
     )
     const newCircle = { key: currentInterval, color: "rgb(83,211,175)" }
     copyArrayOfCircles[targetCircle] = newCircle

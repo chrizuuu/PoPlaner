@@ -7,9 +7,9 @@ import { differenceInSeconds } from "date-fns"
 import TimerCycle from "./TimerCycle"
 import TimerController from "./TimerController"
 import TimerSession from "./TimerSessions"
-import formatTimerTime from "../Helpers/formatTimerTime"
-import colors from "../../styles/colorsLightTheme"
-import { strings } from "../../translations/translations"
+import formatTimerTime from "../../../utils/formatTimerTime"
+import colors from "../../../styles/colorsLightTheme"
+import { strings } from "../../../translations/translations"
 
 const windowHeight = Dimensions.get("window").height - 60
 const windowWidth = Dimensions.get("window").width - 60

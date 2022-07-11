@@ -2,9 +2,9 @@
 import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { ScrollView } from "react-native"
-import SettingsBarHeader from "../components/Settings/SettingsHeaderBar"
-import SettingSlider from "../components/Settings/SettingSlider"
-import SettingSwitch from "../components/Settings/SettingSwitch"
+import SettingsBarHeader from "./components/SettingsHeaderBar"
+import SettingSlider from "./components/SettingSlider"
+import SettingSwitch from "./components/SettingSwitch"
 import {
   changeFocusTime,
   changeShortBreak,
@@ -12,7 +12,7 @@ import {
   changeWorkingSessions,
   toggleAutoStartPomodoro,
   toggleAutoStartBreak,
-} from "../redux/features/pomodoro/pomodoroSlice"
+} from "../../redux/features/pomodoro/pomodoroSlice"
 
 const SettingsScreen = () => {
   // Selectors

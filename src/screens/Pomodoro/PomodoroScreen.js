@@ -1,7 +1,7 @@
 import React from "react"
 import { View, StyleSheet } from "react-native"
 import FlexLayout from "../../components/Layouts/FlexLayout"
-import TimerFunctionalComp from "../../components/Timer/TimerFunctionalComp"
+import TimerFunctionalComp from "./Timer/TimerFunctionalComp"
 
 const styles = StyleSheet.create({
   wrapper: {

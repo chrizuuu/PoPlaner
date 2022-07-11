@@ -5,9 +5,9 @@ import { differenceInSeconds } from "date-fns"
 import TimerCycle from "./TimerCycle"
 import TimerController from "./TimerController"
 import TimerSession from "./TimerSessions"
-import formatTimerTime from "../Helpers/formatTimerTime"
-import colors from "../../styles/colorsLightTheme"
-import { strings } from "../../translations/translations"
+import formatTimerTime from "../../../utils/formatTimerTime"
+import colors from "../../../styles/colorsLightTheme"
+import { strings } from "../../../translations/translations"
 
 const windowHeight = Dimensions.get("window").height - 60
 const windowWidth = Dimensions.get("window").width - 60
@@ -188,13 +188,15 @@ class Timer extends React.PureComponent {
         style={{
           justifyContent: "space-evenly",
           height: windowHeight - 60,
-        }}>
+        }}
+      >
         <View>
           <TimerCycle
             size={windowWidth}
             strokeWidth="16"
             strokeColor="#53D3AF"
-            progress={timePercent}>
+            progress={timePercent}
+          >
             <Text style={[styles.timerValueText, styles.timerText]}>
               {formatTimerTime(time)}
             </Text>

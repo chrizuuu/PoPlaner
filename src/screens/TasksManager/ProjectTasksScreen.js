@@ -7,6 +7,7 @@ import { compose } from "recompose"
 import { database } from "../../database/database"
 import ProjectPage from "../../components/Items/Project/ProjectPage"
 import TasksList from "../../components/List/TasksList"
+import NewTaskButton from "../../components/Buttons/NewTaskButton"
 
 const ProjectTasks = ({ navigation, project, tasks }) => {
   const projectPageRef = useRef()
@@ -32,7 +33,8 @@ const ProjectTasks = ({ navigation, project, tasks }) => {
 
   return (
     <>
-      <TasksList tasks={tasks} displayProject={false} />
+      <TasksList tasks={tasks} />
+      <NewTaskButton />
       <ProjectPage project={project} ref={projectPageRef} />
     </>
   )

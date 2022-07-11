@@ -13,6 +13,8 @@ const DateTimeInput = ({
   formatValue,
   displayMode,
   style,
+  iconSize,
+  displayValue = true,
 }) => {
   const [isPickerVisible, setPickerVisible] = useState(false)
 
@@ -34,16 +36,19 @@ const DateTimeInput = ({
       style={[styles.wrapper, { ...style }]}
       onPress={() => setPickerVisible(true)}
     >
-      <Icon name={iconName} size={18} color="#484848" />
-      <TextReg style={styles.text}>
-        {value
-          ? format(value, formatValue)
-          : strings(typeValue === "date" ? "taskInputDate" : "taskInputTime")}
-      </TextReg>
+      <Icon name={iconName} size={iconSize ?? 18} color="#484848" />
+
+      {displayValue && (
+        <TextReg style={styles.text}>
+          {value
+            ? format(value, formatValue)
+            : strings(typeValue === "date" ? "taskInputDate" : "taskInputTime")}
+        </TextReg>
+      )}
       <DateTimePickerModal
         isVisible={isPickerVisible}
         mode={typeValue}
-        onConfirm={(date) => {
+        onConfirm={date => {
           onChange(date)
           setPickerVisible(false)
         }}

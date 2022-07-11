@@ -11,11 +11,9 @@ function Checkbox({ status, onChange, style, size }) {
       justifyContent: "center",
       alignItems: "center",
     },
-
     true: {
       opacity: 1,
     },
-
     false: {
       opacity: 0,
     },

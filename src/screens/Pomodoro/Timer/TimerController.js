@@ -3,7 +3,7 @@
 import React from "react"
 import { TouchableOpacity, View, StyleSheet } from "react-native"
 import Icon from "react-native-vector-icons/MaterialIcons"
-import colors from "../../styles/colorsLightTheme"
+import colors from "../../../styles/colorsLightTheme"
 
 const TimerController = ({ handleTimer, reset, skip, isPlaying, style }) => {
   const backgroundColorChanger = isPlaying === true ? "#EE5436" : "#53D3AF"

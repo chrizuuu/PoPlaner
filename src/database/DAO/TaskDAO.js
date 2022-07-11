@@ -28,23 +28,13 @@ export default {
       )
     ),
 
-  observeSpecificDayTasksWithTime: date =>
-    tasks.query(
-      Q.where(
-        "deadline_at",
-        Q.between(startOfDay(date).getTime(), endOfDay(date).getTime())
-      ),
-      Q.where("deadline_time_at", Q.notEq(null)),
-      Q.sortBy("deadline_time_at", Q.asc)
-    ),
-
   observeSpecificDayTasks: date =>
     tasks.query(
       Q.where(
         "deadline_at",
         Q.between(startOfDay(date).getTime(), endOfDay(date).getTime())
       ),
-      Q.where("deadline_time_at", null)
+      Q.sortBy("deadline_time_at", Q.asc)
     ),
 
   observePriorityTasks: () =>
