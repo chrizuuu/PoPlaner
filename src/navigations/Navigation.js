@@ -13,7 +13,7 @@ import Icon from "react-native-vector-icons/MaterialIcons"
 import { format } from "date-fns"
 import { strings } from "../translations/translations"
 import globalStyle from "../styles/globalStyle"
-import PomodoroScreen from "../screens/Pomodoro/PomodoroScreen"
+// import PomodoroScreen from "../screens/Pomodoro/PomodoroScreen"
 import SettingsScreen from "../screens/SettingsScreen/SettingsScreen"
 import InboxScreen from "../screens/TasksManager/InboxScreen"
 import TodayTasksScreen from "../screens/TasksManager/TodayTasksScreen"
@@ -48,7 +48,6 @@ const CustomDrawer = props => {
     { name: strings("navToday"), route: "Today", icon: "today" },
     { name: strings("navSchedule"), route: "Schedule", icon: "calendar-today" },
     { name: strings("navPriorities"), route: "Priorities", icon: "star" },
-    { name: strings("navTimer"), route: "Pomodoro Timer", icon: "timelapse" },
   ]
 
   return (
@@ -129,7 +128,6 @@ const StackDrawer = ({ navigation }) => {
       <Stack.Screen name="Today" component={TodayTasksScreen} />
       <Stack.Screen name="Priorities" component={PrioritiesScreen} />
       <Stack.Screen name="Schedule" component={ScheduleScreen} />
-      <Stack.Screen name="Pomodoro Timer" component={PomodoroScreen} />
       <Stack.Screen
         name="Settings"
         component={SettingsScreen}
