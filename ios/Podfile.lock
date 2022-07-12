@@ -290,6 +290,8 @@ PODS:
   - React-jsinspector (0.66.4)
   - React-logger (0.66.4):
     - glog
+  - react-native-background-actions (2.6.7):
+    - React-Core
   - react-native-background-timer (2.4.1):
     - React-Core
   - react-native-flipper (0.131.1):
@@ -399,7 +401,7 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.14.1):
+  - RNScreens (3.15.0):
     - React-Core
     - React-RCTImage
   - RNSVG (12.3.0):
@@ -458,6 +460,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
+  - react-native-background-actions (from `../node_modules/react-native-background-actions`)
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - react-native-flipper (from `../node_modules/react-native-flipper`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -541,6 +544,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
+  react-native-background-actions:
+    :path: "../node_modules/react-native-background-actions"
   react-native-background-timer:
     :path: "../node_modules/react-native-background-timer"
   react-native-flipper:
@@ -629,6 +634,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 94ce921e1d8ce7023366873ec371f3441383b396
   React-jsinspector: d0374f7509d407d2264168b6d0fad0b54e300b85
   React-logger: 933f80c97c633ee8965d609876848148e3fef438
+  react-native-background-actions: 2c251c986f23347f9c1722f05fd296938f60edb1
   react-native-background-timer: 17ea5e06803401a379ebf1f20505b793ac44d0fe
   react-native-flipper: 8d0ada062fbc2c7460cc0d343aded6fc3f9c90dc
   react-native-safe-area-context: 9e40fb181dac02619414ba1294d6c2a807056ab9
@@ -650,7 +656,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: e1ad51d31a580755079d5124d3ab66f0fcaa8311
   RNLocalize: 95a43f85e41a966be7bc9cff2437128911c52da0
   RNReanimated: 569c269480a76e39196aa17a5df08ef1561db5ff
-  RNScreens: aa9a97835afbbdc18a4757870b2b59b7d9fae16a
+  RNScreens: 4a1af06327774490d97342c00aee0c2bafb497b7
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   simdjson: c96317b3a50dff3468a42f586ab7ed22c6ab2fd9
