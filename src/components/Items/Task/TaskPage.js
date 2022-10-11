@@ -40,10 +40,10 @@ const TaskPage = forwardRef((props, ref) => {
   const [taskDeadline, setTaskDeadline] = useState(null)
   const [taskDeadlineTime, setTaskDeadlineTime] = useState(null)
 
-  const onChangeDate = (value) => setTaskDeadline(value)
-  const onChangeTime = (value) => setTaskDeadlineTime(value)
-  const onChangeTitle = (value) => setTaskTitle(value)
-  const onChangeDesc = (value) => setTaskDesc(value)
+  const onChangeDate = value => setTaskDeadline(value)
+  const onChangeTime = value => setTaskDeadlineTime(value)
+  const onChangeTitle = value => setTaskTitle(value)
+  const onChangeDesc = value => setTaskDesc(value)
 
   const closeTaskPage = () => {
     task.updateTask(
@@ -79,7 +79,10 @@ const TaskPage = forwardRef((props, ref) => {
       },
       {
         text: "Delete",
-        onPress: () => task.delete(),
+        onPress: () => {
+          setVisible(false)
+          task.delete()
+        },
       },
     ])
 
@@ -99,7 +102,7 @@ const TaskPage = forwardRef((props, ref) => {
     setVisible(true)
   }
 
-  const pickProject = (value) => {
+  const pickProject = value => {
     setTaskProject(value)
     closeProjectPicker()
   }
@@ -190,7 +193,7 @@ const TaskPage = forwardRef((props, ref) => {
                 maxLength={50}
                 defaultValue={task.title}
                 value={taskTitle}
-                onChangeText={(value) => onChangeTitle(value)}
+                onChangeText={value => onChangeTitle(value)}
               />
               <CheckboxPriority
                 status={taskPriority}
@@ -204,7 +207,7 @@ const TaskPage = forwardRef((props, ref) => {
               maxLength={1000}
               multiline
               value={taskDesc}
-              onChangeText={(value) => onChangeDesc(value)}
+              onChangeText={value => onChangeDesc(value)}
             />
             <View>
               <Pressable
